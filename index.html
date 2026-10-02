@@ -3,69 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TEVFIX — Movies & TV</title>
 
 <style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-
-:root{
-  --bg:#08090d;
-  --card:#12151e;
-  --text:#f5f7fb;
-  --muted:#a5abba;
-  --border:rgba(255,255,255,.09);
-  --accent:linear-gradient(135deg,#ff2020,#155cff);
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
-  transition:background .4s,color .4s;
+html{
+  scroll-behavior:smooth;
+}
+
+:root{
+  --bg:#07080d;
+  --bg2:#0d1018;
+  --card:#121621;
+  --card2:#171c28;
+  --text:#f7f8fc;
+  --muted:#9da5b5;
+  --border:rgba(255,255,255,.09);
+  --red:#ff2424;
+  --blue:#2764ff;
+  --accent:linear-gradient(135deg,#ff2424,#2764ff);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
 body.light{
-  --bg:#f4f5f7;
+  --bg:#f4f5f8;
+  --bg2:#ffffff;
   --card:#ffffff;
-  --text:#111318;
-  --muted:#606775;
+  --card2:#eef0f5;
+  --text:#11141b;
+  --muted:#626a79;
   --border:rgba(0,0,0,.1);
+  --shadow:0 20px 50px rgba(0,0,0,.12);
 }
 
+body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  transition:background .3s,color .3s;
+}
+
+/* HEADER */
+
 header{
+  position:sticky;
+  top:0;
+  z-index:1000;
   height:72px;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:20px;
   padding:0 5%;
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(8,9,13,.88);
+  background:rgba(7,8,13,.88);
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
 }
 
 body.light header{
-  background:rgba(244,245,247,.9);
+  background:rgba(255,255,255,.9);
 }
 
 .logo{
-  font-size:27px;
+  font-size:28px;
   font-weight:950;
   letter-spacing:-1.5px;
+  white-space:nowrap;
 }
 
-.logo span{
-  background:var(--accent);
-  -webkit-background-clip:text;
-  color:transparent;
+.logo .red{
+  color:var(--red);
+}
+
+.logo .blue{
+  color:var(--blue);
 }
 
 nav{
   display:flex;
+  align-items:center;
   gap:22px;
 }
 
@@ -73,6 +96,7 @@ nav a{
   color:var(--muted);
   text-decoration:none;
   font-size:14px;
+  font-weight:600;
   transition:.2s;
 }
 
@@ -89,111 +113,122 @@ nav a:hover{
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
-  border-radius:10px;
+  border-radius:11px;
   padding:9px 13px;
   cursor:pointer;
-  transition:.25s;
+  transition:.2s;
 }
 
 .header-btn:hover{
   transform:translateY(-2px);
+  border-color:rgba(39,100,255,.5);
 }
 
+/* HERO */
+
 .hero{
-  min-height:570px;
-  padding:80px 7% 70px;
+  min-height:590px;
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content:center;
   text-align:center;
+  padding:80px 6%;
   background:
-    radial-gradient(circle at 25% 15%,rgba(255,20,20,.20),transparent 28%),
-    radial-gradient(circle at 75% 15%,rgba(20,80,255,.22),transparent 28%),
-    radial-gradient(circle at 50% 18%,#292e48 0,#121522 38%,var(--bg) 74%);
+    radial-gradient(circle at 20% 15%,rgba(255,36,36,.2),transparent 28%),
+    radial-gradient(circle at 80% 15%,rgba(39,100,255,.2),transparent 28%),
+    linear-gradient(180deg,#151a2a 0%,var(--bg) 90%);
 }
 
 body.light .hero{
   background:
-    radial-gradient(circle at 25% 15%,rgba(255,30,30,.12),transparent 28%),
-    radial-gradient(circle at 75% 15%,rgba(20,80,255,.12),transparent 28%),
+    radial-gradient(circle at 20% 15%,rgba(255,36,36,.1),transparent 28%),
+    radial-gradient(circle at 80% 15%,rgba(39,100,255,.1),transparent 28%),
     var(--bg);
 }
 
 .eyebrow{
-  text-transform:uppercase;
-  letter-spacing:4px;
   font-size:11px;
-  font-weight:800;
-  margin-top:20px;
+  font-weight:900;
+  letter-spacing:4px;
+  text-transform:uppercase;
   background:var(--accent);
   -webkit-background-clip:text;
   color:transparent;
+  margin-bottom:18px;
 }
 
-h1{
+.hero h1{
   font-size:clamp(48px,8vw,92px);
   line-height:.94;
-  margin:18px 0 20px;
   letter-spacing:-5px;
-  animation:fadeUp .8s ease;
+  margin-bottom:25px;
+  animation:fadeUp .7s ease;
 }
 
 .hero p{
-  max-width:680px;
+  max-width:700px;
   color:var(--muted);
   font-size:17px;
-  line-height:1.6;
-  margin:0 0 34px;
+  line-height:1.7;
+  margin-bottom:34px;
 }
 
+/* SEARCH */
+
 .search{
-  width:min(760px,94vw);
-  height:64px;
+  width:min(760px,95vw);
+  min-height:62px;
   display:flex;
   align-items:center;
-  background:var(--card);
+  padding:0 20px;
   border:1px solid var(--border);
   border-radius:18px;
-  padding:0 20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.35);
+  background:var(--card);
+  box-shadow:var(--shadow);
   transition:.25s;
 }
 
 .search:focus-within{
   transform:translateY(-3px);
-  border-color:#4777ff;
+  border-color:rgba(39,100,255,.7);
 }
 
-.search svg{
-  width:22px;
-  opacity:.55;
+.search-icon{
+  font-size:21px;
+  opacity:.6;
 }
 
 .search input{
-  flex:1;
-  background:none;
+  width:100%;
   border:0;
   outline:0;
+  background:transparent;
   color:var(--text);
   font-size:16px;
-  padding:0 14px;
+  padding:0 13px;
 }
 
 .search input::placeholder{
-  color:#777d8d;
+  color:#777f91;
 }
 
+/* MAIN */
+
 main{
-  padding:34px 6% 80px;
+  width:min(1400px,92%);
+  margin:auto;
+  padding:35px 0 80px;
 }
+
+/* CHIPS */
 
 .category-bar{
   display:flex;
   gap:10px;
-  overflow:auto;
-  padding:2px 0 4px;
-  margin-bottom:28px;
+  overflow-x:auto;
   scrollbar-width:none;
+  padding-bottom:5px;
 }
 
 .category-bar::-webkit-scrollbar{
@@ -202,126 +237,158 @@ main{
 
 .chip{
   white-space:nowrap;
-  padding:10px 15px;
+  padding:10px 16px;
+  border:1px solid var(--border);
   border-radius:999px;
   background:var(--card);
-  border:1px solid var(--border);
   color:var(--muted);
-  font-size:12px;
   text-decoration:none;
-  transition:.25s;
+  font-size:12px;
+  font-weight:700;
+  transition:.2s;
 }
 
 .chip:hover{
+  color:var(--text);
   transform:translateY(-2px);
 }
 
 .chip.active{
   background:var(--accent);
   color:white;
-  border:0;
+  border-color:transparent;
 }
 
+/* SECTIONS */
+
 .section{
-  margin-top:38px;
+  margin-top:45px;
 }
 
 .section-head{
   display:flex;
   justify-content:space-between;
-  align-items:end;
-  margin-bottom:17px;
+  align-items:center;
+  margin-bottom:18px;
 }
 
-.section h2{
+.section-head h2{
   font-size:23px;
-  margin:0;
 }
 
-.section-head a{
+.section-head button{
+  border:0;
+  background:none;
   color:var(--muted);
-  font-size:13px;
-  text-decoration:none;
+  cursor:pointer;
 }
+
+/* MOVIE GRID */
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  gap:16px;
+  grid-template-columns:repeat(6,1fr);
+  gap:17px;
 }
 
 .card{
   min-width:0;
   cursor:pointer;
-  transition:transform .3s,opacity .3s;
-  animation:cardIn .6s ease both;
+  animation:cardIn .55s ease both;
+  transition:transform .25s,opacity .25s;
 }
 
 .card:hover{
-  transform:translateY(-8px) scale(1.02);
+  transform:translateY(-8px);
 }
 
 .poster{
+  position:relative;
   aspect-ratio:2/3;
-  border-radius:13px;
   overflow:hidden;
+  border-radius:14px;
   background:
-    linear-gradient(145deg,#252a3b,#11131b);
-  position:relative;
-  display:flex;
-  align-items:flex-end;
-  padding:12px;
+    radial-gradient(circle at 30% 20%,rgba(255,36,36,.4),transparent 35%),
+    linear-gradient(145deg,#252b3d,#10131b);
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
 }
 
-.poster:before{
-  content:"";
+.poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .4s;
+}
+
+.card:hover .poster img{
+  transform:scale(1.06);
+}
+
+.poster-overlay{
   position:absolute;
   inset:0;
-  background:var(--accent);
-  opacity:.12;
+  background:linear-gradient(
+    180deg,
+    transparent 45%,
+    rgba(0,0,0,.9)
+  );
 }
 
-.poster:after{
-  content:"";
+.poster-title{
   position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85));
-}
-
-.poster .title{
-  position:relative;
-  font-weight:800;
+  left:12px;
+  right:12px;
+  bottom:12px;
+  z-index:2;
+  color:white;
   font-size:14px;
-  z-index:1;
+  font-weight:850;
+  line-height:1.25;
 }
 
 .meta{
   display:flex;
-  gap:7px;
-  color:#707688;
-  font-size:11px;
+  gap:6px;
   margin-top:8px;
+  color:var(--muted);
+  font-size:11px;
 }
 
+.no-results{
+  display:none;
+  padding:45px 10px;
+  text-align:center;
+  color:var(--muted);
+}
+
+/* WATCH */
+
 .watch-section{
-  margin-top:65px;
-  padding:30px;
+  margin-top:70px;
+  padding:28px;
   border:1px solid var(--border);
   border-radius:22px;
   background:var(--card);
+}
+
+.watch-section p{
+  color:var(--muted);
+  margin-top:7px;
 }
 
 .watch-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:15px;
-  margin-top:20px;
+  margin-top:22px;
 }
 
 .watch-card{
   padding:20px;
   border:1px solid var(--border);
   border-radius:15px;
+  background:var(--bg2);
   transition:.25s;
 }
 
@@ -330,31 +397,33 @@ main{
 }
 
 .watch-card h3{
-  margin:0 0 8px;
+  margin-bottom:8px;
 }
 
 .watch-card p{
-  color:var(--muted);
   font-size:13px;
 }
 
+/* STORE */
+
 .store{
-  margin-top:60px;
+  margin-top:65px;
 }
 
 .store-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:18px;
+  margin-top:20px;
 }
 
 .product{
+  padding:20px;
+  text-align:center;
   background:var(--card);
   border:1px solid var(--border);
   border-radius:18px;
-  padding:20px;
-  text-align:center;
-  transition:.3s;
+  transition:.25s;
 }
 
 .product:hover{
@@ -363,42 +432,88 @@ main{
 
 .shirt{
   height:220px;
-  border-radius:14px;
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,#111,#333);
-  font-size:28px;
-  font-weight:900;
+  border-radius:14px;
   margin-bottom:18px;
+  background:
+    radial-gradient(circle at 50% 30%,rgba(39,100,255,.35),transparent 30%),
+    linear-gradient(145deg,#111,#292d3a);
+  font-size:28px;
+  font-weight:950;
+}
+
+.product p{
+  color:var(--muted);
+  margin:8px 0 15px;
 }
 
 .product button{
   border:0;
   border-radius:10px;
-  padding:11px 17px;
+  padding:11px 18px;
   background:var(--accent);
   color:white;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.product button:hover{
+  transform:scale(1.04);
+}
+
+/* SUPPORT */
+
+.support{
+  margin-top:65px;
+  padding:30px;
+  text-align:center;
+  border:1px solid var(--border);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(39,100,255,.15),transparent 50%),
+    var(--card);
+}
+
+.support p{
+  color:var(--muted);
+  margin:10px auto 20px;
+}
+
+.support button{
+  border:0;
+  border-radius:11px;
+  padding:12px 20px;
+  background:var(--accent);
+  color:white;
+  font-weight:800;
   cursor:pointer;
 }
 
+/* FOOTER */
+
 footer{
-  border-top:1px solid var(--border);
-  padding:35px 6%;
-  color:#686e7c;
-  font-size:13px;
   display:flex;
   justify-content:space-between;
+  gap:20px;
+  padding:35px 5%;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:13px;
 }
+
+/* MODALS */
 
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
+  z-index:3000;
   display:none;
   place-items:center;
-  z-index:500;
   padding:20px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(9px);
 }
 
 .modal.show{
@@ -406,91 +521,224 @@ footer{
 }
 
 .modal-box{
-  width:min(440px,95vw);
+  width:min(470px,95vw);
   max-height:90vh;
   overflow:auto;
+  padding:25px;
   background:var(--card);
   border:1px solid var(--border);
   border-radius:20px;
-  padding:25px;
-  animation:modalIn .3s ease;
+  animation:modalIn .25s ease;
 }
 
 .modal-top{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  margin-bottom:15px;
 }
 
 .close{
   border:0;
   background:none;
   color:var(--muted);
-  font-size:25px;
+  font-size:27px;
   cursor:pointer;
 }
 
-.setting-option,
-.login-option{
+.modal-text{
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.option{
   width:100%;
-  padding:14px;
   margin-top:10px;
+  padding:14px;
   border:1px solid var(--border);
+  border-radius:12px;
   background:transparent;
   color:var(--text);
-  border-radius:12px;
   cursor:pointer;
   text-align:left;
   transition:.2s;
 }
 
-.setting-option:hover,
-.login-option:hover{
+.option:hover{
   transform:translateX(4px);
+  border-color:rgba(39,100,255,.5);
 }
 
 .login-option{
   text-align:center;
 }
 
-.cast{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
+/* DETAILS */
+
+.details-poster{
+  width:140px;
+  aspect-ratio:2/3;
+  object-fit:cover;
+  display:block;
+  margin:0 auto 20px;
+  border-radius:12px;
+  background:#202432;
 }
 
+.cast{
+  color:var(--muted);
+  line-height:1.7;
+  margin-top:7px;
+}
+
+/* LOADING */
+
+.loading{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:30px;
+  color:var(--muted);
+}
+
+/* ANIMATIONS */
+
 @keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 @keyframes cardIn{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 @keyframes modalIn{
-  from{opacity:0;transform:scale(.92)}
-  to{opacity:1;transform:scale(1)}
+  from{
+    opacity:0;
+    transform:scale(.94);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
 }
 
-@media(max-width:1000px){
-  .grid{grid-template-columns:repeat(4,1fr)}
-  .watch-grid{grid-template-columns:repeat(2,1fr)}
+/* TABLET */
+
+@media(max-width:1050px){
+
+  .grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .watch-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
 }
 
-@media(max-width:650px){
-  nav{display:none}
-  .grid{grid-template-columns:repeat(3,1fr);gap:12px}
-  .store-grid{grid-template-columns:1fr}
-  .header-btn{padding:8px 9px;font-size:11px}
+/* MOBILE */
+
+@media(max-width:700px){
+
+  header{
+    height:64px;
+    padding:0 4%;
+  }
+
+  nav{
+    display:none;
+  }
+
+  .logo{
+    font-size:23px;
+  }
+
+  .header-btn{
+    padding:8px 10px;
+    font-size:11px;
+  }
+
+  .hero{
+    min-height:530px;
+    padding:60px 5%;
+  }
+
+  .hero h1{
+    font-size:clamp(43px,13vw,65px);
+    letter-spacing:-3px;
+  }
+
+  .hero p{
+    font-size:15px;
+  }
+
+  main{
+    width:92%;
+  }
+
+  .grid{
+    grid-template-columns:repeat(3,1fr);
+    gap:11px;
+  }
+
+  .poster{
+    border-radius:10px;
+  }
+
+  .poster-title{
+    font-size:11px;
+    left:8px;
+    right:8px;
+    bottom:8px;
+  }
+
+  .meta{
+    font-size:9px;
+  }
+
+  .store-grid{
+    grid-template-columns:1fr;
+  }
+
+  footer{
+    flex-direction:column;
+    text-align:center;
+  }
+
 }
 
-@media(max-width:480px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  h1{letter-spacing:-3px}
-  .hero{padding-top:50px}
-  .watch-grid{grid-template-columns:1fr}
+@media(max-width:450px){
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .watch-grid{
+    grid-template-columns:1fr;
+  }
+
+  .watch-section{
+    padding:20px;
+  }
+
+  .hero{
+    padding-top:45px;
+  }
+
 }
 </style>
 </head>
@@ -498,153 +746,308 @@ footer{
 <body>
 
 <header>
-  <div class="logo">TEV<span>FIX</span></div>
+
+  <div class="logo">
+    TEV<span class="red">F</span><span class="blue">IX</span>
+  </div>
 
   <nav>
+    <a href="#trending">Trending</a>
     <a href="#movies">Movies</a>
     <a href="#series">TV Series</a>
-    <a href="#horror">Classic Horror</a>
+    <a href="#horror">Horror</a>
     <a href="#classic">Classic TV</a>
   </nav>
 
   <div class="header-buttons">
-    <button class="header-btn" onclick="openModal('loginModal')">Login</button>
-    <button class="header-btn" onclick="openModal('settingsModal')">⚙️</button>
+    <button class="header-btn" onclick="openModal('loginModal')">
+      Login
+    </button>
+
+    <button class="header-btn" onclick="openModal('settingsModal')">
+      ⚙️
+    </button>
   </div>
+
 </header>
+
 
 <section class="hero">
 
-  <div class="eyebrow">Movies • Series • Classics</div>
+  <div class="eyebrow">
+    Movies • Series • Classics
+  </div>
 
-  <h1>Find something<br>worth watching.</h1>
+  <h1>
+    Find something<br>
+    worth watching.
+  </h1>
 
   <p>
-    Discover movies and TV series, from today's favourites to legendary classics.
-    Search the TEVFIX catalogue and find your next watch.
+    Discover movies and TV series, from today's favourites
+    to legendary classics. Search TEVFIX and find your next watch.
   </p>
 
   <div class="search">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="11" cy="11" r="7"/>
-      <path d="m20 20-4-4"/>
-    </svg>
 
-    <input id="search" placeholder="Search movies, TV series, actors..." autocomplete="off">
+    <span class="search-icon">🔎</span>
+
+    <input
+      id="search"
+      type="search"
+      placeholder="Search movies, TV series, actors..."
+      autocomplete="off"
+    >
+
   </div>
 
 </section>
+
 
 <main>
 
-<div class="category-bar">
-  <a class="chip active" href="#trending">Trending</a>
-  <a class="chip" href="#movies">Movies</a>
-  <a class="chip" href="#series">TV Series</a>
-  <a class="chip" href="#horror">Classic Horror</a>
-  <a class="chip" href="#classic">Classic TV</a>
-</div>
+  <div class="category-bar">
 
-<div id="sections"></div>
+    <a class="chip active" href="#trending">
+      Trending
+    </a>
 
-<section class="watch-section" id="watchable">
+    <a class="chip" href="#movies">
+      Movies
+    </a>
 
-  <h2>Where to watch</h2>
+    <a class="chip" href="#series">
+      TV Series
+    </a>
 
-  <p style="color:var(--muted)">
-    Availability depends on your country and can change over time.
-  </p>
+    <a class="chip" href="#horror">
+      Classic Horror
+    </a>
 
-  <div class="watch-grid">
+    <a class="chip" href="#classic">
+      Classic TV
+    </a>
 
-    <div class="watch-card">
-      <h3>Netflix</h3>
-      <p>Check Netflix for available movies and series.</p>
-    </div>
+  </div>
 
-    <div class="watch-card">
-      <h3>Disney+</h3>
-      <p>Check Disney+ for available titles.</p>
-    </div>
 
-    <div class="watch-card">
-      <h3>Prime Video</h3>
-      <p>Check Prime Video for available titles.</p>
-    </div>
+  <div id="sections">
 
-    <div class="watch-card">
-      <h3>Other services</h3>
-      <p>Availability can vary by location.</p>
+    <div class="loading">
+      Loading TEVFIX...
     </div>
 
   </div>
 
-</section>
 
-<section class="store">
-
-  <div class="section-head">
-    <h2>TEVFIX Store</h2>
+  <div id="noResults" class="no-results">
+    <h2>No results found</h2>
+    <p>Try searching for another movie, series or actor.</p>
   </div>
 
-  <div class="store-grid">
 
-    <div class="product">
-      <div class="shirt">TEVFIX</div>
-      <h3>TEVFIX Classic T-Shirt</h3>
-      <p style="color:var(--muted)">Coming soon</p>
-      <button onclick="comingSoon()">View shirt</button>
+  <!-- WHERE TO WATCH -->
+
+  <section class="watch-section">
+
+    <h2>Where to watch</h2>
+
+    <p>
+      Availability depends on your country and can change over time.
+    </p>
+
+    <div class="watch-grid">
+
+      <div class="watch-card">
+        <h3>Netflix</h3>
+        <p>
+          Check Netflix for available movies and series.
+        </p>
+      </div>
+
+      <div class="watch-card">
+        <h3>Disney+</h3>
+        <p>
+          Check Disney+ for available titles.
+        </p>
+      </div>
+
+      <div class="watch-card">
+        <h3>Prime Video</h3>
+        <p>
+          Check Prime Video for available titles.
+        </p>
+      </div>
+
+      <div class="watch-card">
+        <h3>Other services</h3>
+        <p>
+          Availability can vary by location.
+        </p>
+      </div>
+
     </div>
 
-    <div class="product">
-      <div class="shirt">TEV<span style="color:#155cff">FIX</span></div>
-      <h3>TEVFIX Red & Blue T-Shirt</h3>
-      <p style="color:var(--muted)">Coming soon</p>
-      <button onclick="comingSoon()">View shirt</button>
+  </section>
+
+
+  <!-- STORE -->
+
+  <section class="store">
+
+    <div class="section-head">
+      <h2>TEVFIX Store</h2>
     </div>
 
-    <div class="product">
-      <div class="shirt">TV</div>
-      <h3>TEVFIX TV Shirt</h3>
-      <p style="color:var(--muted)">Coming soon</p>
-      <button onclick="comingSoon()">View shirt</button>
+    <div class="store-grid">
+
+      <div class="product">
+
+        <div class="shirt">
+          TEVFIX
+        </div>
+
+        <h3>
+          TEVFIX Classic T-Shirt
+        </h3>
+
+        <p>
+          Coming soon
+        </p>
+
+        <button onclick="comingSoon()">
+          View shirt
+        </button>
+
+      </div>
+
+
+      <div class="product">
+
+        <div class="shirt">
+          <span>
+            TEV<span style="color:#2764ff">FIX</span>
+          </span>
+        </div>
+
+        <h3>
+          TEVFIX Red & Blue T-Shirt
+        </h3>
+
+        <p>
+          Coming soon
+        </p>
+
+        <button onclick="comingSoon()">
+          View shirt
+        </button>
+
+      </div>
+
+
+      <div class="product">
+
+        <div class="shirt">
+          TV
+        </div>
+
+        <h3>
+          TEVFIX TV Shirt
+        </h3>
+
+        <p>
+          Coming soon
+        </p>
+
+        <button onclick="comingSoon()">
+          View shirt
+        </button>
+
+      </div>
+
     </div>
 
-  </div>
+  </section>
 
-</section>
+
+  <!-- SUPPORT -->
+
+  <section class="support">
+
+    <h2>Need help?</h2>
+
+    <p>
+      Have a question or found something that needs fixing?
+      Contact TEVFIX support.
+    </p>
+
+    <button onclick="contactSupport()">
+      Contact Support
+    </button>
+
+  </section>
 
 </main>
 
+
 <footer>
-  <div>© 2026 TEVFIX</div>
-  <div>Movies & TV discovery</div>
+
+  <div>
+    © 2026 TEVFIX
+  </div>
+
+  <div>
+    Movies & TV discovery
+  </div>
+
 </footer>
 
-<!-- LOGIN MODAL -->
 
-<div class="modal" id="loginModal" onclick="closeOutside(event,'loginModal')">
+<!-- LOGIN -->
+
+<div
+  class="modal"
+  id="loginModal"
+  onclick="closeOutside(event,'loginModal')"
+>
 
   <div class="modal-box">
 
     <div class="modal-top">
+
       <h2>Login</h2>
-      <button class="close" onclick="closeModal('loginModal')">×</button>
+
+      <button
+        class="close"
+        onclick="closeModal('loginModal')"
+      >
+        ×
+      </button>
+
     </div>
 
-    <p style="color:var(--muted)">
+    <p class="modal-text">
       Choose how you want to sign in.
     </p>
 
-    <button class="login-option" onclick="loginMessage('Google')">
+    <button
+      class="option login-option"
+      onclick="loginMessage('Google')"
+    >
       Continue with Google
     </button>
 
-    <button class="login-option" onclick="loginMessage('Apple')">
+    <button
+      class="option login-option"
+      onclick="loginMessage('Apple')"
+    >
       Continue with Apple
     </button>
 
-    <button class="login-option" onclick="loginMessage('TikTok')">
+    <button
+      class="option login-option"
+      onclick="loginMessage('TikTok')"
+    >
       Continue with TikTok
     </button>
 
@@ -652,478 +1055,719 @@ footer{
 
 </div>
 
-<!-- SETTINGS MODAL -->
 
-<div class="modal" id="settingsModal" onclick="closeOutside(event,'settingsModal')">
+<!-- SETTINGS -->
+
+<div
+  class="modal"
+  id="settingsModal"
+  onclick="closeOutside(event,'settingsModal')"
+>
 
   <div class="modal-box">
 
     <div class="modal-top">
+
       <h2>Settings</h2>
-      <button class="close" onclick="closeModal('settingsModal')">×</button>
+
+      <button
+        class="close"
+        onclick="closeModal('settingsModal')"
+      >
+        ×
+      </button>
+
     </div>
 
-    <p style="color:var(--muted)">
+    <p class="modal-text">
       Choose the appearance of TEVFIX.
     </p>
 
-    <button class="setting-option" onclick="setTheme('dark')">
+    <button
+      class="option"
+      onclick="setTheme('dark')"
+    >
       🌙 Dark mode
     </button>
 
-    <button class="setting-option" onclick="setTheme('light')">
+    <button
+      class="option"
+      onclick="setTheme('light')"
+    >
       ☀️ Light mode
     </button>
 
-    <button class="setting-option" onclick="setTheme('normal')">
-      🔴🔵 TEVFIX red & blue theme
+    <button
+      class="option"
+      onclick="setTheme('normal')"
+    >
+      🔴🔵 TEVFIX theme
     </button>
 
   </div>
 
 </div>
 
-<!-- DETAILS MODAL -->
 
-<div class="modal" id="detailsModal" onclick="closeOutside(event,'detailsModal')">
+<!-- DETAILS -->
+
+<div
+  class="modal"
+  id="detailsModal"
+  onclick="closeOutside(event,'detailsModal')"
+>
 
   <div class="modal-box">
 
     <div class="modal-top">
-      <h2 id="detailsTitle">Title</h2>
-      <button class="close" onclick="closeModal('detailsModal')">×</button>
+
+      <h2 id="detailsTitle">
+        Title
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal('detailsModal')"
+      >
+        ×
+      </button>
+
     </div>
 
-    <p id="detailsType" style="color:var(--muted)"></p>
+    <img
+      id="detailsPoster"
+      class="details-poster"
+      src=""
+      alt=""
+    >
 
-    <h3>Cast</h3>
+    <p
+      id="detailsType"
+      class="modal-text"
+    ></p>
 
-    <p id="detailsCast" class="cast"></p>
+    <h3 style="margin-top:20px">
+      Cast
+    </h3>
+
+    <p
+      id="detailsCast"
+      class="cast"
+    ></p>
 
   </div>
 
 </div>
 
+
 <script>
 
-const collections=[
-[
-"trending",
-"Trending now",
-[
-"Stranger Things",
-"Teen Wolf",
-"Wednesday",
-"The Last of Us",
-"The Batman",
-"Interstellar",
-"The Boys",
-"Scream"
-]
-],
-[
-"movies",
-"Popular movies",
-[
-"The Batman",
-"Interstellar",
-"Inception",
-"Oppenheimer",
-"Dune",
-"Gladiator",
-"Jurassic Park",
-"Titanic"
-]
-],
-[
-"series",
-"Popular TV series",
-[
-"Stranger Things",
-"Teen Wolf",
-"Breaking Bad",
-"The Boys",
-"The Walking Dead",
-"Peaky Blinders",
-"Friends",
-"The X-Files"
-]
-],
-[
-"horror",
-"Classic horror",
-[
-"Halloween",
-"Friday the 13th",
-"A Nightmare on Elm Street",
-"Scream",
-"Child's Play",
-"The Exorcist",
-"Psycho",
-"The Shining",
-"The Thing",
-"Alien",
-"The Texas Chain Saw Massacre",
-"Night of the Living Dead"
-]
-],
-[
-"classic",
-"Classic TV",
-[
-"The Twilight Zone",
-"Friends",
-"The Fresh Prince of Bel-Air",
-"Buffy the Vampire Slayer",
-"The A-Team",
-"Knight Rider",
-"Cheers",
-"M*A*S*H",
-"The Addams Family",
-"The Brady Bunch",
-"Doctor Who",
-"Baywatch"
-]
-]
+/*
+====================================================
+TEVFIX CONFIGURATION
+====================================================
+
+IMPORTANT:
+Do NOT put the TMDB key you previously pasted into
+this public code.
+
+After regenerating your TMDB key, you can put the
+new key between the quotes below.
+
+Example:
+
+const TMDB_API_KEY = "YOUR_NEW_KEY";
+
+====================================================
+*/
+
+const TMDB_API_KEY = "";
+
+
+/* COLLECTIONS */
+
+const collections = [
+
+  {
+    id:"trending",
+    title:"Trending now",
+    items:[
+      ["Stranger Things","tv"],
+      ["Teen Wolf","tv"],
+      ["Wednesday","tv"],
+      ["The Last of Us","tv"],
+      ["The Batman","movie"],
+      ["Interstellar","movie"],
+      ["The Boys","tv"],
+      ["Scream","movie"]
+    ]
+  },
+
+  {
+    id:"movies",
+    title:"Popular movies",
+    items:[
+      ["The Batman","movie"],
+      ["Interstellar","movie"],
+      ["Inception","movie"],
+      ["Oppenheimer","movie"],
+      ["Dune","movie"],
+      ["Gladiator","movie"],
+      ["Jurassic Park","movie"],
+      ["Titanic","movie"]
+    ]
+  },
+
+  {
+    id:"series",
+    title:"Popular TV series",
+    items:[
+      ["Stranger Things","tv"],
+      ["Teen Wolf","tv"],
+      ["Breaking Bad","tv"],
+      ["The Boys","tv"],
+      ["The Walking Dead","tv"],
+      ["Peaky Blinders","tv"],
+      ["Friends","tv"],
+      ["The X-Files","tv"]
+    ]
+  },
+
+  {
+    id:"horror",
+    title:"Classic horror",
+    items:[
+      ["Halloween","movie"],
+      ["Friday the 13th","movie"],
+      ["A Nightmare on Elm Street","movie"],
+      ["Scream","movie"],
+      ["Child's Play","movie"],
+      ["The Exorcist","movie"],
+      ["Psycho","movie"],
+      ["The Shining","movie"],
+      ["The Thing","movie"],
+      ["Alien","movie"],
+      ["The Texas Chain Saw Massacre","movie"],
+      ["Night of the Living Dead","movie"]
+    ]
+  },
+
+  {
+    id:"classic",
+    title:"Classic TV",
+    items:[
+      ["The Twilight Zone","tv"],
+      ["Friends","tv"],
+      ["The Fresh Prince of Bel-Air","tv"],
+      ["Buffy the Vampire Slayer","tv"],
+      ["The A-Team","tv"],
+      ["Knight Rider","tv"],
+      ["Cheers","tv"],
+      ["M*A*S*H","tv"],
+      ["The Addams Family","tv"],
+      ["The Brady Bunch","tv"],
+      ["Doctor Who","tv"],
+      ["Baywatch","tv"]
+    ]
+  }
+
 ];
 
-const movieNames=new Set([
-"The Batman",
-"Interstellar",
-"Inception",
-"Oppenheimer",
-"Dune",
-"Gladiator",
-"Jurassic Park",
-"Titanic",
-"Halloween",
-"Friday the 13th",
-"A Nightmare on Elm Street",
-"Scream",
-"Child's Play",
-"The Exorcist",
-"Psycho",
-"The Shining",
-"The Thing",
-"Alien",
-"The Texas Chain Saw Massacre",
-"Night of the Living Dead"
-]);
 
-const cast={
-"Stranger Things":"Millie Bobby Brown, Finn Wolfhard, David Harbour, Winona Ryder",
-"Teen Wolf":"Tyler Posey, Dylan O'Brien, Holland Roden, Crystal Reed",
-"Wednesday":"Jenna Ortega, Catherine Zeta-Jones, Luis Guzmán, Emma Myers",
-"The Batman":"Robert Pattinson, Zoë Kravitz, Paul Dano, Jeffrey Wright",
-"Interstellar":"Matthew McConaughey, Anne Hathaway, Jessica Chastain, Michael Caine",
-"Inception":"Leonardo DiCaprio, Joseph Gordon-Levitt, Tom Hardy, Elliot Page",
-"Oppenheimer":"Cillian Murphy, Emily Blunt, Matt Damon, Robert Downey Jr.",
-"Dune":"Timothée Chalamet, Zendaya, Rebecca Ferguson, Oscar Isaac",
-"Gladiator":"Russell Crowe, Joaquin Phoenix, Connie Nielsen, Oliver Reed",
-"Jurassic Park":"Sam Neill, Laura Dern, Jeff Goldblum, Richard Attenborough",
-"Titanic":"Leonardo DiCaprio, Kate Winslet, Billy Zane, Kathy Bates",
-"The Boys":"Karl Urban, Jack Quaid, Antony Starr, Erin Moriarty",
-"Breaking Bad":"Bryan Cranston, Aaron Paul, Anna Gunn, Dean Norris",
-"The Walking Dead":"Andrew Lincoln, Norman Reedus, Melissa McBride, Lauren Cohan",
-"Peaky Blinders":"Cillian Murphy, Paul Anderson, Helen McCrory, Sophie Rundle",
-"Friends":"Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry, David Schwimmer",
-"Scream":"Neve Campbell, Courteney Cox, David Arquette, Skeet Ulrich",
-"Halloween":"Jamie Lee Curtis, Donald Pleasence, Nick Castle",
-"Friday the 13th":"Betsy Palmer, Adrienne King, Harry Crosby",
-"The Exorcist":"Ellen Burstyn, Max von Sydow, Linda Blair",
-"Psycho":"Anthony Perkins, Janet Leigh, Vera Miles",
-"The Shining":"Jack Nicholson, Shelley Duvall, Danny Lloyd"
+/* CAST */
+
+const cast = {
+
+  "Stranger Things":
+    "Millie Bobby Brown, Finn Wolfhard, David Harbour, Winona Ryder",
+
+  "Teen Wolf":
+    "Tyler Posey, Dylan O'Brien, Holland Roden, Crystal Reed",
+
+  "Wednesday":
+    "Jenna Ortega, Catherine Zeta-Jones, Luis Guzmán, Emma Myers",
+
+  "The Batman":
+    "Robert Pattinson, Zoë Kravitz, Paul Dano, Jeffrey Wright",
+
+  "Interstellar":
+    "Matthew McConaughey, Anne Hathaway, Jessica Chastain, Michael Caine",
+
+  "Inception":
+    "Leonardo DiCaprio, Joseph Gordon-Levitt, Tom Hardy, Elliot Page",
+
+  "Oppenheimer":
+    "Cillian Murphy, Emily Blunt, Matt Damon, Robert Downey Jr.",
+
+  "Dune":
+    "Timothée Chalamet, Zendaya, Rebecca Ferguson, Oscar Isaac",
+
+  "Gladiator":
+    "Russell Crowe, Joaquin Phoenix, Connie Nielsen, Oliver Reed",
+
+  "Jurassic Park":
+    "Sam Neill, Laura Dern, Jeff Goldblum, Richard Attenborough",
+
+  "Titanic":
+    "Leonardo DiCaprio, Kate Winslet, Billy Zane, Kathy Bates",
+
+  "The Boys":
+    "Karl Urban, Jack Quaid, Antony Starr, Erin Moriarty",
+
+  "Breaking Bad":
+    "Bryan Cranston, Aaron Paul, Anna Gunn, Dean Norris",
+
+  "The Walking Dead":
+    "Andrew Lincoln, Norman Reedus, Melissa McBride, Lauren Cohan",
+
+  "Peaky Blinders":
+    "Cillian Murphy, Paul Anderson, Helen McCrory, Sophie Rundle",
+
+  "Friends":
+    "Jennifer Aniston, Courteney Cox, Lisa Kudrow, Matt LeBlanc, Matthew Perry, David Schwimmer",
+
+  "Scream":
+    "Neve Campbell, Courteney Cox, David Arquette, Skeet Ulrich",
+
+  "Halloween":
+    "Jamie Lee Curtis, Donald Pleasence, Nick Castle",
+
+  "Friday the 13th":
+    "Betsy Palmer, Adrienne King, Harry Crosby",
+
+  "The Exorcist":
+    "Ellen Burstyn, Max von Sydow, Linda Blair",
+
+  "Psycho":
+    "Anthony Perkins, Janet Leigh, Vera Miles",
+
+  "The Shining":
+    "Jack Nicholson, Shelley Duvall, Danny Lloyd"
+
 };
 
-function cards(names){
 
-return names.map((name,i)=>`
+/* TMDB SEARCH */
 
-<article
-class="card"
-data-name="${name.toLowerCase()}"
-onclick="showDetails('${name.replace(/'/g,"\\'")}')"
-style="animation-delay:${i*40}ms"
->
+async function getTMDBPoster(name,type){
 
-<div class="poster">
+  if(!TMDB_API_KEY){
+    return "";
+  }
 
-<div class="title">${name}</div>
+  try{
 
-</div>
+    const endpoint =
+      type === "movie"
+      ? "movie"
+      : "tv";
 
-<div class="meta">
+    const url =
+      `https://api.themoviedb.org/3/search/${endpoint}` +
+      `?api_key=${encodeURIComponent(TMDB_API_KEY)}` +
+      `&query=${encodeURIComponent(name)}` +
+      `&language=en-US`;
 
-<span>${movieNames.has(name)?"Movie":"Series"}</span>
+    const response = await fetch(url);
 
-<span>•</span>
+    if(!response.ok){
+      return "";
+    }
 
-<span>${movieNames.has(name)?"Film":"Series"}</span>
+    const data = await response.json();
 
-</div>
+    if(
+      data.results &&
+      data.results.length &&
+      data.results[0].poster_path
+    ){
 
-</article>
+      return "https://image.tmdb.org/t/p/w500" +
+        data.results[0].poster_path;
 
-`).join("");
+    }
+
+  }catch(error){
+
+    console.log("TMDB error:",error);
+
+  }
+
+  return "";
+}
+
+
+/* CREATE CARD */
+
+function createCard(name,type,index){
+
+  const card=document.createElement("article");
+
+  card.className="card";
+
+  card.dataset.name=name.toLowerCase();
+
+  card.style.animationDelay=(index*40)+"ms";
+
+  const poster=document.createElement("div");
+
+  poster.className="poster";
+
+  const overlay=document.createElement("div");
+
+  overlay.className="poster-overlay";
+
+  const title=document.createElement("div");
+
+  title.className="poster-title";
+
+  title.textContent=name;
+
+  poster.appendChild(overlay);
+  poster.appendChild(title);
+
+  card.appendChild(poster);
+
+  const meta=document.createElement("div");
+
+  meta.className="meta";
+
+  meta.innerHTML=
+    `<span>${type==="movie"?"Movie":"TV Series"}</span>
+     <span>•</span>
+     <span>TEVFIX</span>`;
+
+  card.appendChild(meta);
+
+  card.addEventListener("click",()=>{
+
+    showDetails(name,type);
+
+  });
+
+  loadPoster(poster,name,type);
+
+  return card;
+}
+
+
+/* LOAD POSTER */
+
+async function loadPoster(container,name,type){
+
+  const image=await getTMDBPoster(name,type);
+
+  if(!image){
+    return;
+  }
+
+  const img=document.createElement("img");
+
+  img.src=image;
+
+  img.alt=name+" poster";
+
+  img.loading="lazy";
+
+  img.onerror=()=>img.remove();
+
+  container.insertBefore(img,container.firstChild);
 
 }
 
-document.getElementById("sections").innerHTML=
-collections.map(([id,title,names])=>`
 
-<section class="section" id="${id}">
+/* BUILD SECTIONS */
 
-<div class="section-head">
+function buildSections(){
 
-<h2>${title}</h2>
+  const sections=document.getElementById("sections");
 
-<a href="#${id}">View all</a>
+  sections.innerHTML="";
 
-</div>
+  collections.forEach(collection=>{
 
-<div class="grid">
+    const section=document.createElement("section");
 
-${cards(names)}
+    section.className="section";
 
-</div>
+    section.id=collection.id;
 
-</section>
+    const head=document.createElement("div");
 
-`).join("");
+    head.className="section-head";
 
-const input=document.getElementById("search");
+    const heading=document.createElement("h2");
 
-input.addEventListener("input",()=>{
+    heading.textContent=collection.title;
 
-const q=input.value.trim().toLowerCase();
+    head.appendChild(heading);
 
-document.querySelectorAll(".card").forEach(card=>{
+    section.appendChild(head);
 
-card.style.display=
-(!q || card.dataset.name.includes(q))
-?""
-:"none";
+    const grid=document.createElement("div");
+
+    grid.className="grid";
+
+    collection.items.forEach((item,index)=>{
+
+      const card=createCard(
+        item[0],
+        item[1],
+        index
+      );
+
+      grid.appendChild(card);
+
+    });
+
+    section.appendChild(grid);
+
+    sections.appendChild(section);
+
+  });
+
+}
+
+
+/* SEARCH */
+
+const search=document.getElementById("search");
+
+search.addEventListener("input",()=>{
+
+  const query=
+    search.value
+      .trim()
+      .toLowerCase();
+
+  let visible=0;
+
+  document.querySelectorAll(".card").forEach(card=>{
+
+    const matches=
+      !query ||
+      card.dataset.name.includes(query);
+
+    card.style.display=
+      matches ? "" : "none";
+
+    if(matches){
+      visible++;
+    }
+
+  });
+
+  document
+    .querySelectorAll(".section")
+    .forEach(section=>{
+
+      const cards=
+        section.querySelectorAll(".card");
+
+      const hasVisible=
+        [...cards].some(card=>
+          card.style.display !== "none"
+        );
+
+      section.style.display=
+        hasVisible ? "" : "none";
+
+    });
+
+  document.getElementById("noResults").style.display=
+    query && visible===0
+    ? "block"
+    : "none";
 
 });
 
-});
+
+/* MODALS */
 
 function openModal(id){
 
-document.getElementById(id).classList.add("show");
+  document
+    .getElementById(id)
+    .classList.add("show");
+
+  document.body.style.overflow="hidden";
 
 }
+
 
 function closeModal(id){
 
-document.getElementById(id).classList.remove("show");
+  document
+    .getElementById(id)
+    .classList.remove("show");
+
+  document.body.style.overflow="";
 
 }
+
 
 function closeOutside(event,id){
 
-if(event.target.id===id){
+  if(event.target.id===id){
 
-closeModal(id);
+    closeModal(id);
+
+  }
 
 }
 
+
+/* ESCAPE KEY */
+
+document.addEventListener("keydown",event=>{
+
+  if(event.key==="Escape"){
+
+    document
+      .querySelectorAll(".modal.show")
+      .forEach(modal=>{
+
+        modal.classList.remove("show");
+
+      });
+
+    document.body.style.overflow="";
+
+  }
+
+});
+
+
+/* DETAILS */
+
+async function showDetails(name,type){
+
+  document.getElementById("detailsTitle")
+    .textContent=name;
+
+  document.getElementById("detailsType")
+    .textContent=
+      type==="movie"
+      ? "Movie"
+      : "TV Series";
+
+  document.getElementById("detailsCast")
+    .textContent=
+      cast[name] ||
+      "Cast information coming soon.";
+
+  const poster=
+    document.getElementById("detailsPoster");
+
+  poster.removeAttribute("src");
+
+  const image=
+    await getTMDBPoster(name,type);
+
+  if(image){
+
+    poster.src=image;
+    poster.alt=name+" poster";
+
+  }else{
+
+    poster.src=
+      "data:image/svg+xml,"+
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg"
+        width="300" height="450">
+        <rect width="100%" height="100%"
+        fill="#202432"/>
+        <text x="50%" y="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        fill="white"
+        font-size="22">
+        ${name}
+        </text>
+        </svg>
+      `);
+
+  }
+
+  openModal("detailsModal");
+
 }
+
+
+/* STORE */
 
 function comingSoon(){
 
-alert("TEVFIX Store products are coming soon!");
+  alert(
+    "TEVFIX Store products are coming soon!"
+  );
 
 }
+
+
+/* LOGIN */
 
 function loginMessage(provider){
 
-alert(
-provider+
-" login needs to be connected to an authentication service before it can actually sign users in."
-);
+  alert(
+    provider +
+    " login needs to be connected to an authentication service before it can actually sign users in."
+  );
 
 }
 
-function showDetails(name){
 
-document.getElementById("detailsTitle").textContent=name;
+/* SUPPORT */
 
-document.getElementById("detailsType").textContent=
-movieNames.has(name)?"Movie":"TV Series";
+function contactSupport(){
 
-document.getElementById("detailsCast").textContent=
-cast[name] || "Cast information coming soon.";
-
-openModal("detailsModal");
+  window.location.href=
+    "mailto:joshuabarkerwhite11@gmail.com" +
+    "?subject=TEVFIX%20Support";
 
 }
+
+
+/* THEME */
 
 function setTheme(theme){
 
-document.body.classList.remove("light");
+  document.body.classList.remove("light");
 
-if(theme==="light"){
+  if(theme==="light"){
 
-document.body.classList.add("light");
+    document.body.classList.add("light");
 
-}
+  }
 
-if(theme==="dark"){
+  localStorage.setItem(
+    "tevfixTheme",
+    theme
+  );
 
-document.body.classList.remove("light");
-
-}
-
-localStorage.setItem("tevfixTheme",theme);
-
-closeModal("settingsModal");
+  closeModal("settingsModal");
 
 }
 
-const savedTheme=localStorage.getItem("tevfixTheme");
+
+/* LOAD SAVED THEME */
+
+const savedTheme=
+  localStorage.getItem("tevfixTheme");
 
 if(savedTheme){
 
-setTheme(savedTheme);
+  setTheme(savedTheme);
 
 }
+
+
+/* START */
+
+buildSections();
 
 </script>
 
 </body>
-    </html><html><head>
-      <title>FFTR:Fresh From The Reel</title>
-   </head>
-
-   <body style="background-image:url('bgimg.jpg'); 
-		background-size: 1500px 10000px;">
- 
-   <header>
-      <h1 style="font-family:verdana;
-		 font-size:350%;
-		 color:red;
-		 text-align:center;
-		 border:2px solid Tomato;">
-
-            <img src="mage.jpg" width="130px" height="120px">
-
-             		FFTR: Fresh From The Reel
-      </h1>
-   </header>
-
-
-
-
-
-
-
-<style>
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color:LightGray;
-}
-
-
-
-li a {
-  display: block;
-  color: black;
-  text-align: center;
-  font-size:28px;
-  padding: 20px 20px;
-  text-decoration: none;
-}
-
-li a:hover:not(.active) {
-  background-color:DodgerBlue;
-}
-
-.active {
-  background-color: ;
-}
-</style>
-
-
-
-<center>
-<ul>
-  <li style="float: left;"><a href="home.html">Home		</a></li>&nbsp;&nbsp;
-  <li style="float: left;"><a href="engmovie.html">English Movies	</a></li>&nbsp;&nbsp;
-  <li style="float: left;"><a href="engtv.html">English TV Series	</a></li>&nbsp;&nbsp;
-  <li style="float: left;"><a href="hindimovie.html">Hindi Movies	</a></li>&nbsp;&nbsp;
-  <li style="float: left;"><a href="hindiwebser.html">Hindi Web Series	</a></li>&nbsp;&nbsp;
-  <li style="float: left;"><a href="login_page.html">Login		</a></li>
-  <li style="float: left;"><a href="about_us.html">About us		</a></li>
-</ul>
-</center>
-
-<p style="font-family:Arial Black, Gadget, sans-serif;text-align:center; color: DarkOrange; font-size:30px;">*******<u>Welcome to FFTR(Fresh From The Reel)</u>*******</p>
-<p style="font-family:Arial Black, Gadget, sans-serif;text-align:center; color: DeepSkyBlue; font-size:30px;">Looking for Streaming Movies?</p>
-<p style="font-family:Arial Black, Gadget, sans-serif;text-align:center; color: DodgerBlue; font-size:30px;">Well you've come to the right place</p>
-
-<center><img src="reelimgg.jpg" width="300px" height="200px">&nbsp;&nbsp;&nbsp;&nbsp;<img src="hdimgg.jpg" width="200px" height="150px"></center>
-
-
-<h3 style="text-align:center;
-	 color: DodgerBlue;
-	 font-size:300%;
-	 font-family:Arial Black;
-	border:2px solid #FFFF00;">
-  Get the best of Engish updated movies
-   Now streaming in HD too!<br> 
-   Get the Best of all<br>
-   Enter the World of Hollywood Movies!<br></h3>
-   <center><img src="holgraphics.jpg" width="1300px" height="500px"></center>
-   <!--We've got Action,Romantic,Drama,Comedy and many more<br>
-   You just name it!<br>
-   All in one site!<br>-->
-
-
-
-
-
-<h3 style="text-align:center;
-	 color: DodgerBlue;
-	 font-size:300%;
-	 font-family:Arial Black;
-	border:2px solid #FFFF00;">
-	English Tv series!?<br>
-	We've got Action,Romantic,Drama,Comedy and many more<br>
-   	You just name it!<br>
-   	All in one site!<br>
-</h3>
-
-<center><img src="holtvgraphics.jpg" width="1300px" height="500px"></center>
-
-
-<h3 style="text-align:center;
-	 color: DodgerBlue;
-	 font-size:300%;
-	 font-family:Arial Black;
-	border:2px solid #FFFF00;">
-  Get the best of Hindi updated movies
-   Now streaming in HD too!<br> 
-   Get the Best of all<br>
-   Enter the World of Bollywood Movies!<br></h3>
-<center><img src="hindmoviegraphics.jpg/" width="1300px" height="500px"></center>
-
-
-<h3 style="text-align:center;
-	 color: DodgerBlue;
-	 font-size:300%;
-	 font-family:Arial Black;
-	border:2px solid #FFFF00;">
-	Hindi Web Series!?<br>
-	We've got Action,Romantic,Drama,Comedy and many more<br>
-   	You just name it!<br>
-   	All in one site!<br>
-</h3>
-
-<center><img src="hindiwebsergraphics.jpg" width="1300px" height="500px"></center>
-
-
-</body></html>
+	</html>
