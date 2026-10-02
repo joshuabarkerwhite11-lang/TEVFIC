@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEVFIX — Movies & TV</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#08090d;color:#f4f5f8;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;background:rgba(8,9,13,.9);backdrop-filter:blur(18px);z-index:10;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1.2px}.logo span{opacity:.45}nav{display:flex;gap:26px}nav a{color:#aaaebb;text-decoration:none;font-size:14px}nav a:hover{color:#fff}.profile{width:36px;height:36px;border-radius:50%;background:#191c25;display:grid;place-items:center}
+.hero{min-height:560px;padding:78px 7% 70px;display:flex;flex-direction:column;align-items:center;text-align:center;background:radial-gradient(circle at 50% 18%,#292e48 0,#121522 38%,#08090d 74%)}
+.eyebrow{text-transform:uppercase;letter-spacing:4px;color:#9097ad;font-size:11px;font-weight:800;margin-top:28px}
+h1{font-size:clamp(48px,8vw,92px);line-height:.94;margin:18px 0 20px;letter-spacing:-5px} .hero p{max-width:660px;color:#a7acbb;font-size:17px;line-height:1.6;margin:0 0 34px}
+.search{width:min(760px,94vw);height:64px;display:flex;align-items:center;background:#151822;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:0 20px;box-shadow:0 20px 60px rgba(0,0,0,.35);transition:.25s}.search:focus-within{border-color:#fff;transform:translateY(-2px)}
+.search svg{width:22px;opacity:.55}.search input{flex:1;background:none;border:0;outline:0;color:#fff;font-size:16px;padding:0 14px}.search input::placeholder{color:#777d8d}
+main{padding:34px 6% 80px}.section{margin-top:32px}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:17px}.section h2{font-size:22px;margin:0}.section-head a{color:#8990a3;font-size:13px;text-decoration:none}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}.card{min-width:0;cursor:pointer;transition:transform .25s}.card:hover{transform:translateY(-6px)}.poster{aspect-ratio:2/3;border-radius:13px;overflow:hidden;background:linear-gradient(145deg,#252a3b,#11131b);position:relative}.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 48%,rgba(0,0,0,.8))}
+.poster .title{position:absolute;bottom:12px;left:12px;right:12px;font-weight:800;font-size:14px;z-index:1}.meta{display:flex;gap:7px;color:#707688;font-size:11px;margin-top:8px}.badge{color:#d5d8e1}
+.category-bar{display:flex;gap:10px;overflow:auto;padding:2px 0 4px;margin-bottom:28px;scrollbar-width:none}.category-bar::-webkit-scrollbar{display:none}.chip{white-space:nowrap;padding:10px 15px;border-radius:999px;background:#131620;border:1px solid rgba(255,255,255,.07);color:#aeb3c1;font-size:12px}.chip.active{background:#f2f3f5;color:#0a0b0f}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:35px 6%;color:#686e7c;font-size:13px;display:flex;justify-content:space-between}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:650px){.grid{grid-template-columns:repeat(3,1fr);gap:12px}nav{display:none}}@media(max-width:480px){.grid{grid-template-columns:repeat(2,1fr)}h1{letter-spacing:-3px}.hero{padding-top:50px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">TEV<span>FIX</span></div>
+<nav><a href="#movies">Movies</a><a href="#series">TV Series</a><a href="#horror">Classic Horror</a><a href="#classic">Classic TV</a></nav>
+<div class="profile">◉</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">Movies • Series • Classics</div>
+<h1>Find something<br>worth watching.</h1>
+<p>Discover movies and TV series, from today's favourites to legendary classics. Search the TEVFIX catalogue and build your next watchlist.</p>
+<div class="search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+<input id="search" placeholder="Search movies, TV series, actors..." autocomplete="off">
+</div>
+</section>
+
+<main>
+<div class="category-bar">
+<a class="chip active" href="#trending">Trending</a><a class="chip" href="#movies">Movies</a><a class="chip" href="#series">TV Series</a><a class="chip" href="#horror">Classic Horror</a><a class="chip" href="#classic">Classic TV</a>
+</div>
+<div id="sections"></div>
+</main>
+<footer><div>© 2026 TEVFIX</div><div>Movies & TV discovery</div></footer>
+
+<script>
+const collections=[
+["trending","Trending now",["Stranger Things","Teen Wolf","Wednesday","The Last of Us","The Batman","Interstellar","The Boys","Scream"]],
+["movies","Popular movies",["The Batman","Interstellar","Inception","Oppenheimer","Dune","Gladiator","Jurassic Park","Titanic"]],
+["series","Popular TV series",["Stranger Things","Teen Wolf","Breaking Bad","The Boys","The Walking Dead","Peaky Blinders","Friends","The X-Files"]],
+["horror","Classic horror",["Halloween","Friday the 13th","A Nightmare on Elm Street","Scream","Child's Play","The Exorcist","Psycho","The Shining","The Thing","Alien","The Texas Chain Saw Massacre","Night of the Living Dead"]],
+["classic","Classic TV",["The Twilight Zone","Friends","The Fresh Prince of Bel-Air","Buffy the Vampire Slayer","The A-Team","Knight Rider","Cheers","M*A*S*H","The Addams Family","The Brady Bunch","Doctor Who","Baywatch"]]
+];
+const years={};
+const movieNames=new Set(["The Batman","Interstellar","Inception","Oppenheimer","Dune","Gladiator","Jurassic Park","Titanic","Halloween","Friday the 13th","A Nightmare on Elm Street","Scream","Child's Play","The Exorcist","Psycho","The Shining","The Thing","Alien","The Texas Chain Saw Massacre","Night of the Living Dead"]);
+function cards(names,section){
+ return names.map((name,i)=>`<article class="card" data-name="${name.toLowerCase()}"><div class="poster"><div class="title">${name}</div></div><div class="meta"><span>${movieNames.has(name)?"Movie":"Series"}</span><span>•</span><span>${movieNames.has(name)?(name==="Interstellar"?"2014":"Classic"):"Classic"}</span></div></article>`).join("");
+}
+document.getElementById("sections").innerHTML=collections.map(([id,title,names])=>`<section class="section" id="${id}"><div class="section-head"><h2>${title}</h2><a href="#">View all</a></div><div class="grid">${cards(names,id)}</div></section>`).join("");
+const input=document.getElementById("search");
+input.addEventListener("input",()=>{const q=input.value.trim().toLowerCase();document.querySelectorAll(".card").forEach(c=>c.style.display=(!q||c.dataset.name.includes(q))?"":"none")});
+</script>
+</body>
+</html>
