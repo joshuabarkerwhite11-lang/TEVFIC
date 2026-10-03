@@ -1,927 +1,2879 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
-<meta name="description" content="TEVFIX - Movies, shows and entertainment.">
-<title>TEVFIX</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+  <title>TEVFIX — Free Movies & TV</title>
+  <meta name="description" content="TEVFIX — discover free movies and TV shows.">
+  <meta name="theme-color" content="#090909">
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    background: #080808;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.5;
-}
-
-button,
-input {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(8, 8, 8, 0.96);
-    border-bottom: 1px solid #252525;
-    backdrop-filter: blur(12px);
-}
-
-.navbar {
-    width: 100%;
-    max-width: 1450px;
-    margin: auto;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
-.logo {
-    color: #e50914;
-    font-size: 27px;
-    font-weight: 900;
-    letter-spacing: -1px;
-    white-space: nowrap;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-}
-
-.nav-links button {
-    background: transparent;
-    border: 0;
-    color: #ddd;
-    padding: 9px 12px;
-    border-radius: 7px;
-}
-
-.nav-links button:hover {
-    background: #1d1d1d;
-    color: #fff;
-}
-
-.search-box {
-    position: relative;
-}
-
-.search-box input {
-    width: 230px;
-    padding: 10px 13px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    background: #151515;
-    color: #fff;
-    outline: none;
-}
-
-.search-box input:focus {
-    border-color: #777;
-}
-
-.menu-button {
-    display: none;
-    background: #181818;
-    border: 1px solid #333;
-    color: white;
-    border-radius: 8px;
-    padding: 9px 12px;
-}
-
-main {
-    width: 100%;
-    max-width: 1450px;
-    margin: auto;
-    padding: 25px 20px 50px;
-}
-
-.hero {
-    min-height: 390px;
-    border-radius: 18px;
-    padding: 55px 40px;
-    display: flex;
-    align-items: center;
-    background:
-        radial-gradient(circle at 75% 30%, rgba(229,9,20,.25), transparent 35%),
-        linear-gradient(135deg, #151515, #090909);
-    border: 1px solid #252525;
-    overflow: hidden;
-    margin-bottom: 35px;
-}
-
-.hero-content {
-    max-width: 650px;
-}
-
-.hero h1 {
-    font-size: clamp(38px, 6vw, 72px);
-    line-height: 1;
-    margin-bottom: 18px;
-}
-
-.hero h1 span {
-    color: #e50914;
-}
-
-.hero p {
-    color: #bbb;
-    font-size: 18px;
-    margin-bottom: 25px;
-}
-
-.primary-button {
-    background: #e50914;
-    border: 0;
-    color: white;
-    padding: 12px 19px;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-.primary-button:hover {
-    background: #f6121d;
-}
-
-.secondary-button {
-    background: #222;
-    border: 1px solid #444;
-    color: #fff;
-    padding: 12px 19px;
-    border-radius: 8px;
-    margin-left: 8px;
-}
-
-.status {
-    background: #121212;
-    border: 1px solid #242424;
-    color: #bbb;
-    padding: 13px 15px;
-    border-radius: 9px;
-    margin-bottom: 28px;
-}
-
-.status strong {
-    color: #fff;
-}
-
-section {
-    scroll-margin-top: 90px;
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin: 30px 0 17px;
-}
-
-.section-header h2 {
-    font-size: 25px;
-}
-
-.section-header span {
-    color: #888;
-    font-size: 14px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-    gap: 18px;
-    padding-bottom: 15px;
-}
-
-.card {
-    background: #121212;
-    border: 1px solid #242424;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    border-color: #444;
-    box-shadow: 0 12px 30px rgba(0,0,0,.35);
-}
-
-.poster {
-    aspect-ratio: 2 / 3;
-    background:
-        linear-gradient(145deg, #292929, #101010);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 15px;
-    font-weight: bold;
-    color: #bbb;
-}
-
-.card-body {
-    padding: 12px;
-}
-
-.card-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.card-meta {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 11px;
-}
-
-.card button {
-    width: 100%;
-    padding: 8px;
-    border-radius: 7px;
-    background: #1d1d1d;
-    color: #fff;
-    border: 1px solid #333;
-}
-
-.card button:hover {
-    background: #e50914;
-    border-color: #e50914;
-}
-
-.empty {
-    display: none;
-    text-align: center;
-    padding: 40px;
-    color: #888;
-    border: 1px dashed #333;
-    border-radius: 10px;
-}
-
-.info-section {
-    margin-top: 45px;
-    padding: 28px;
-    background: #111;
-    border: 1px solid #252525;
-    border-radius: 14px;
-}
-
-.info-section h2 {
-    margin-bottom: 10px;
-}
-
-.info-section p {
-    color: #aaa;
-    margin-bottom: 10px;
-}
-
-.contact-box {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-    margin-top: 18px;
-}
-
-.contact-item {
-    background: #181818;
-    padding: 17px;
-    border-radius: 9px;
-    border: 1px solid #292929;
-}
-
-.contact-item strong {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.contact-item span {
-    color: #aaa;
-    word-break: break-word;
-}
-
-.admin-panel {
-    display: none;
-    margin-top: 35px;
-    padding: 25px;
-    background: #101010;
-    border: 1px solid #333;
-    border-radius: 14px;
-}
-
-.admin-panel.active {
-    display: block;
-}
-
-.admin-panel h2 {
-    margin-bottom: 15px;
-}
-
-.admin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 12px;
-}
-
-.admin-grid input {
-    width: 100%;
-}
-
-.modal {
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    background: rgba(0,0,0,.75);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-box {
-    width: 100%;
-    max-width: 560px;
-    background: #151515;
-    border: 1px solid #333;
-    border-radius: 14px;
-    padding: 25px;
-    position: relative;
-    box-shadow: 0 25px 70px rgba(0,0,0,.6);
-}
-
-.modal-box h2 {
-    margin-bottom: 8px;
-}
-
-.modal-box p {
-    color: #aaa;
-    margin-bottom: 20px;
-}
-
-.close-modal {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #222;
-    border: 1px solid #333;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    color: #fff;
-}
-
-footer {
-    border-top: 1px solid #222;
-    background: #0b0b0b;
-    color: #777;
-    text-align: center;
-    padding: 28px 20px;
-    margin-top: 45px;
-}
-
-footer strong {
-    color: #e50914;
-}
-
-.hidden {
-    display: none !important;
-}
-
-@media (max-width: 850px) {
-    .navbar {
-        flex-wrap: wrap;
+  <style>
+    :root {
+      --bg: #090909;
+      --bg2: #111111;
+      --card: #171717;
+      --card2: #202020;
+      --text: #ffffff;
+      --muted: #a7a7a7;
+      --accent: #e50914;
+      --accent-hover: #ff1b26;
+      --border: rgba(255,255,255,.08);
+      --shadow: 0 12px 35px rgba(0,0,0,.35);
     }
 
-    .menu-button {
-        display: block;
-        margin-left: auto;
+    body.light {
+      --bg: #f5f5f5;
+      --bg2: #ffffff;
+      --card: #ffffff;
+      --card2: #eeeeee;
+      --text: #111111;
+      --muted: #555555;
+      --border: rgba(0,0,0,.1);
+      --shadow: 0 12px 35px rgba(0,0,0,.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      transition:
+        background .25s ease,
+        color .25s ease;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(9,9,9,.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.light header {
+      background: rgba(255,255,255,.94);
+    }
+
+    .nav {
+      max-width: 1250px;
+      min-height: 68px;
+      margin: auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .logo {
+      font-size: 29px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--text);
     }
 
     .nav-links {
-        display: none;
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-left: auto;
     }
 
-    .nav-links.active {
-        display: flex;
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 700;
+      transition: .2s;
     }
 
-    .nav-links button {
-        text-align: left;
-        width: 100%;
+    .nav-links a:hover {
+      color: var(--text);
     }
 
-    .search-box {
-        width: 100%;
-        order: 5;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
     }
 
-    .search-box input {
-        width: 100%;
+    .icon-btn,
+    .menu-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
     }
+
+    .menu-btn {
+      display: none;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
 
     .hero {
-        padding: 35px 25px;
-        min-height: 350px;
+      min-height: 540px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(
+          circle at 75% 35%,
+          rgba(229,9,20,.28),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          var(--bg),
+          var(--bg2)
+        );
     }
 
-    .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      right: -180px;
+      top: -100px;
+      border-radius: 50%;
+      background: rgba(229,9,20,.08);
+      filter: blur(20px);
     }
-}
 
-@media (max-width: 430px) {
-    main {
-        padding: 18px 12px 40px;
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to right,
+          var(--bg) 0%,
+          rgba(9,9,9,.75) 45%,
+          transparent 100%
+        );
+      pointer-events: none;
     }
 
-    .hero {
-        padding: 30px 20px;
+    body.light .hero::after {
+      background:
+        linear-gradient(
+          to right,
+          #f5f5f5 0%,
+          rgba(245,245,245,.75) 45%,
+          transparent 100%
+        );
+    }
+
+    .hero-content {
+      max-width: 1250px;
+      width: 100%;
+      margin: auto;
+      padding: 75px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 12px;
+      background: var(--accent);
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      max-width: 750px;
+      font-size: clamp(43px, 7vw, 80px);
+      line-height: .95;
+      margin-bottom: 22px;
+      letter-spacing: -3px;
     }
 
     .hero p {
-        font-size: 16px;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 18px;
+      margin-bottom: 30px;
     }
 
-    .secondary-button {
-        margin-left: 0;
-        margin-top: 8px;
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 19px;
+      font-weight: 800;
+      transition:
+        transform .2s,
+        background .2s,
+        opacity .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: var(--card2);
+      border: 1px solid var(--border);
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-area {
+      max-width: 1250px;
+      margin: auto;
+      padding: 30px 20px 5px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+      transition: .2s;
+    }
+
+    .search-box input::placeholder {
+      color: var(--muted);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(229,9,20,.1);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    section.content-section {
+      max-width: 1250px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      font-size: 29px;
+      margin-bottom: 3px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       FILTERS
+    ========================= */
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .filter-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      border-radius: 999px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* =========================
+       CARDS
+    ========================= */
 
     .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: 18px;
     }
-}
-</style>
+
+    .card {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+      transition:
+        transform .22s,
+        border-color .22s,
+        box-shadow .22s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(229,9,20,.45);
+    }
+
+    .poster {
+      aspect-ratio: 2 / 3;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          145deg,
+          #252525,
+          #080808
+        );
+    }
+
+    .poster-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 20px;
+      font-weight: 900;
+      font-size: 23px;
+      line-height: 1.05;
+      background:
+        radial-gradient(
+          circle at 30% 20%,
+          rgba(229,9,20,.48),
+          transparent 40%
+        ),
+        linear-gradient(
+          145deg,
+          #252525,
+          #080808
+        );
+    }
+
+    .type-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 5px 8px;
+      border-radius: 5px;
+      background: rgba(0,0,0,.78);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 14px;
+    }
+
+    .card-body h3 {
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .card-actions .btn {
+      flex: 1;
+      padding: 9px 10px;
+      font-size: 13px;
+    }
+
+    .empty {
+      display: none;
+      padding: 35px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* =========================
+       PLAYER
+    ========================= */
+
+    .player-section {
+      max-width: 1250px;
+      margin: auto;
+      padding: 15px 20px 40px;
+    }
+
+    .player-wrap {
+      display: none;
+      background: #000;
+      border-radius: 13px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .player-wrap.active {
+      display: block;
+    }
+
+    .player-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 13px 15px;
+      background: #111;
+    }
+
+    .player-top h3 {
+      color: #fff;
+      font-size: 16px;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-height: 650px;
+      background: #000;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,.78);
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(700px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .close {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 28px;
+    }
+
+    .close:hover {
+      color: var(--text);
+    }
+
+    .modal-content {
+      padding: 22px;
+    }
+
+    .modal-content p {
+      color: var(--muted);
+      margin: 10px 0 20px;
+    }
+
+    /* =========================
+       ABOUT / CONTACT
+    ========================= */
+
+    .info-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-box p {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .contact-email {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 800;
+      margin: 12px 0 20px;
+      word-break: break-word;
+    }
+
+    /* =========================
+       ADMIN
+    ========================= */
+
+    .admin {
+      max-width: 1250px;
+      margin: auto;
+      padding: 35px 20px 60px;
+    }
+
+    .admin-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .admin-box h2 {
+      margin-bottom: 8px;
+    }
+
+    .admin-box > p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .admin-form {
+      display: none;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .admin-form.active {
+      display: flex;
+    }
+
+    .admin-form input,
+    .admin-form select {
+      flex: 1;
+      min-width: 180px;
+      padding: 11px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .admin-form input:focus,
+    .admin-form select:focus {
+      border-color: var(--accent);
+    }
+
+    .admin-message {
+      color: var(--muted);
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    footer strong {
+      color: var(--accent);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+
+      .nav {
+        min-height: 62px;
+      }
+
+      .menu-btn {
+        display: grid;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 62px;
+        left: 0;
+        right: 0;
+        padding: 15px 20px 20px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 10px;
+      }
+
+      .grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .hero {
+        min-height: 470px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+    }
+
+    @media (max-width: 430px) {
+
+      .grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .card-body {
+        padding: 10px;
+      }
+
+      .card-body h3 {
+        font-size: 14px;
+      }
+
+      .meta {
+        font-size: 11px;
+      }
+
+      .card-actions {
+        flex-direction: column;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+      }
+
+      .hero-content {
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-    <nav class="navbar">
-        <div class="logo">TEVFIX</div>
+  <!-- =========================
+       HEADER
+  ========================= -->
 
-        <button class="menu-button" id="menuButton" type="button">
-            ☰
+  <header>
+    <nav class="nav">
+
+      <a href="#home" class="logo">
+        TEV<span>FIX</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#movies">Movies</a>
+        <a href="#shows">TV Shows</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+
+        <button
+          class="icon-btn"
+          id="themeToggle"
+          title="Switch theme"
+          aria-label="Switch theme"
+        >
+          ☀️
         </button>
 
-        <div class="nav-links" id="navLinks">
-            <button type="button" onclick="goTo('home')">Home</button>
-            <button type="button" onclick="goTo('movies')">Movies</button>
-            <button type="button" onclick="goTo('shows')">Shows</button>
-            <button type="button" onclick="goTo('contact')">Contact</button>
-            <button type="button" onclick="openAdmin()">Admin</button>
-        </div>
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
 
-        <div class="search-box">
-            <input
-                id="searchInput"
-                type="search"
-                placeholder="Search movies & shows..."
-                autocomplete="off"
-                aria-label="Search movies and shows"
-            >
-        </div>
+      </div>
+
     </nav>
-</header>
+  </header>
 
-<main id="home">
+
+  <!-- =========================
+       MAIN
+  ========================= -->
+
+  <main id="home">
+
+    <!-- HERO -->
 
     <section class="hero">
-        <div class="hero-content">
-            <h1>Welcome to <span>TEVFIX</span></h1>
-            <p>
-                Your entertainment hub for movies, shows and future TEVFIX
-                features — all in one clean, fast website.
-            </p>
 
-            <button class="primary-button" type="button" onclick="goTo('movies')">
-                Browse Movies
-            </button>
+      <div class="hero-content">
 
-            <button class="secondary-button" type="button" onclick="goTo('shows')">
-                Browse Shows
-            </button>
-        </div>
-    </section>
+        <span class="badge">
+          Welcome to TEVFIX
+        </span>
 
-    <div class="status">
-        <strong>TEVFIX status:</strong>
-        Website online and ready.
-    </div>
+        <h1>
+          Movies & TV.<br>
+          Made simple.
+        </h1>
 
-    <section id="movies">
-        <div class="section-header">
-            <h2>Movies</h2>
-            <span id="movieCount"></span>
-        </div>
-
-        <div class="grid" id="movieGrid">
-
-            <article class="card" data-title="Big Buck Bunny" data-type="movie">
-                <div class="poster">BIG BUCK<br>BUNNY</div>
-                <div class="card-body">
-                    <div class="card-title">Big Buck Bunny</div>
-                    <div class="card-meta">Animation • Free</div>
-                    <button type="button"
-                        onclick="showDetails('Big Buck Bunny','An open movie that can be used as a legal example for TEVFIX.')">
-                        Details
-                    </button>
-                </div>
-            </article>
-
-            <article class="card" data-title="Sintel" data-type="movie">
-                <div class="poster">SINTEL</div>
-                <div class="card-body">
-                    <div class="card-title">Sintel</div>
-                    <div class="card-meta">Fantasy • Free</div>
-                    <button type="button"
-                        onclick="showDetails('Sintel','An open movie suitable for demonstrating legal streaming on TEVFIX.')">
-                        Details
-                    </button>
-                </div>
-            </article>
-
-            <article class="card" data-title="Tears of Steel" data-type="movie">
-                <div class="poster">TEARS OF<br>STEEL</div>
-                <div class="card-body">
-                    <div class="card-title">Tears of Steel</div>
-                    <div class="card-meta">Sci-Fi • Free</div>
-                    <button type="button"
-                        onclick="showDetails('Tears of Steel','An open movie that can be used as a legal demonstration title.')">
-                        Details
-                    </button>
-                </div>
-            </article>
-
-            <article class="card" data-title="Elephants Dream" data-type="movie">
-                <div class="poster">ELEPHANTS<br>DREAM</div>
-                <div class="card-body">
-                    <div class="card-title">Elephants Dream</div>
-                    <div class="card-meta">Animation • Free</div>
-                    <button type="button"
-                        onclick="showDetails('Elephants Dream','An open movie that can be used for legal testing and demonstrations.')">
-                        Details
-                    </button>
-                </div>
-            </article>
-
-        </div>
-
-        <div class="empty" id="movieEmpty">
-            No movies matched your search.
-        </div>
-    </section>
-
-    <section id="shows">
-        <div class="section-header">
-            <h2>Shows</h2>
-            <span id="showCount"></span>
-        </div>
-
-        <div class="grid" id="showGrid">
-
-            <article class="card" data-title="TEVFIX Originals" data-type="show">
-                <div class="poster">TEVFIX<br>ORIGINALS</div>
-                <div class="card-body">
-                    <div class="card-title">TEVFIX Originals</div>
-                    <div class="card-meta">Coming Soon</div>
-                    <button type="button"
-                        onclick="showDetails('TEVFIX Originals','Your future home for original TEVFIX content.')">
-                        Details
-                    </button>
-                </div>
-            </article>
-
-            <article class="card" data-title="Coming Soon" data-type="show">
-                <div class="poster">COMING<br>SOON</div>
-                <div class="card-body">
-                    <div class="card-title">Coming Soon</div>
-                    <div class="card-meta">More content</div>
-                    <button type="button"
-                        onclick="showDetails('Coming Soon','More legally licensed or freely available content can be added here.')">
-                        Details
-                    </button>
-                </div>
-            </article>
-
-        </div>
-
-        <div class="empty" id="showEmpty">
-            No shows matched your search.
-        </div>
-    </section>
-
-    <section class="info-section" id="contact">
-        <h2>Contact TEVFIX</h2>
         <p>
-            Use the contact details below for TEVFIX enquiries, partnerships,
-            content permissions or website support.
+          Discover free-to-watch movies and TV shows
+          in one clean place. Search, browse and watch
+          available content directly from TEVFIX.
         </p>
 
-        <div class="contact-box">
-            <div class="contact-item">
-                <strong>Project</strong>
-                <span>TEVFIX</span>
-            </div>
+        <div class="hero-buttons">
 
-            <div class="contact-item">
-                <strong>Email</strong>
-                <span>Add your official TEVFIX email here</span>
-            </div>
+          <a
+            href="#movies"
+            class="btn btn-primary"
+          >
+            Browse Movies
+          </a>
 
-            <div class="contact-item">
-                <strong>Content</strong>
-                <span>Licensed and legally distributable content</span>
-            </div>
+          <a
+            href="#shows"
+            class="btn btn-secondary"
+          >
+            Browse TV Shows
+          </a>
+
         </div>
+
+      </div>
+
     </section>
 
-    <section class="admin-panel" id="adminPanel">
-        <h2>TEVFIX Admin Controls</h2>
 
-        <p style="color:#999;margin-bottom:18px;">
-            Admin tools are stored locally in this demo. For a real public
-            website, authentication must be handled securely on a server.
-        </p>
+    <!-- SEARCH -->
 
-        <div class="admin-grid">
-            <input id="adminTitle" type="text" placeholder="New title">
-            <input id="adminType" type="text" placeholder="Movie or show">
-            <button class="primary-button" type="button" onclick="addTitle()">
-                Add title
-            </button>
-            <button type="button" onclick="closeAdmin()">
-                Close admin
-            </button>
-        </div>
-    </section>
+    <div class="search-area">
 
-</main>
+      <div class="search-box">
 
-<div class="modal" id="detailsModal" role="dialog" aria-modal="true">
-    <div class="modal-box">
-        <button class="close-modal" type="button" onclick="closeModal()">
-            ×
-        </button>
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search movies and TV shows..."
+          autocomplete="off"
+          aria-label="Search movies and TV shows"
+        >
 
-        <h2 id="modalTitle">Title</h2>
-        <p id="modalDescription">Description</p>
+      </div>
 
-        <button class="primary-button" type="button" onclick="closeModal()">
-            Close
-        </button>
     </div>
-</div>
 
-<footer>
+
+    <!-- =========================
+         VIDEO PLAYER
+    ========================= -->
+
+    <section class="player-section">
+
+      <div
+        class="player-wrap"
+        id="playerWrap"
+      >
+
+        <div class="player-top">
+
+          <h3 id="playerTitle">
+            Now Playing
+          </h3>
+
+          <button
+            class="btn btn-secondary"
+            id="closePlayer"
+          >
+            Close
+          </button>
+
+        </div>
+
+        <video
+          id="videoPlayer"
+          controls
+          playsinline
+        >
+          Your browser does not support HTML5 video.
+        </video>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         MOVIES
+    ========================= -->
+
+    <section
+      class="content-section"
+      id="movies"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>
+            Free Movies
+          </h2>
+
+          <p>
+            Public-domain or openly available titles.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="filters">
+
+        <button
+          class="filter-btn movie-filter active"
+          data-filter="all"
+        >
+          All
+        </button>
+
+        <button
+          class="filter-btn movie-filter"
+          data-filter="animation"
+        >
+          Animation
+        </button>
+
+        <button
+          class="filter-btn movie-filter"
+          data-filter="sci-fi"
+        >
+          Sci-Fi
+        </button>
+
+        <button
+          class="filter-btn movie-filter"
+          data-filter="documentary"
+        >
+          Documentary
+        </button>
+
+        <button
+          class="filter-btn movie-filter"
+          data-filter="classic"
+        >
+          Classic
+        </button>
+
+      </div>
+
+
+      <div
+        class="grid"
+        id="movieGrid"
+      >
+
+        <!-- BIG BUCK BUNNY -->
+
+        <article
+          class="card media-card"
+          data-title="Big Buck Bunny"
+          data-category="animation"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              BIG<br>
+              BUCK<br>
+              BUNNY
+            </div>
+
+            <span class="type-label">
+              Movie
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Big Buck Bunny
+            </h3>
+
+            <div class="meta">
+              Animation • 2008
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Big Buck Bunny"
+                data-video="https://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Big Buck Bunny"
+                data-description="An open movie created by the Blender Institute."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- SINTEL -->
+
+        <article
+          class="card media-card"
+          data-title="Sintel"
+          data-category="animation"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              SINTEL
+            </div>
+
+            <span class="type-label">
+              Movie
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Sintel
+            </h3>
+
+            <div class="meta">
+              Animation • 2010
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Sintel"
+                data-video="https://archive.org/download/Sintel/sintel-2048-surround.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Sintel"
+                data-description="An open movie from the Blender Foundation."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- TEARS OF STEEL -->
+
+        <article
+          class="card media-card"
+          data-title="Tears of Steel"
+          data-category="sci-fi"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              TEARS<br>
+              OF<br>
+              STEEL
+            </div>
+
+            <span class="type-label">
+              Movie
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Tears of Steel
+            </h3>
+
+            <div class="meta">
+              Sci-Fi • 2012
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Tears of Steel"
+                data-video="https://archive.org/download/TearsOfSteel720p/TearsOfSteel720p.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Tears of Steel"
+                data-description="A science-fiction short film created with open-source tools."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- ELEPHANTS DREAM -->
+
+        <article
+          class="card media-card"
+          data-title="Elephants Dream"
+          data-category="animation"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              ELEPHANTS<br>
+              DREAM
+            </div>
+
+            <span class="type-label">
+              Movie
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Elephants Dream
+            </h3>
+
+            <div class="meta">
+              Animation • 2006
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Elephants Dream"
+                data-video="https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Elephants Dream"
+                data-description="An open movie produced by the Orange Open Movie Project."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- FOR THE BIRDS -->
+
+        <article
+          class="card media-card"
+          data-title="For the Birds"
+          data-category="animation"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              FOR THE<br>
+              BIRDS
+            </div>
+
+            <span class="type-label">
+              Short
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              For the Birds
+            </h3>
+
+            <div class="meta">
+              Animation • Short
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="For the Birds"
+                data-video="https://archive.org/download/for-the-birds/for-the-birds.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="For the Birds"
+                data-description="A short animated film."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- NIGHT OF THE LIVING DEAD -->
+
+        <article
+          class="card media-card"
+          data-title="Night of the Living Dead"
+          data-category="classic"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              NIGHT OF<br>
+              THE LIVING<br>
+              DEAD
+            </div>
+
+            <span class="type-label">
+              Classic
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Night of the Living Dead
+            </h3>
+
+            <div class="meta">
+              Horror • Classic
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Night of the Living Dead"
+                data-video="https://archive.org/download/night_of_the_living_dead/night_of_the_living_dead.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Night of the Living Dead"
+                data-description="A classic horror film widely available through public-domain archives."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- HIS GIRL FRIDAY -->
+
+        <article
+          class="card media-card"
+          data-title="His Girl Friday"
+          data-category="classic"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              HIS GIRL<br>
+              FRIDAY
+            </div>
+
+            <span class="type-label">
+              Classic
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              His Girl Friday
+            </h3>
+
+            <div class="meta">
+              Comedy • Classic
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="His Girl Friday"
+                data-video="https://archive.org/download/HisGirlFriday_720p/HisGirlFriday_720p.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="His Girl Friday"
+                data-description="A classic comedy film available through public-domain archives."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- THE KID -->
+
+        <article
+          class="card media-card"
+          data-title="The Kid"
+          data-category="classic"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              THE<br>
+              KID
+            </div>
+
+            <span class="type-label">
+              Classic
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              The Kid
+            </h3>
+
+            <div class="meta">
+              Comedy • Classic
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="The Kid"
+                data-video="https://archive.org/download/the_kid_1921/the_kid_1921.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="The Kid"
+                data-description="A classic silent comedy film starring Charlie Chaplin."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <div
+        class="empty"
+        id="movieEmpty"
+      >
+        No movies matched your search.
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         TV SHOWS
+    ========================= -->
+
+    <section
+      class="content-section"
+      id="shows"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>
+            Free TV & Series
+          </h2>
+
+          <p>
+            Free and openly available episodic content.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="filters">
+
+        <button
+          class="filter-btn show-filter active"
+          data-show-filter="all"
+        >
+          All
+        </button>
+
+        <button
+          class="filter-btn show-filter"
+          data-show-filter="animation"
+        >
+          Animation
+        </button>
+
+        <button
+          class="filter-btn show-filter"
+          data-show-filter="documentary"
+        >
+          Documentary
+        </button>
+
+        <button
+          class="filter-btn show-filter"
+          data-show-filter="classic"
+        >
+          Classic
+        </button>
+
+      </div>
+
+
+      <div
+        class="grid"
+        id="showGrid"
+      >
+
+        <!-- OPEN MOVIE COLLECTION -->
+
+        <article
+          class="card show-card"
+          data-title="Open Movie Collection"
+          data-category="animation"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              OPEN<br>
+              MOVIE<br>
+              COLLECTION
+            </div>
+
+            <span class="type-label">
+              Series
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Open Movie Collection
+            </h3>
+
+            <div class="meta">
+              Animation • Free Collection
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Big Buck Bunny"
+                data-video="https://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4"
+              >
+                ▶ Episode 1
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Open Movie Collection"
+                data-description="A collection of freely available open movies and shorts."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- CLASSIC COLLECTION -->
+
+        <article
+          class="card show-card"
+          data-title="Classic Film Collection"
+          data-category="classic"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              CLASSIC<br>
+              COLLECTION
+            </div>
+
+            <span class="type-label">
+              Series
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Classic Film Collection
+            </h3>
+
+            <div class="meta">
+              Classic • Free Collection
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="The Kid"
+                data-video="https://archive.org/download/the_kid_1921/the_kid_1921.mp4"
+              >
+                ▶ Episode 1
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Classic Film Collection"
+                data-description="Classic films that are available through public-domain archives."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- OPEN ANIMATION -->
+
+        <article
+          class="card show-card"
+          data-title="Open Animation Shorts"
+          data-category="animation"
+        >
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              ANIMATION<br>
+              SHORTS
+            </div>
+
+            <span class="type-label">
+              Series
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              Open Animation Shorts
+            </h3>
+
+            <div class="meta">
+              Animation • Shorts
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary watch-btn"
+                data-title="Sintel"
+                data-video="https://archive.org/download/Sintel/sintel-2048-surround.mp4"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary details-btn"
+                data-title="Open Animation Shorts"
+                data-description="Openly available animated films and shorts."
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <div
+        class="empty"
+        id="showEmpty"
+      >
+        No TV shows matched your search.
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         ABOUT
+    ========================= -->
+
+    <section
+      class="content-section"
+      id="about"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>
+            About TEVFIX
+          </h2>
+
+          <p>
+            Your free entertainment hub.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="info-box">
+
+        <p>
+          TEVFIX is a simple entertainment platform
+          designed to make finding free-to-watch
+          content easier.
+        </p>
+
+        <p>
+          The site is designed to work on phones,
+          tablets, computers and modern browsers.
+        </p>
+
+        <p>
+          Content listed on TEVFIX should only be
+          content that you have the legal right to
+          distribute, embed or link to.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTACT
+    ========================= -->
+
+    <section
+      class="content-section"
+      id="contact"
+    >
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>
+            Contact TEVFIX
+          </h2>
+
+          <p>
+            Questions, suggestions or enquiries?
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="info-box">
+
+        <p>
+          For questions, suggestions, copyright concerns,
+          technical problems or other enquiries, contact
+          the TEVFIX team by email.
+        </p>
+
+
+        <a
+          class="contact-email"
+          href="mailto:joshuabarkerwhite11@gmail.com"
+        >
+          joshuabarkerwhite11@gmail.com
+        </a>
+
+
+        <br>
+
+
+        <a
+          class="btn btn-primary"
+          href="mailto:joshuabarkerwhite11@gmail.com"
+        >
+          ✉ Email TEVFIX
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         ADMIN
+    ========================= -->
+
+    <section
+      class="admin"
+      id="admin"
+    >
+
+      <div class="admin-box">
+
+        <h2>
+          Admin Controls
+        </h2>
+
+        <p>
+          Front-end tools for adding content to
+          the current page.
+        </p>
+
+
+        <button
+          class="btn btn-secondary"
+          id="adminLogin"
+        >
+          Open Admin
+        </button>
+
+
+        <div
+          class="admin-form"
+          id="adminForm"
+        >
+
+          <input
+            type="text"
+            id="adminTitle"
+            placeholder="Title"
+          >
+
+
+          <select id="adminType">
+
+            <option value="movie">
+              Movie
+            </option>
+
+            <option value="show">
+              TV Show
+            </option>
+
+          </select>
+
+
+          <input
+            type="url"
+            id="adminVideo"
+            placeholder="Legal video URL"
+          >
+
+
+          <button
+            class="btn btn-primary"
+            id="addTitle"
+          >
+            Add Title
+          </button>
+
+        </div>
+
+
+        <div
+          class="admin-message"
+          id="adminMessage"
+        ></div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       DETAILS MODAL
+  ========================= -->
+
+  <div
+    class="modal"
+    id="detailsModal"
+  >
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <h2 id="modalTitle">
+          Title
+        </h2>
+
+        <button
+          class="close"
+          id="modalClose"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-content">
+
+        <p id="modalDescription">
+        </p>
+
+        <button
+          class="btn btn-primary"
+          id="modalWatch"
+        >
+          ▶ Watch
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
     <p>
-        <strong>TEVFIX</strong> © 2026. Built for entertainment.
+      <strong>TEVFIX</strong>
+      © <span id="year"></span>
     </p>
-    <p style="margin-top:5px;">
-        Only content you have permission to distribute should be added.
+
+    <p>
+      Free content only.
+      Always respect copyright and licensing requirements.
     </p>
-</footer>
 
-<script>
-"use strict";
+    <p>
+      <a href="#contact">
+        Contact TEVFIX
+      </a>
+    </p>
 
-/* -------------------------
-   Navigation
-------------------------- */
+  </footer>
 
-function goTo(id) {
-    const element = document.getElementById(id);
 
-    if (element) {
-        element.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
 
-    document.getElementById("navLinks").classList.remove("active");
-}
+  <script>
+    "use strict";
 
-/* -------------------------
-   Mobile menu
-------------------------- */
 
-document.getElementById("menuButton").addEventListener("click", function () {
-    document.getElementById("navLinks").classList.toggle("active");
-});
+    /* =========================
+       YEAR
+    ========================= */
 
-/* -------------------------
-   Search
-------------------------- */
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
 
-const searchInput = document.getElementById("searchInput");
 
-searchInput.addEventListener("input", function () {
-    const query = searchInput.value.trim().toLowerCase();
+    /* =========================
+       MOBILE MENU
+    ========================= */
 
-    filterCards("movieGrid", "movieEmpty", query);
-    filterCards("showGrid", "showEmpty", query);
+    const menuBtn =
+      document.getElementById("menuBtn");
 
-    updateCounts();
-});
+    const navLinks =
+      document.getElementById("navLinks");
 
-function filterCards(gridId, emptyId, query) {
-    const grid = document.getElementById(gridId);
-    const empty = document.getElementById(emptyId);
-    const cards = grid.querySelectorAll(".card");
 
-    let visible = 0;
+    menuBtn.addEventListener(
+      "click",
+      () => {
 
-    cards.forEach(function (card) {
-        const title = card.dataset.title.toLowerCase();
+        navLinks.classList.toggle("open");
 
-        const matches =
-            query === "" ||
-            title.includes(query);
+      }
+    );
 
-        card.classList.toggle("hidden", !matches);
 
-        if (matches) {
-            visible++;
-        }
-    });
+    document
+      .querySelectorAll(".nav-links a")
+      .forEach(link => {
 
-    empty.style.display = visible === 0 ? "block" : "none";
-}
+        link.addEventListener(
+          "click",
+          () => {
 
-function updateCounts() {
-    const movies = document.querySelectorAll("#movieGrid .card:not(.hidden)").length;
-    const shows = document.querySelectorAll("#showGrid .card:not(.hidden)").length;
+            navLinks.classList.remove("open");
 
-    document.getElementById("movieCount").textContent =
-        movies + (movies === 1 ? " title" : " titles");
-
-    document.getElementById("showCount").textContent =
-        shows + (shows === 1 ? " title" : " titles");
-}
-
-updateCounts();
-
-/* -------------------------
-   Modal
-------------------------- */
-
-function showDetails(title, description) {
-    document.getElementById("modalTitle").textContent = title;
-    document.getElementById("modalDescription").textContent = description;
-
-    document.getElementById("detailsModal").classList.add("active");
-}
-
-function closeModal() {
-    document.getElementById("detailsModal").classList.remove("active");
-}
-
-document.getElementById("detailsModal").addEventListener("click", function (event) {
-    if (event.target === this) {
-        closeModal();
-    }
-});
-
-document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") {
-        closeModal();
-    }
-});
-
-/* -------------------------
-   Admin panel
-------------------------- */
-
-function openAdmin() {
-    const password = prompt("Enter TEVFIX admin password:");
-
-    if (password === null) {
-        return;
-    }
-
-    /*
-      This is only a front-end demo.
-      Never use a client-side password as real security.
-    */
-    if (password === "WALL") {
-        document.getElementById("adminPanel").classList.add("active");
-        document.getElementById("adminPanel").scrollIntoView({
-            behavior: "smooth"
-        });
-    } else {
-        alert("Incorrect admin password.");
-    }
-}
-
-function closeAdmin() {
-    document.getElementById("adminPanel").classList.remove("active");
-}
-
-function addTitle() {
-    const titleInput = document.getElementById("adminTitle");
-    const typeInput = document.getElementById("adminType");
-
-    const title = titleInput.value.trim();
-    const type = typeInput.value.trim().toLowerCase();
-
-    if (!title) {
-        alert("Enter a title first.");
-        return;
-    }
-
-    if (type !== "movie" && type !== "show") {
-        alert("Type must be 'movie' or 'show'.");
-        return;
-    }
-
-    const gridId = type === "movie" ? "movieGrid" : "showGrid";
-    const grid = document.getElementById(gridId);
-
-    const card = document.createElement("article");
-    card.className = "card";
-    card.dataset.title = title;
-    card.dataset.type = type;
-
-    const poster = document.createElement("div");
-    poster.className = "poster";
-    poster.textContent = title.toUpperCase();
-
-    const body = document.createElement("div");
-    body.className = "card-body";
-
-    const cardTitle = document.createElement("div");
-    cardTitle.className = "card-title";
-    cardTitle.textContent = title;
-
-    const meta = document.createElement("div");
-    meta.className = "card-meta";
-    meta.textContent = "TEVFIX • Added";
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = "Details";
-
-    button.addEventListener("click", function () {
-        showDetails(
-            title,
-            "This title was added through the TEVFIX admin interface."
+          }
         );
-    });
 
-    body.appendChild(cardTitle);
-    body.appendChild(meta);
-    body.appendChild(button);
+      });
 
-    card.appendChild(poster);
-    card.appendChild(body);
 
-    grid.appendChild(card);
+    /* =========================
+       DARK / LIGHT MODE
+    ========================= */
 
-    titleInput.value = "";
-    typeInput.value = "";
+    const themeToggle =
+      document.getElementById("themeToggle");
 
-    updateCounts();
 
-    alert("Title added to TEVFIX.");
-}
+    function applyTheme(theme) {
 
-/* -------------------------
-   Prevent accidental form
-   submission behaviour
-------------------------- */
+      if (theme === "light") {
 
-document.querySelectorAll("button").forEach(function (button) {
-    button.setAttribute("type", button.getAttribute("type") || "button");
-});
-</script>
+        document.body.classList.add("light");
+
+        themeToggle.textContent = "🌙";
+
+        themeToggle.title =
+          "Switch to dark mode";
+
+      } else {
+
+        document.body.classList.remove("light");
+
+        themeToggle.textContent = "☀️";
+
+        themeToggle.title =
+          "Switch to light mode";
+
+      }
+
+
+      localStorage.setItem(
+        "tevfix-theme",
+        theme
+      );
+
+    }
+
+
+    const savedTheme =
+      localStorage.getItem("tevfix-theme");
+
+
+    if (savedTheme) {
+
+      applyTheme(savedTheme);
+
+    } else {
+
+      applyTheme("dark");
+
+    }
+
+
+    themeToggle.addEventListener(
+      "click",
+      () => {
+
+        const newTheme =
+          document.body.classList.contains("light")
+            ? "dark"
+            : "light";
+
+        applyTheme(newTheme);
+
+      }
+    );
+
+
+    /* =========================
+       VIDEO PLAYER
+    ========================= */
+
+    const playerWrap =
+      document.getElementById("playerWrap");
+
+    const videoPlayer =
+      document.getElementById("videoPlayer");
+
+    const playerTitle =
+      document.getElementById("playerTitle");
+
+    const closePlayer =
+      document.getElementById("closePlayer");
+
+
+    function playVideo(title, videoUrl) {
+
+      if (!videoUrl) {
+
+        alert(
+          "This title does not currently have a video."
+        );
+
+        return;
+
+      }
+
+
+      playerTitle.textContent = title;
+
+      videoPlayer.src = videoUrl;
+
+      playerWrap.classList.add("active");
+
+
+      playerWrap.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+
+      videoPlayer
+        .play()
+        .catch(() => {
+          /* Browser may require manual play. */
+        });
+
+    }
+
+
+    function attachWatchButtons() {
+
+      document
+        .querySelectorAll(".watch-btn")
+        .forEach(button => {
+
+          if (
+            button.dataset.bound === "true"
+          ) {
+            return;
+          }
+
+
+          button.dataset.bound = "true";
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              playVideo(
+                button.dataset.title,
+                button.dataset.video
+              );
+
+            }
+          );
+
+        });
+
+    }
+
+
+    attachWatchButtons();
+
+
+    closePlayer.addEventListener(
+      "click",
+      () => {
+
+        videoPlayer.pause();
+
+        videoPlayer.removeAttribute("src");
+
+        videoPlayer.load();
+
+        playerWrap.classList.remove("active");
+
+      }
+    );
+
+
+    /* =========================
+       DETAILS MODAL
+    ========================= */
+
+    const detailsModal =
+      document.getElementById("detailsModal");
+
+    const modalTitle =
+      document.getElementById("modalTitle");
+
+    const modalDescription =
+      document.getElementById("modalDescription");
+
+    const modalWatch =
+      document.getElementById("modalWatch");
+
+    const modalClose =
+      document.getElementById("modalClose");
+
+
+    let currentModalVideo = "";
+
+    let currentModalTitle = "";
+
+
+    function openDetails(
+      title,
+      description,
+      video
+    ) {
+
+      currentModalTitle = title;
+
+      currentModalVideo = video || "";
+
+
+      modalTitle.textContent =
+        title;
+
+      modalDescription.textContent =
+        description ||
+        "No description available.";
+
+
+      detailsModal.classList.add(
+        "active"
+      );
+
+    }
+
+
+    function attachDetailsButtons() {
+
+      document
+        .querySelectorAll(".details-btn")
+        .forEach(button => {
+
+          if (
+            button.dataset.bound === "true"
+          ) {
+            return;
+          }
+
+
+          button.dataset.bound = "true";
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const card =
+                button.closest(".card");
+
+              const watchButton =
+                card
+                  ? card.querySelector(".watch-btn")
+                  : null;
+
+
+              openDetails(
+                button.dataset.title,
+                button.dataset.description,
+                watchButton
+                  ? watchButton.dataset.video
+                  : ""
+              );
+
+            }
+          );
+
+        });
+
+    }
+
+
+    attachDetailsButtons();
+
+
+    modalWatch.addEventListener(
+      "click",
+      () => {
+
+        if (currentModalVideo) {
+
+          detailsModal.classList.remove(
+            "active"
+          );
+
+          playVideo(
+            currentModalTitle,
+            currentModalVideo
+          );
+
+        } else {
+
+          alert(
+            "There is no playable video attached to this title yet."
+          );
+
+        }
+
+      }
+    );
+
+
+    modalClose.addEventListener(
+      "click",
+      () => {
+
+        detailsModal.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+    detailsModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target === detailsModal
+        ) {
+
+          detailsModal.classList.remove(
+            "active"
+          );
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Escape") {
+
+          detailsModal.classList.remove(
+            "active"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        const search =
+          searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+        filterCards(
+          document.querySelectorAll(
+            "#movieGrid .media-card"
+          ),
+          search,
+          "movieEmpty"
+        );
+
+
+        filterCards(
+          document.querySelectorAll(
+            "#showGrid .show-card"
+          ),
+          search,
+          "showEmpty"
+        );
+
+      }
+    );
+
+
+    function filterCards(
+      cards,
+      search,
+      emptyId
+    ) {
+
+      let visible = 0;
+
+
+      cards.forEach(card => {
+
+        const title =
+          (
+            card.dataset.title || ""
+          ).toLowerCase();
+
+
+        if (
+          !search ||
+          title.includes(search)
+        ) {
+
+          card.style.display = "";
+
+          visible++;
+
+        } else {
+
+          card.style.display =
+            "none";
+
+        }
+
+      });
+
+
+      const empty =
+        document.getElementById(emptyId);
+
+
+      empty.style.display =
+        visible === 0
+          ? "block"
+          : "none";
+
+    }
+
+
+    /* =========================
+       MOVIE FILTERS
+    ========================= */
+
+    document
+      .querySelectorAll(".movie-filter")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(".movie-filter")
+              .forEach(btn => {
+
+                btn.classList.remove(
+                  "active"
+                );
+
+              });
+
+
+            button.classList.add(
+              "active"
+            );
+
+
+            const filter =
+              button.dataset.filter;
+
+
+            document
+              .querySelectorAll(
+                "#movieGrid .media-card"
+              )
+              .forEach(card => {
+
+                const category =
+                  card.dataset.category;
+
+
+                if (
+                  filter === "all" ||
+                  category === filter
+                ) {
+
+                  card.style.display =
+                    "";
+
+                } else {
+
+                  card.style.display =
+                    "none";
+
+                }
+
+              });
+
+          }
+        );
+
+      });
+
+
+    /* =========================
+       SHOW FILTERS
+    ========================= */
+
+    document
+      .querySelectorAll(".show-filter")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(".show-filter")
+              .forEach(btn => {
+
+                btn.classList.remove(
+                  "active"
+                );
+
+              });
+
+
+            button.classList.add(
+              "active"
+            );
+
+
+            const filter =
+              button.dataset.showFilter;
+
+
+            document
+              .querySelectorAll(
+                "#showGrid .show-card"
+              )
+              .forEach(card => {
+
+                const category =
+                  card.dataset.category;
+
+
+                if (
+                  filter === "all" ||
+                  category === filter
+                ) {
+
+                  card.style.display =
+                    "";
+
+                } else {
+
+                  card.style.display =
+                    "none";
+
+                }
+
+              });
+
+          }
+        );
+
+      });
+
+
+    /* =========================
+       ADMIN
+    ========================= */
+
+    const adminLogin =
+      document.getElementById("adminLogin");
+
+    const adminForm =
+      document.getElementById("adminForm");
+
+    const adminMessage =
+      document.getElementById("adminMessage");
+
+
+    adminLogin.addEventListener(
+      "click",
+      () => {
+
+        const entered =
+          prompt(
+            "Enter admin password:"
+          );
+
+
+        /*
+          This front-end login is only
+          a demonstration.
+
+          A real production admin panel
+          should use server-side authentication.
+        */
+
+
+        if (
+          entered === "WALL"
+        ) {
+
+          adminForm.classList.add(
+            "active"
+          );
+
+          adminMessage.textContent =
+            "Admin panel opened.";
+
+        } else if (
+          entered !== null
+        ) {
+
+          adminMessage.textContent =
+            "Incorrect password.";
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       ADD TITLE
+    ========================= */
+
+    const addTitle =
+      document.getElementById("addTitle");
+
+
+    addTitle.addEventListener(
+      "click",
+      () => {
+
+        const title =
+          document
+            .getElementById("adminTitle")
+            .value
+            .trim();
+
+
+        const type =
+          document
+            .getElementById("adminType")
+            .value;
+
+
+        const video =
+          document
+            .getElementById("adminVideo")
+            .value
+            .trim();
+
+
+        if (
+          !title ||
+          !video
+        ) {
+
+          adminMessage.textContent =
+            "Please enter a title and legal video URL.";
+
+          return;
+
+        }
+
+
+        const grid =
+          type === "movie"
+            ? document.getElementById(
+                "movieGrid"
+              )
+            : document.getElementById(
+                "showGrid"
+              );
+
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          type === "movie"
+            ? "card media-card"
+            : "card show-card";
+
+
+        card.dataset.title =
+          title;
+
+        card.dataset.category =
+          "all";
+
+
+        card.innerHTML = `
+
+          <div class="poster">
+
+            <div class="poster-placeholder">
+              ${escapeHtml(title)}
+            </div>
+
+            <span class="type-label">
+              ${
+                type === "movie"
+                  ? "Movie"
+                  : "Series"
+              }
+            </span>
+
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              ${escapeHtml(title)}
+            </h3>
+
+            <div class="meta">
+              ${
+                type === "movie"
+                  ? "Movie"
+                  : "TV Show"
+              }
+              • Added locally
+            </div>
+
+            <div class="card-actions">
+
+              <button
+                class="btn btn-primary new-watch"
+              >
+                ▶ Watch
+              </button>
+
+              <button
+                class="btn btn-secondary new-details"
+              >
+                Details
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+
+        grid.prepend(card);
+
+
+        card
+          .querySelector(".new-watch")
+          .addEventListener(
+            "click",
+            () => {
+
+              playVideo(
+                title,
+                video
+              );
+
+            }
+          );
+
+
+        card
+          .querySelector(".new-details")
+          .addEventListener(
+            "click",
+            () => {
+
+              openDetails(
+                title,
+                "This title was added using the TEVFIX front-end admin panel.",
+                video
+              );
+
+            }
+          );
+
+
+        document
+          .getElementById("adminTitle")
+          .value = "";
+
+
+        document
+          .getElementById("adminVideo")
+          .value = "";
+
+
+        adminMessage.textContent =
+          `"${title}" was added to this page.`;
+
+      }
+    );
+
+
+    /* =========================
+       HTML ESCAPING
+    ========================= */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return value
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+  </script>
 
 </body>
 </html>
