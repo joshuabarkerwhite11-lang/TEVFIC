@@ -1,478 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TEVFIX — Movies & TV</title>
-
+<title>TEVFIX</title>
 <style>
-:root{
-  --bg:#07080d;
-  --bg2:#0d1018;
-  --card:#121621;
-  --card2:#171c28;
-  --text:#f7f8fc;
-  --muted:#9da5b5;
-  --border:rgba(255,255,255,.09);
-  --red:#ff2424;
-  --blue:#2764ff;
-  --shadow:0 20px 60px #0008
-}
-
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif
-}
-
-body.light{
-  --bg:#f4f5f8;
-  --bg2:#fff;
-  --card:#fff;
-  --card2:#eef0f5;
-  --text:#11141b;
-  --muted:#626a79;
-  --border:#0002;
-  --shadow:0 20px 50px #0002
-}
-
+body{margin:0;background:#080808;color:#fff;font-family:Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;background:#101010;padding:14px 18px;border-bottom:1px solid #222}
+nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:900;color:#e50914}
 button,input{font:inherit}
-button{cursor:pointer}
-
-header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  height:70px;
-  padding:0 5%;
-  display:flex;
-  align-items:center;
-  gap:20px;
-  background:#07080de8;
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border)
-}
-
-body.light header{
-  background:#fffffff0
-}
-
-.logo{
-  font-size:27px;
-  font-weight:900;
-  margin-right:auto
-}
-
-.r{color:var(--red)}
-.b{color:var(--blue)}
-
-nav{
-  display:flex;
-  gap:20px
-}
-
-nav a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:700
-}
-
-.headbtn,
-.chip,
-.primary,
-.adminbtn{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  border-radius:11px;
-  padding:9px 13px
-}
-
-.headbtn:hover,
-.chip:hover{
-  transform:translateY(-2px)
-}
-
-.hero{
-  min-height:510px;
-  padding:70px 6%;
-  display:grid;
-  place-items:center;
-  text-align:center;
-  background:
-    radial-gradient(circle at 20% 20%,#ff242433,transparent 30%),
-    radial-gradient(circle at 80% 20%,#2764ff33,transparent 30%),
-    linear-gradient(180deg,#151a2a,var(--bg))
-}
-
-.hero h1{
-  font-size:clamp(45px,8vw,88px);
-  line-height:.95;
-  letter-spacing:-4px;
-  margin:10px 0 25px
-}
-
-.hero p{
-  max-width:720px;
-  color:var(--muted);
-  line-height:1.7;
-  margin:0 auto 28px
-}
-
-.search{
-  width:min(760px,95vw);
-  display:flex;
-  align-items:center;
-  padding:0 18px;
-  min-height:60px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:17px;
-  box-shadow:var(--shadow)
-}
-
-.search input{
-  width:100%;
-  border:0;
-  outline:0;
-  background:none;
-  color:var(--text);
-  padding:0 12px
-}
-
-.main{
-  width:min(1400px,92%);
-  margin:auto;
-  padding:30px 0 80px
-}
-
-.chips{
-  display:flex;
-  gap:9px;
-  overflow:auto;
-  padding-bottom:4px
-}
-
-.section{
-  margin-top:42px
-}
-
-.sectionhead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:16px
-}
-
-.sectionhead h2{
-  margin:0
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:16px
-}
-
-.card{
-  min-width:0;
-  cursor:pointer;
-  transition:.2s
-}
-
-.card:hover{
-  transform:translateY(-7px)
-}
-
-.poster{
-  position:relative;
-  aspect-ratio:2/3;
-  border-radius:13px;
-  overflow:hidden;
-  background:linear-gradient(145deg,#252b3d,#10131b)
-}
-
-.poster img{
-  width:100%;
-  height:100%;
-  object-fit:cover
-}
-
-.shade{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,transparent 45%,#000d)
-}
-
-.ctitle{
-  position:absolute;
-  bottom:10px;
-  left:10px;
-  right:10px;
-  font-size:13px;
-  font-weight:800;
-  color:#fff
-}
-
-.meta{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:7px
-}
-
-.watch,
-.store,
-.support{
-  margin-top:60px;
-  padding:26px;
-  border:1px solid var(--border);
-  border-radius:20px;
-  background:var(--card)
-}
-
-.watchgrid,
-.storegrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-  margin-top:18px
-}
-
-.watchcard,
-.product{
-  padding:18px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:var(--bg2)
-}
-
-.watchcard p,
-.product p,
-.support p{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.5
-}
-
-.shirt{
-  height:150px;
-  display:grid;
-  place-items:center;
-  border-radius:11px;
-  background:linear-gradient(145deg,#111,#303545);
-  font-size:27px;
-  font-weight:900;
-  margin-bottom:14px
-}
-
-.primary{
-  background:linear-gradient(135deg,var(--red),var(--blue));
-  color:#fff;
-  border:0;
-  font-weight:800
-}
-
-.support{
-  text-align:center
-}
-
-.support button{
-  padding:11px 18px;
-  border:0;
-  border-radius:10px;
-  background:linear-gradient(135deg,var(--red),var(--blue));
-  color:#fff;
-  font-weight:800
-}
-
-footer{
-  padding:35px 5%;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-  text-align:center
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:3000;
-  display:none;
-  place-items:center;
-  padding:18px;
-  background:#000b;
-  backdrop-filter:blur(8px)
-}
-
-.modal.show{
-  display:grid
-}
-
-.box{
-  width:min(900px,96vw);
-  max-height:90vh;
-  overflow:auto;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:22px;
-  box-shadow:var(--shadow)
-}
-
-.close{
-  float:right;
-  background:none;
-  border:0;
-  color:var(--muted);
-  font-size:28px
-}
-
-.detail{
-  display:grid;
-  grid-template-columns:210px 1fr;
-  gap:22px
-}
-
-.detail img{
-  width:100%;
-  border-radius:12px
-}
-
-.detail p{
-  color:var(--muted);
-  line-height:1.6
-}
-
-.trailer{
-  width:100%;
-  aspect-ratio:16/9;
-  border:0;
-  border-radius:12px;
-  margin-top:15px
-}
-
-.adminnav{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin:15px 0
-}
-
-.adminnav button{
-  border:1px solid var(--border);
-  background:var(--card2);
-  color:var(--text);
-  padding:10px;
-  border-radius:10px
-}
-
-.adminstats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px
-}
-
-.stat{
-  padding:16px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:var(--bg2)
-}
-
-.stat b{
-  display:block;
-  font-size:25px;
-  margin-top:5px
-}
-
-.adminlist{
-  margin-top:15px;
-  display:grid;
-  gap:10px
-}
-
-.userrow{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:10px
-}
-
-.userrow button{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:7px;
-  border-radius:8px
-}
-
-.music{
-  position:fixed;
-  right:15px;
-  bottom:15px;
-  z-index:2000;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  border-radius:30px;
-  padding:11px 15px
-}
-
-.empty{
-  padding:25px;
-  color:var(--muted)
-}
-
-@media(max-width:1050px){
-  .grid{
-    grid-template-columns:repeat(4,1fr)
-  }
-
-  .watchgrid,
-  .storegrid{
-    grid-template-columns:repeat(2,1fr)
-  }
-}
-
-@media(max-width:700px){
-  nav{
-    display:none
-  }
-
-  .grid{
-    grid-template-columns:repeat(3,1fr);
-    gap:10px
-  }
-
-  .watchgrid,
-  .storegrid{
-    grid-template-columns:1fr
-  }
-
-  .detail{
-    grid-template-columns:1fr
-  }
-
-  .detail img{
-    max-width:210px
-  }
-
-  .adminstats{
-    grid-template-columns:repeat(2,1fr)
-  }
-}
-
-@media(max-width:430px){
-  .grid{
-    grid-template-columns:repeat(2,1fr)
-  }
+button{background:#181818;color:white;border:1px solid #333;border-radius:8px;padding:9px 13px;cursor:pointer}
+button:hover{background:#292929}
+input{background:#151515;color:white;border:1px solid #333;border-radius:8px;padding:10px;width:230px}
+main{padding:22px;max-width:1400px;margin:auto}
+h1,h2{margin-top:0}
+h2{margin-top:30px}
+.status{padding:12px;border-radius:8px;background:#151515;margin-bottom:20px;color:#bbb}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px}
+.card{background:#111;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid #202020}
+.card:hover{transform:translateY(-3px);border-color:#444}
+.card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#181818}
+.info{padding:10px}
+.title{font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{color:#aaa;font-size:13px;margin-top:5px}
+#searchBox{display:none;margin-top:15px}
+#searchBox.active{display:block}
+#searchResults{margin-top:20px}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:30;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modalBox{background:#151515;max-width:750px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;padding:22px}
+.close{float:right}
+.hero{padding:25px;background:linear-gradient(135deg,#171717,#090909);border-radius:12px}
+.error{color:#ff7777}
+@media(max-width:600px){
+ main{padding:14px}
+ .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+ input{width:100%}
+ nav{gap:7px}
 }
 </style>
 </head>
@@ -480,1480 +46,400 @@ footer{
 <body>
 
 <header>
-
-  <div class="logo">
-    TEV<span class="r">F</span><span class="b">IX</span>
-  </div>
-
-  <nav>
-    <a href="#trending">Trending</a>
-    <a href="#movies">Movies</a>
-    <a href="#series">TV</a>
-    <a href="#horror">Horror</a>
-    <a href="#mylist">My List</a>
-  </nav>
-
-  <button class="headbtn" onclick="openModal('login')">
-    Login
-  </button>
-
-  <button class="headbtn" onclick="openModal('settings')">
-    ⚙️
-  </button>
-
-  <button class="headbtn" onclick="openAdmin()">
-    👑 Admin
-  </button>
-
+<nav>
+<div class="logo">TEVFIX</div>
+<button onclick="home()">Home</button>
+<button onclick="showMovies()">Movies</button>
+<button onclick="showTV()">TV Shows</button>
+<button onclick="toggleSearch()">Search</button>
+<button onclick="showList()">My List</button>
+<input id="searchBox" placeholder="Search movies or TV..." onkeydown="if(event.key==='Enter')searchTMDB()">
+</nav>
 </header>
 
+<main>
 
-<section class="hero">
+<div class="hero">
+<h1>TEVFIX</h1>
+<p>Discover movies and TV shows.</p>
+</div>
 
-  <div>
+<div id="status" class="status">Loading movies and TV shows...</div>
 
-    <small>
-      TEVFIX • MOVIES • SERIES • TRAILERS
-    </small>
-
-    <h1>
-      Find something<br>
-      worth watching.
-    </h1>
-
-    <p>
-      Real movies and TV series powered by TMDB.
-      Browse popular titles, discover new favourites,
-      save your list and watch available trailers.
-    </p>
-
-    <div class="search">
-
-      <span>🔎</span>
-
-      <input
-        id="search"
-        placeholder="Search movies, TV series or people..."
-      >
-
-    </div>
-
-  </div>
-
+<section>
+<h2 id="sectionTitle">Popular Movies</h2>
+<div id="content" class="grid"></div>
 </section>
 
-
-<main class="main">
-
-  <div class="chips">
-
-    <button class="chip" onclick="loadAll()">
-      Trending
-    </button>
-
-    <button class="chip" onclick="loadMovies()">
-      Movies
-    </button>
-
-    <button class="chip" onclick="loadTV()">
-      TV Series
-    </button>
-
-    <button class="chip" onclick="loadGenre(27,'Horror')">
-      Horror
-    </button>
-
-    <button class="chip" onclick="loadGenre(28,'Action')">
-      Action
-    </button>
-
-    <button class="chip" onclick="loadGenre(35,'Comedy')">
-      Comedy
-    </button>
-
-    <button class="chip" onclick="renderList()">
-      ❤️ My List
-    </button>
-
-  </div>
-
-
-  <div id="sections"></div>
-
-
-  <section class="watch">
-
-    <h2>Where to watch</h2>
-
-    <p>
-      TEVFIX can show discovery information here.
-      Actual playback will be for content TEVFIX is
-      legally allowed to distribute.
-    </p>
-
-    <div class="watchgrid">
-
-      <div class="watchcard">
-        <h3>🎞️ Trailers</h3>
-        <p>
-          Open available trailers from title details.
-        </p>
-      </div>
-
-      <div class="watchcard">
-        <h3>📺 TV</h3>
-        <p>
-          Browse real series and their details.
-        </p>
-      </div>
-
-      <div class="watchcard">
-        <h3>🎬 Movies</h3>
-        <p>
-          Browse popular and highly-rated movies.
-        </p>
-      </div>
-
-      <div class="watchcard">
-        <h3>🔒 Future streaming</h3>
-        <p>
-          Connect a licensed video source later.
-        </p>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="store">
-
-    <h2>TEVFIX Store</h2>
-
-    <div class="storegrid">
-
-      <div class="product">
-
-        <div class="shirt">
-          TEVFIX
-        </div>
-
-        <h3>Classic T-Shirt</h3>
-
-        <p>Coming soon</p>
-
-        <button
-          class="primary"
-          onclick="alert('Coming soon!')"
-        >
-          View shirt
-        </button>
-
-      </div>
-
-
-      <div class="product">
-
-        <div class="shirt">
-          TEV<span class="b">FIX</span>
-        </div>
-
-        <h3>Red & Blue T-Shirt</h3>
-
-        <p>Coming soon</p>
-
-        <button
-          class="primary"
-          onclick="alert('Coming soon!')"
-        >
-          View shirt
-        </button>
-
-      </div>
-
-
-      <div class="product">
-
-        <div class="shirt">
-          TV
-        </div>
-
-        <h3>TEVFIX TV Shirt</h3>
-
-        <p>Coming soon</p>
-
-        <button
-          class="primary"
-          onclick="alert('Coming soon!')"
-        >
-          View shirt
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="support">
-
-    <h2>Need help?</h2>
-
-    <p>
-      Contact TEVFIX support.
-    </p>
-
-    <button
-      onclick="location.href='mailto:joshuabarkerwhite11@gmail.com?subject=TEVFIX%20Support'"
-    >
-      Contact Support
-    </button>
-
-  </section>
+<section id="searchSection" style="display:none">
+<h2>Search Results</h2>
+<div id="searchResults" class="grid"></div>
+</section>
 
 </main>
 
-
-<footer>
-  © 2026 TEVFIX • Movie & TV discovery
-</footer>
-
-
-<button
-  class="music"
-  id="musicBtn"
-  onclick="toggleMusic()"
->
-  🎵 Music
-</button>
-
-<audio
-  id="music"
-  loop
-  preload="none"
-></audio>
-
-
-<!-- DETAILS -->
-
-<div
-  class="modal"
-  id="details"
-  onclick="outside(event,'details')"
->
-
-  <div class="box">
-
-    <button
-      class="close"
-      onclick="closeModal('details')"
-    >
-      ×
-    </button>
-
-    <div id="detailBody"></div>
-
-  </div>
-
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
+<div class="modalBox">
+<button class="close" onclick="closeModal()">✕</button>
+<div id="details"></div>
 </div>
-
-
-<!-- LOGIN -->
-
-<div
-  class="modal"
-  id="login"
->
-
-  <div class="box">
-
-    <button
-      class="close"
-      onclick="closeModal('login')"
-    >
-      ×
-    </button>
-
-    <h2>Login</h2>
-
-    <p class="meta">
-      Account login will be connected to secure
-      authentication later.
-    </p>
-
-    <button
-      class="headbtn"
-      onclick="alert('Google login needs a backend/auth provider.')"
-    >
-      Continue with Google
-    </button>
-
-  </div>
-
 </div>
-
-
-<!-- SETTINGS -->
-
-<div
-  class="modal"
-  id="settings"
->
-
-  <div class="box">
-
-    <button
-      class="close"
-      onclick="closeModal('settings')"
-    >
-      ×
-    </button>
-
-    <h2>Settings</h2>
-
-    <br>
-
-    <button
-      class="headbtn"
-      onclick="setTheme('dark')"
-    >
-      🌙 Dark
-    </button>
-
-    <button
-      class="headbtn"
-      onclick="setTheme('light')"
-    >
-      ☀️ Light
-    </button>
-
-    <button
-      class="headbtn"
-      onclick="setTheme('normal')"
-    >
-      🔴🔵 TEVFIX
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- ADMIN -->
-
-<div
-  class="modal"
-  id="admin"
->
-
-  <div class="box">
-
-    <button
-      class="close"
-      onclick="closeModal('admin')"
-    >
-      ×
-    </button>
-
-    <h2>👑 TEVFIX Admin Dashboard</h2>
-
-    <p class="meta">
-      This is the front-end dashboard.
-      Real bans, accounts and admin permissions
-      require a secure backend.
-    </p>
-
-    <div class="adminstats">
-
-      <div class="stat">
-        Movies
-        <b id="sMovies">0</b>
-      </div>
-
-      <div class="stat">
-        TV
-        <b id="sTV">0</b>
-      </div>
-
-      <div class="stat">
-        My List
-        <b id="sList">0</b>
-      </div>
-
-      <div class="stat">
-        Admins
-        <b>1</b>
-      </div>
-
-    </div>
-
-
-    <div class="adminnav">
-
-      <button onclick="adminUsers()">
-        👥 Users
-      </button>
-
-      <button
-        onclick="alert('Content management is ready to connect to a backend.')"
-      >
-        🎬 Content
-      </button>
-
-      <button
-        onclick="alert('Featured/trailer controls will be stored server-side later.')"
-      >
-        ⭐ Featured
-      </button>
-
-      <button
-        onclick="alert('Only the owner should be allowed to create/remove admins.')"
-      >
-        🛡️ Admin Roles
-      </button>
-
-      <button
-        onclick="alert('Admin activity logging belongs on the backend.')"
-      >
-        📜 Activity Log
-      </button>
-
-    </div>
-
-
-    <div id="adminContent">
-
-      <h3>Owner controls</h3>
-
-      <p class="meta">
-        Owner: you<br>
-        Can eventually create Admin 2, Admin 3,
-        set permissions, ban/unban users,
-        promote/demote admins and manage content.
-      </p>
-
-    </div>
-
-  </div>
-
-</div>
-
 
 <script>
+/* =====================================================
+   TEVFIX TMDB SETTINGS
+   ===================================================== */
 
-/*
-====================================================
-TEVFIX TMDB CONFIGURATION
-====================================================
+const TMDB_API_KEY = "PUT_YOUR_NEW_KEY_HERE";
 
-Put your NEW TMDB API key between the quotes.
+const API = "https://api.themoviedb.org/3";
+const IMG = "https://image.tmdb.org/t/p/w500";
 
-Example:
+let currentList = [];
+let myList = JSON.parse(localStorage.getItem("tevfix_list") || "[]");
 
-const TMDB_API_KEY = "YOUR_NEW_KEY";
+/* =====================================================
+   TMDB
+   ===================================================== */
 
-DO NOT paste your key into ChatGPT.
+async function tmdb(path, params = {}) {
+    const url = new URL(API + path);
 
-====================================================
-*/
+    url.searchParams.set("api_key", TMDB_API_KEY);968e7efef4206f0914f37ccfc7c788f0
+    url.searchParams.set("language", "en-US");
 
-const TMDB_API_KEY = "";
-
-
-/* TMDB */
-
-const BASE =
-  "https://api.themoviedb.org/3";
-
-const IMG =
-  "https://image.tmdb.org/t/p/w500";
-
-
-/* DATA */
-
-let myList =
-  JSON.parse(
-    localStorage.getItem("tevfixList") || "[]"
-  );
-
-let cache = {
-  movies:[],
-  tv:[]
-};
-
-
-/* ESCAPE HTML */
-
-const esc = s =>
-  String(s || "")
-    .replace(
-      /[&<>"']/g,
-      m => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[m])
-    );
-
-
-/* API */
-
-async function api(path,params={}){
-
-  if(!TMDB_API_KEY){
-    throw Error("No key");
-  }
-
-  let u =
-    new URL(BASE + path);
-
-  Object.entries(params)
-    .forEach(([k,v]) =>
-      u.searchParams.set(k,v)
-    );
-
-  let r =
-    await fetch(
-      u,
-      {
-        headers:{
-          Authorization:
-            "Bearer " + TMDB_API_KEY
-        }
-      }
-    );
-
-  if(!r.ok){
-    throw Error("TMDB " + r.status);
-  }
-
-  return r.json();
-
-}
-
-
-/* IMAGE */
-
-function img(p){
-
-  if(p){
-    return IMG + p;
-  }
-
-  return "data:image/svg+xml," +
-    encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750">' +
-      '<rect width="100%" height="100%" fill="#202635"/>' +
-      '<text x="50%" y="50%" text-anchor="middle" fill="white">No poster</text>' +
-      '</svg>'
-    );
-
-}
-
-
-/* CARD */
-
-function card(x,type){
-
-  const title =
-    type === "movie"
-      ? x.title
-      : x.name;
-
-  const year =
-    type === "movie"
-      ? x.release_date
-      : x.first_air_date;
-
-  const d = {
-    ...x,
-    media_type:type
-  };
-
-  return `
-    <article
-      class="card"
-      onclick='details(${JSON.stringify(d).replace(/'/g,"&#39;")})'
-    >
-
-      <div class="poster">
-
-        <img
-          loading="lazy"
-          src="${img(x.poster_path)}"
-          alt="${esc(title)}"
-        >
-
-        <div class="shade"></div>
-
-        <div class="ctitle">
-          ${esc(title)}
-        </div>
-
-      </div>
-
-      <div class="meta">
-        ${type==="movie" ? "🎬 Movie" : "📺 TV"}
-        · ⭐ ${Number(x.vote_average||0).toFixed(1)}
-        · ${year ? year.slice(0,4) : ""}
-      </div>
-
-    </article>
-  `;
-
-}
-
-
-/* SECTION */
-
-function section(id,title,items,type){
-
-  if(!items || !items.length){
-    return `
-      <section class="section" id="${id}">
-        <div class="empty">
-          Nothing found.
-        </div>
-      </section>
-    `;
-  }
-
-  return `
-    <section
-      class="section"
-      id="${id}"
-    >
-
-      <div class="sectionhead">
-        <h2>${title}</h2>
-      </div>
-
-      <div class="grid">
-
-        ${items
-          .map(x => {
-
-            const itemType =
-              type || x.media_type;
-
-            return card(
-              x,
-              itemType
-            );
-
-          })
-          .join("")}
-
-      </div>
-
-    </section>
-  `;
-
-}
-
-
-/* LOAD EVERYTHING */
-
-async function loadAll(){
-
-  if(!TMDB_API_KEY){968e7efef4206f0914f37ccfc7c788f0
-    return keyMessage();
-  }
-
-  try{
-
-    let [
-      tr,
-      m,
-      t,
-      r
-    ] = await Promise.all([
-
-      api(
-        "/trending/all/week",
-        {
-          language:"en-US"
-        }
-      ),
-
-      api(
-        "/discover/movie",
-        {
-          language:"en-US",
-          region:"IE",
-          sort_by:"popularity.desc",
-          vote_count_gte:100,
-          include_adult:false
-        }
-      ),
-
-      api(
-        "/discover/tv",
-        {
-          language:"en-US",
-          sort_by:"popularity.desc",
-          vote_count_gte:100,
-          include_adult:false
-        }
-      ),
-
-      api(
-        "/movie/top_rated",
-        {
-          language:"en-US",
-          region:"IE",
-          vote_count_gte:300
-        }
-      )
-
-    ]);
-
-
-    cache.movies =
-      m.results || [];
-
-    cache.tv =
-      t.results || [];
-
-
-    const trending =
-      (tr.results || [])
-        .filter(
-          x =>
-            x.media_type === "movie" ||
-            x.media_type === "tv"
-        )
-        .slice(0,12);
-
-
-    document.getElementById("sections")
-      .innerHTML =
-
-      section(
-        "trending",
-        "🔥 Trending now",
-        trending
-      )
-
-      +
-
-      section(
-        "movies",
-        "🎬 Popular Movies",
-        (m.results || []).slice(0,12),
-        "movie"
-      )
-
-      +
-
-      section(
-        "series",
-        "📺 Popular TV Series",
-        (t.results || []).slice(0,12),
-        "tv"
-      )
-
-      +
-
-      section(
-        "rated",
-        "⭐ Highly Rated",
-        (r.results || []).slice(0,12),
-        "movie"
-      );
-
-
-    stats();
-
-  }catch(e){
-
-    errorMessage(e);
-
-  }
-
-}
-
-
-/* MOVIES */
-
-async function loadMovies(){
-
-  if(!TMDB_API_KEY){
-    return keyMessage();
-  }
-
-  try{
-
-    let d =
-      await api(
-        "/discover/movie",
-        {
-          language:"en-US",
-          region:"IE",
-          sort_by:"popularity.desc",
-          vote_count_gte:100,
-          include_adult:false
-        }
-      );
-
-    cache.movies =
-      d.results || [];
-
-    document.getElementById("sections")
-      .innerHTML =
-      section(
-        "movies",
-        "🎬 Movies",
-        d.results || [],
-        "movie"
-      );
-
-    stats();
-
-  }catch(e){
-
-    errorMessage(e);
-
-  }
-
-}
-
-
-/* TV */
-
-async function loadTV(){
-
-  if(!TMDB_API_KEY){
-    return keyMessage();
-  }
-
-  try{
-
-    let d =
-      await api(
-        "/discover/tv",
-        {
-          language:"en-US",
-          sort_by:"popularity.desc",
-          vote_count_gte:100,
-          include_adult:false
-        }
-      );
-
-    cache.tv =
-      d.results || [];
-
-    document.getElementById("sections")
-      .innerHTML =
-      section(
-        "series",
-        "📺 TV Series",
-        d.results || [],
-        "tv"
-      );
-
-    stats();
-
-  }catch(e){
-
-    errorMessage(e);
-
-  }
-
-}
-
-
-/* GENRE */
-
-async function loadGenre(id,name){
-
-  ifconst TMDB_API_KEY = "968e7efef4206f0914f37ccfc7c788f0";
-    return keyMessage();
-  }
-
-  try{
-
-    let d =
-      await api(
-        "/discover/movie",
-        {
-          language:"en-US",
-          region:"IE",
-          sort_by:"popularity.desc",
-          with_genres:id,
-          vote_count_gte:100,
-          include_adult:false
-        }
-      );
-
-    document.getElementById("sections")
-      .innerHTML =
-      section(
-        "genre",
-        "🎭 " + name,
-        d.results || [],
-        "movie"
-      );
-
-  }catch(e){
-
-    errorMessage(e);
-
-  }
-
-}
-
-
-/* NO KEY */
-
-function keyMessage(){
-
-  document.getElementById("sections")
-    .innerHTML = `
-
-      <div class="empty">
-
-        <h2>
-          TMDB is ready — add your new API key.
-        </h2>
-
-        <p>
-          Open this file and put your new key
-          in <b>TMDB_API_KEY</b>.
-          The catalogue will then load real
-          titles, posters and ratings.
-        </p>
-
-      </div>
-
-    `;
-
-}
-
-
-/* ERROR */
-
-function errorMessage(e){
-
-  document.getElementById("sections")
-    .innerHTML = `
-
-      <div class="empty">
-
-        <h2>
-          TMDB could not load.
-        </h2>
-
-        <p>
-          Check your API key and refresh.
-        </p>
-
-      </div>
-
-    `;
-
-  console.error(e);
-
-}
-
-
-/* DETAILS */
-
-async function details(x){
-
-  const title =
-    x.media_type === "movie"
-      ? x.title
-      : x.name;
-
-  const date =
-    x.media_type === "movie"
-      ? x.release_date
-      : x.first_air_date;
-
-
-  document.getElementById("detailBody")
-    .innerHTML = `
-
-      <div class="detail">
-
-        <img
-          src="${img(x.poster_path)}"
-          alt="${esc(title)}"
-        >
-
-        <div>
-
-          <h2>
-            ${esc(title)}
-          </h2>
-
-          <p>
-            ⭐ ${Number(x.vote_average||0).toFixed(1)}
-            · ${date || "Unknown date"}
-            · ${x.media_type==="movie" ? "Movie" : "TV Series"}
-          </p>
-
-          <p>
-            ${esc(
-              x.overview ||
-              "No overview available."
-            )}
-          </p>
-
-          <button
-            class="primary"
-            onclick='save(${JSON.stringify(x).replace(/'/g,"&#39;")})'
-          >
-            ❤️ Add to My List
-          </button>
-
-          <div id="trailer">
-            <p class="meta">
-              Finding trailer…
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-    `;
-
-
-  openModal("details");
-
-
-  try{
-
-    let v =
-      await api(
-        `/${x.media_type==="movie" ? "movie" : "tv"}/${x.id}/videos`,
-        {
-          language:"en-US"
-        }
-      );
-
-
-    let tr =
-      (v.results || [])
-        .find(
-          a =>
-            a.site === "YouTube" &&
-            a.type === "Trailer"
-        )
-      ||
-      (v.results || [])
-        .find(
-          a =>
-            a.site === "YouTube"
-        );
-
-
-    document.getElementById("trailer")
-      .innerHTML = tr
-
-      ? `
-
-          <h3>
-            🎞️ Trailer
-          </h3>
-
-          <iframe
-            class="trailer"
-            src="https://www.youtube.com/embed/${tr.key}"
-            allowfullscreen
-          ></iframe>
-
-        `
-
-      : `
-          <p class="meta">
-            No trailer found.
-          </p>
-        `;
-
-  }catch(e){
-
-    document.getElementById("trailer")
-      .innerHTML = `
-        <p class="meta">
-          Trailer unavailable.
-        </p>
-      `;
-
-  }
-
-}
-
-
-/* MY LIST */
-
-function save(x){
-
-  const key =
-    x.media_type + ":" + x.id;
-
-  if(
-    !myList.some(
-      a => a.key === key
-    )
-  ){
-
-    myList.push({
-      key,
-      item:x
+    Object.entries(params).forEach(([key,value]) => {
+        if(value !== undefined && value !== null)
+            url.searchParams.set(key,value);
     });
 
-    localStorage.setItem(
-      "tevfixList",
-      JSON.stringify(myList)
-    );
+    const response = await fetch(url);
 
-    stats();
+    if(!response.ok) {
+        const text = await response.text();
+        throw new Error("TMDB " + response.status + ": " + text);
+    }
 
-    alert(
-      "Added to My List ❤️"
-    );
-
-  }else{
-
-    alert(
-      "Already in My List."
-    );
-
-  }
-
+    return response.json();
 }
 
+/* =====================================================
+   START
+   ===================================================== */
 
-/* RENDER MY LIST */
+window.addEventListener("load", () => {
+    home();
+});
 
-function renderList(){
+/* =====================================================
+   HOME
+   ===================================================== */
 
-  const items =
-    myList.map(
-      a => a.item
-    );
+async function home() {
+    document.getElementById("sectionTitle").textContent = "Popular Movies";
+    document.getElementById("searchSection").style.display = "none";
 
-  document.getElementById("sections")
-    .innerHTML =
-      section(
-        "mylist",
-        "❤️ My List",
-        items
-      );
+    try {
+        const data = await tmdb("/discover/movie", {
+            sort_by:"popularity.desc",
+            include_adult:"false",
+            include_video:"false",
+            page:"1",
+            region:"IE"
+        });
 
+        render(data.results || []);
+        setStatus("Movies loaded.");
+    } catch(error) {
+        showError(error);
+    }
 }
 
+/* =====================================================
+   MOVIES
+   ===================================================== */
 
-/* SEARCH */
+async function showMovies() {
+    document.getElementById("sectionTitle").textContent = "Popular Movies";
+    document.getElementById("searchSection").style.display = "none";
 
-let timer;
+    try {
+        const data = await tmdb("/discover/movie", {
+            sort_by:"popularity.desc",
+            include_adult:"false",
+            page:"1",
+            region:"IE"
+        });
 
-document.getElementById("search")
-  .addEventListener(
-    "input",
-    e => {
+        render(data.results || []);
+        setStatus("Movies loaded.");
+    } catch(error) {
+        showError(error);
+    }
+}
 
-      clearTimeout(timer);
+/* =====================================================
+   TV
+   ===================================================== */
 
-      let q =
-        e.target.value.trim();
+async function showTV() {
+    document.getElementById("sectionTitle").textContent = "Popular TV Shows";
+    document.getElementById("searchSection").style.display = "none";
 
+    try {
+        const data = await tmdb("/discover/tv", {
+            sort_by:"popularity.desc",
+            include_adult:"false",
+            page:"1"
+        });
 
-      if(q.length < 2){
+        render(data.results || [], true);
+        setStatus("TV shows loaded.");
+    } catch(error) {
+        showError(error);
+    }
+}
 
-        if(q === ""){
-          loadAll();
-        }
+/* =====================================================
+   RENDER
+   ===================================================== */
 
+function render(items, isTV=false) {
+
+    currentList = items;
+
+    const box = document.getElementById("content");
+
+    if(!items.length) {
+        box.innerHTML = "<p>No results found.</p>";
         return;
-
-      }
-
-
-      timer =
-        setTimeout(
-          async () => {
-
-            if(!TMDB_API_KEY){
-              return keyMessage();
-            }
-
-            try{
-
-              let d =
-                await api(
-                  "/search/multi",
-                  {
-                    query:q,
-                    language:"en-US",
-                    include_adult:false,
-                    page:1
-                  }
-                );
-
-
-              let items =
-                (d.results || [])
-                  .filter(
-                    x =>
-                      (
-                        x.media_type === "movie" ||
-                        x.media_type === "tv"
-                      )
-                      &&
-                      x.vote_count >= 20
-                  )
-                  .slice(0,24);
-
-
-              document.getElementById("sections")
-                .innerHTML =
-                  section(
-                    "search",
-                    "🔎 Search results",
-                    items
-                  );
-
-
-            }catch(e){
-
-              errorMessage(e);
-
-            }
-
-          },
-          350
-        );
-
-    }
-  );
-
-
-/* STATS */
-
-function stats(){
-
-  document.getElementById("sMovies")
-    .textContent =
-      cache.movies.length;
-
-  document.getElementById("sTV")
-    .textContent =
-      cache.tv.length;
-
-  document.getElementById("sList")
-    .textContent =
-      myList.length;
-
-}
-
-
-/* MODALS */
-
-function openModal(id){
-
-  document
-    .getElementById(id)
-    .classList
-    .add("show");
-
-  document.body.style.overflow =
-    "hidden";
-
-}
-
-
-function closeModal(id){
-
-  document
-    .getElementById(id)
-    .classList
-    .remove("show");
-
-  document.body.style.overflow =
-    "";
-
-}
-
-
-function outside(e,id){
-
-  if(
-    e.target.id === id
-  ){
-    closeModal(id);
-  }
-
-}
-
-
-document.addEventListener(
-  "keydown",
-  e => {
-
-    if(e.key === "Escape"){
-
-      document
-        .querySelectorAll(".modal.show")
-        .forEach(
-          x =>
-            x.classList.remove("show")
-        );
-
-      document.body.style.overflow =
-        "";
-
     }
 
-  }
-);
+    box.innerHTML = items.map(item => {
 
+        const title = item.title || item.name || "Untitled";
+        const date = item.release_date || item.first_air_date || "";
+        const poster = item.poster_path
+            ? IMG + item.poster_path
+            : "";
 
-/* ADMIN */
-
-function openAdmin(){
-
-  openModal("admin");
-
-  stats();
-
+        return `
+        <article class="card" onclick="openDetails(${item.id},${isTV})">
+            ${poster
+                ? `<img src="${poster}" alt="">`
+                : `<div style="aspect-ratio:2/3;background:#222"></div>`
+            }
+            <div class="info">
+                <div class="title">${escapeHTML(title)}</div>
+                <div class="meta">
+                    ⭐ ${Number(item.vote_average || 0).toFixed(1)}
+                    ${date ? " • " + date.slice(0,4) : ""}
+                </div>
+            </div>
+        </article>`;
+    }).join("");
 }
 
+/* =====================================================
+   SEARCH
+   ===================================================== */
 
-function adminUsers(){
+function toggleSearch() {
+    const box = document.getElementById("searchBox");
+    box.classList.toggle("active");
 
-  document.getElementById("adminContent")
-    .innerHTML = `
+    if(box.classList.contains("active"))
+        box.focus();
+}
 
-      <h3>
-        👥 User moderation
-      </h3>
+async function searchTMDB() {
 
-      <div class="adminlist">
+    const query = document.getElementById("searchBox").value.trim();
 
-        <div class="userrow">
+    if(!query) return;
 
-          Example user
+    try {
 
-          <span>
+        setStatus("Searching...");
 
-            <button
-              onclick="alert('Backend required for a real ban.')"
-            >
-              Ban
+        const data = await tmdb("/search/multi", {
+            query:query,
+            include_adult:"false",
+            page:"1"
+        });
+
+        const results = (data.results || [])
+            .filter(x => x.media_type === "movie" || x.media_type === "tv");
+
+        document.getElementById("searchSection").style.display = "block";
+
+        const box = document.getElementById("searchResults");
+
+        box.innerHTML = results.map(item => {
+
+            const title = item.title || item.name || "Untitled";
+            const poster = item.poster_path ? IMG + item.poster_path : "";
+            const isTV = item.media_type === "tv";
+
+            return `
+            <article class="card" onclick="openDetails(${item.id},${isTV})">
+                ${poster
+                    ? `<img src="${poster}" alt="">`
+                    : `<div style="aspect-ratio:2/3;background:#222"></div>`
+                }
+                <div class="info">
+                    <div class="title">${escapeHTML(title)}</div>
+                    <div class="meta">
+                        ${isTV ? "TV" : "Movie"} •
+                        ⭐ ${Number(item.vote_average || 0).toFixed(1)}
+                    </div>
+                </div>
+            </article>`;
+        }).join("");
+
+        document.getElementById("searchSection")
+            .scrollIntoView({behavior:"smooth"});
+
+        setStatus(results.length + " results found.");
+
+    } catch(error) {
+        showError(error);
+    }
+}
+
+/* =====================================================
+   DETAILS
+   ===================================================== */
+
+async function openDetails(id,isTV) {
+
+    const modal = document.getElementById("modal");
+    const details = document.getElementById("details");
+
+    modal.classList.add("show");
+    details.innerHTML = "<h2>Loading...</h2>";
+
+    try {
+
+        const type = isTV ? "tv" : "movie";
+
+        const item = await tmdb("/" + type + "/" + id);
+
+        const title = item.title || item.name || "Untitled";
+        const date = item.release_date || item.first_air_date || "Unknown";
+
+        const poster = item.poster_path
+            ? IMG + item.poster_path
+            : "";
+
+        const saved = myList.some(x =>
+            x.id === item.id && x.type === type
+        );
+
+        details.innerHTML = `
+            ${poster ? `<img src="${poster}" style="width:180px;max-width:100%;border-radius:8px">` : ""}
+            <h1>${escapeHTML(title)}</h1>
+            <p>⭐ ${Number(item.vote_average || 0).toFixed(1)} / 10</p>
+            <p>${date}</p>
+            <p>${escapeHTML(item.overview || "No description available.")}</p>
+
+            <button onclick="toggleList(${item.id},'${type}')">
+                ${saved ? "Remove from My List" : "Add to My List"}
             </button>
+        `;
 
-            <button
-              onclick="alert('Backend required for a real unban.')"
-            >
-              Unban
-            </button>
+    } catch(error) {
+        details.innerHTML =
+            `<p class="error">${escapeHTML(error.message)}</p>`;
+    }
+}
 
-          </span>
+function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+}
 
+/* =====================================================
+   MY LIST
+   ===================================================== */
+
+function toggleList(id,type) {
+
+    const index = myList.findIndex(x =>
+        x.id === id && x.type === type
+    );
+
+    if(index >= 0) {
+        myList.splice(index,1);
+    } else {
+        myList.push({id,type});
+    }
+
+    localStorage.setItem("tevfix_list",JSON.stringify(myList));
+
+    openDetails(id,type === "tv");
+}
+
+async function showList() {
+
+    document.getElementById("sectionTitle").textContent = "My List";
+    document.getElementById("searchSection").style.display = "none";
+
+    if(!myList.length) {
+        document.getElementById("content").innerHTML =
+            "<p>Your list is empty.</p>";
+        return;
+    }
+
+    const results = [];
+
+    for(const item of myList) {
+        try {
+            const data = await tmdb("/" + item.type + "/" + item.id);
+            results.push(data);
+        } catch(e) {}
+    }
+
+    render(results, false);
+    setStatus("Your list");
+}
+
+/* =====================================================
+   HELPERS
+   ===================================================== */
+
+function setStatus(message) {
+    document.getElementById("status").textContent = message;
+    document.getElementById("status").classList.remove("error");
+}
+
+function showError(error) {
+
+    console.error(error);
+
+    const message = error.message || "Unknown error";
+
+    document.getElementById("status").textContent =
+        "TMDB could not load: " + message;
+
+    document.getElementById("status").classList.add("error");
+
+    document.getElementById("content").innerHTML = `
+        <div>
+            <h3>Movies couldn't load.</h3>
+            <p>Check that your TMDB API key is entered correctly.</p>
         </div>
-
-      </div>
-
-      <p class="meta">
-        Real accounts, bans/unbans,
-        promotions, demotions and admin
-        creation must be enforced server-side.
-      </p>
-
     `;
-
 }
 
-
-/* THEME */
-
-function setTheme(t){
-
-  document.body.classList
-    .toggle(
-      "light",
-      t === "light"
-    );
-
-  localStorage.setItem(
-    "tevfixTheme",
-    t
-  );
-
-  if(
-    document.getElementById("settings")
-      .classList.contains("show")
-  ){
-    closeModal("settings");
-  }
-
+function escapeHTML(value) {
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 }
-
-
-let theme =
-  localStorage.getItem(
-    "tevfixTheme"
-  );
-
-if(theme){
-  setTheme(theme);
-}
-
-
-/* MUSIC */
-
-function toggleMusic(){
-
-  let a =
-    document.getElementById("music");
-
-
-  if(!a.src){
-
-    alert(
-      "Add a legal/royalty-free music URL to the audio element before using background music."
-    );
-
-    return;
-
-  }
-
-
-  if(a.paused){
-
-    a.play();
-
-    document.getElementById("musicBtn")
-      .textContent =
-        "🔇 Mute";
-
-  }else{
-
-    a.pause();
-
-    document.getElementById("musicBtn")
-      .textContent =
-        "🎵 Music";
-
-  }
-
-}
-
-
-/* START */
-
-loadAll();
-
-stats();
-
 </script>
 
 </body>
-	</html>
+</html>
