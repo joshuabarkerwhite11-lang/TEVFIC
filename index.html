@@ -2,110 +2,926 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="TEVFIX - Movies, shows and entertainment.">
 <title>TEVFIX</title>
 
 <style>
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-    margin:0;
-    background:#080808;
-    color:#fff;
-    font-family:Arial,sans-serif;
-    min-height:100vh;
-}
-
-header{
-    position:sticky;
-    top:0;
-    z-index:100;
-    background:#101010;
-    padding:14px 18px;
-    border-bottom:1px solid #222;
-}
-
-nav{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.logo{
-    font-size:25px;
-    font-weight:900;
-    color:#e50914;
-    margin-right:5px;
+body {
+    min-height: 100vh;
+    background: #080808;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
 }
 
 button,
-input{
-    font:inherit;
+input {
+    font: inherit;
 }
 
-button{
-    background:#181818;
-    color:#fff;
-    border:1px solid #333;
-    border-radius:8px;
-    padding:9px 13px;
-    cursor:pointer;
+button {
+    cursor: pointer;
 }
 
-button:hover{
-    background:#292929;
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(8, 8, 8, 0.96);
+    border-bottom: 1px solid #252525;
+    backdrop-filter: blur(12px);
 }
 
-input{
-    background:#151515;
-    color:#fff;
-    border:1px solid #333;
-    border-radius:8px;
-    padding:10px;
-    width:230px;
-    outline:none;
+.navbar {
+    width: 100%;
+    max-width: 1450px;
+    margin: auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 
-input:focus{
-    border-color:#777;
+.logo {
+    color: #e50914;
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    white-space: nowrap;
 }
 
-main{
-    padding:22px;
-    max-width:1400px;
-    margin:auto;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
 }
 
-h1,
-h2{
-    margin-top:0;
+.nav-links button {
+    background: transparent;
+    border: 0;
+    color: #ddd;
+    padding: 9px 12px;
+    border-radius: 7px;
 }
 
-h2{
-    margin-top:30px;
+.nav-links button:hover {
+    background: #1d1d1d;
+    color: #fff;
 }
 
-.status{
-    padding:12px;
-    border-radius:8px;
-    background:#151515;
-    margin-bottom:20px;
-    color:#bbb;
+.search-box {
+    position: relative;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-    gap:18px;
-    padding-bottom:30px;
+.search-box input {
+    width: 230px;
+    padding: 10px 13px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #151515;
+    color: #fff;
+    outline: none;
 }
 
-.card{
-   
+.search-box input:focus {
+    border-color: #777;
+}
+
+.menu-button {
+    display: none;
+    background: #181818;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 8px;
+    padding: 9px 12px;
+}
+
+main {
+    width: 100%;
+    max-width: 1450px;
+    margin: auto;
+    padding: 25px 20px 50px;
+}
+
+.hero {
+    min-height: 390px;
+    border-radius: 18px;
+    padding: 55px 40px;
+    display: flex;
+    align-items: center;
+    background:
+        radial-gradient(circle at 75% 30%, rgba(229,9,20,.25), transparent 35%),
+        linear-gradient(135deg, #151515, #090909);
+    border: 1px solid #252525;
+    overflow: hidden;
+    margin-bottom: 35px;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 6vw, 72px);
+    line-height: 1;
+    margin-bottom: 18px;
+}
+
+.hero h1 span {
+    color: #e50914;
+}
+
+.hero p {
+    color: #bbb;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.primary-button {
+    background: #e50914;
+    border: 0;
+    color: white;
+    padding: 12px 19px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.primary-button:hover {
+    background: #f6121d;
+}
+
+.secondary-button {
+    background: #222;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 12px 19px;
+    border-radius: 8px;
+    margin-left: 8px;
+}
+
+.status {
+    background: #121212;
+    border: 1px solid #242424;
+    color: #bbb;
+    padding: 13px 15px;
+    border-radius: 9px;
+    margin-bottom: 28px;
+}
+
+.status strong {
+    color: #fff;
+}
+
+section {
+    scroll-margin-top: 90px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 30px 0 17px;
+}
+
+.section-header h2 {
+    font-size: 25px;
+}
+
+.section-header span {
+    color: #888;
+    font-size: 14px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 18px;
+    padding-bottom: 15px;
+}
+
+.card {
+    background: #121212;
+    border: 1px solid #242424;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #444;
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.poster {
+    aspect-ratio: 2 / 3;
+    background:
+        linear-gradient(145deg, #292929, #101010);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    color: #bbb;
+}
+
+.card-body {
+    padding: 12px;
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.card-meta {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 11px;
+}
+
+.card button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 7px;
+    background: #1d1d1d;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.card button:hover {
+    background: #e50914;
+    border-color: #e50914;
+}
+
+.empty {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    border: 1px dashed #333;
+    border-radius: 10px;
+}
+
+.info-section {
+    margin-top: 45px;
+    padding: 28px;
+    background: #111;
+    border: 1px solid #252525;
+    border-radius: 14px;
+}
+
+.info-section h2 {
+    margin-bottom: 10px;
+}
+
+.info-section p {
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.contact-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.contact-item {
+    background: #181818;
+    padding: 17px;
+    border-radius: 9px;
+    border: 1px solid #292929;
+}
+
+.contact-item strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.contact-item span {
+    color: #aaa;
+    word-break: break-word;
+}
+
+.admin-panel {
+    display: none;
+    margin-top: 35px;
+    padding: 25px;
+    background: #101010;
+    border: 1px solid #333;
+    border-radius: 14px;
+}
+
+.admin-panel.active {
+    display: block;
+}
+
+.admin-panel h2 {
+    margin-bottom: 15px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+}
+
+.admin-grid input {
+    width: 100%;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0,0,0,.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 560px;
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 25px;
+    position: relative;
+    box-shadow: 0 25px 70px rgba(0,0,0,.6);
+}
+
+.modal-box h2 {
+    margin-bottom: 8px;
+}
+
+.modal-box p {
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    color: #fff;
+}
+
+footer {
+    border-top: 1px solid #222;
+    background: #0b0b0b;
+    color: #777;
+    text-align: center;
+    padding: 28px 20px;
+    margin-top: 45px;
+}
+
+footer strong {
+    color: #e50914;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 850px) {
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .menu-button {
+        display: block;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links button {
+        text-align: left;
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+        order: 5;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .hero {
+        padding: 35px 25px;
+        min-height: 350px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 430px) {
+    main {
+        padding: 18px 12px 40px;
+    }
+
+    .hero {
+        padding: 30px 20px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .secondary-button {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">TEVFIX</div>
+
+        <button class="menu-button" id="menuButton" type="button">
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <button type="button" onclick="goTo('home')">Home</button>
+            <button type="button" onclick="goTo('movies')">Movies</button>
+            <button type="button" onclick="goTo('shows')">Shows</button>
+            <button type="button" onclick="goTo('contact')">Contact</button>
+            <button type="button" onclick="openAdmin()">Admin</button>
+        </div>
+
+        <div class="search-box">
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search movies & shows..."
+                autocomplete="off"
+                aria-label="Search movies and shows"
+            >
+        </div>
+    </nav>
+</header>
+
+<main id="home">
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span>TEVFIX</span></h1>
+            <p>
+                Your entertainment hub for movies, shows and future TEVFIX
+                features — all in one clean, fast website.
+            </p>
+
+            <button class="primary-button" type="button" onclick="goTo('movies')">
+                Browse Movies
+            </button>
+
+            <button class="secondary-button" type="button" onclick="goTo('shows')">
+                Browse Shows
+            </button>
+        </div>
+    </section>
+
+    <div class="status">
+        <strong>TEVFIX status:</strong>
+        Website online and ready.
+    </div>
+
+    <section id="movies">
+        <div class="section-header">
+            <h2>Movies</h2>
+            <span id="movieCount"></span>
+        </div>
+
+        <div class="grid" id="movieGrid">
+
+            <article class="card" data-title="Big Buck Bunny" data-type="movie">
+                <div class="poster">BIG BUCK<br>BUNNY</div>
+                <div class="card-body">
+                    <div class="card-title">Big Buck Bunny</div>
+                    <div class="card-meta">Animation • Free</div>
+                    <button type="button"
+                        onclick="showDetails('Big Buck Bunny','An open movie that can be used as a legal example for TEVFIX.')">
+                        Details
+                    </button>
+                </div>
+            </article>
+
+            <article class="card" data-title="Sintel" data-type="movie">
+                <div class="poster">SINTEL</div>
+                <div class="card-body">
+                    <div class="card-title">Sintel</div>
+                    <div class="card-meta">Fantasy • Free</div>
+                    <button type="button"
+                        onclick="showDetails('Sintel','An open movie suitable for demonstrating legal streaming on TEVFIX.')">
+                        Details
+                    </button>
+                </div>
+            </article>
+
+            <article class="card" data-title="Tears of Steel" data-type="movie">
+                <div class="poster">TEARS OF<br>STEEL</div>
+                <div class="card-body">
+                    <div class="card-title">Tears of Steel</div>
+                    <div class="card-meta">Sci-Fi • Free</div>
+                    <button type="button"
+                        onclick="showDetails('Tears of Steel','An open movie that can be used as a legal demonstration title.')">
+                        Details
+                    </button>
+                </div>
+            </article>
+
+            <article class="card" data-title="Elephants Dream" data-type="movie">
+                <div class="poster">ELEPHANTS<br>DREAM</div>
+                <div class="card-body">
+                    <div class="card-title">Elephants Dream</div>
+                    <div class="card-meta">Animation • Free</div>
+                    <button type="button"
+                        onclick="showDetails('Elephants Dream','An open movie that can be used for legal testing and demonstrations.')">
+                        Details
+                    </button>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="empty" id="movieEmpty">
+            No movies matched your search.
+        </div>
+    </section>
+
+    <section id="shows">
+        <div class="section-header">
+            <h2>Shows</h2>
+            <span id="showCount"></span>
+        </div>
+
+        <div class="grid" id="showGrid">
+
+            <article class="card" data-title="TEVFIX Originals" data-type="show">
+                <div class="poster">TEVFIX<br>ORIGINALS</div>
+                <div class="card-body">
+                    <div class="card-title">TEVFIX Originals</div>
+                    <div class="card-meta">Coming Soon</div>
+                    <button type="button"
+                        onclick="showDetails('TEVFIX Originals','Your future home for original TEVFIX content.')">
+                        Details
+                    </button>
+                </div>
+            </article>
+
+            <article class="card" data-title="Coming Soon" data-type="show">
+                <div class="poster">COMING<br>SOON</div>
+                <div class="card-body">
+                    <div class="card-title">Coming Soon</div>
+                    <div class="card-meta">More content</div>
+                    <button type="button"
+                        onclick="showDetails('Coming Soon','More legally licensed or freely available content can be added here.')">
+                        Details
+                    </button>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="empty" id="showEmpty">
+            No shows matched your search.
+        </div>
+    </section>
+
+    <section class="info-section" id="contact">
+        <h2>Contact TEVFIX</h2>
+        <p>
+            Use the contact details below for TEVFIX enquiries, partnerships,
+            content permissions or website support.
+        </p>
+
+        <div class="contact-box">
+            <div class="contact-item">
+                <strong>Project</strong>
+                <span>TEVFIX</span>
+            </div>
+
+            <div class="contact-item">
+                <strong>Email</strong>
+                <span>Add your official TEVFIX email here</span>
+            </div>
+
+            <div class="contact-item">
+                <strong>Content</strong>
+                <span>Licensed and legally distributable content</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="admin-panel" id="adminPanel">
+        <h2>TEVFIX Admin Controls</h2>
+
+        <p style="color:#999;margin-bottom:18px;">
+            Admin tools are stored locally in this demo. For a real public
+            website, authentication must be handled securely on a server.
+        </p>
+
+        <div class="admin-grid">
+            <input id="adminTitle" type="text" placeholder="New title">
+            <input id="adminType" type="text" placeholder="Movie or show">
+            <button class="primary-button" type="button" onclick="addTitle()">
+                Add title
+            </button>
+            <button type="button" onclick="closeAdmin()">
+                Close admin
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<div class="modal" id="detailsModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="close-modal" type="button" onclick="closeModal()">
+            ×
+        </button>
+
+        <h2 id="modalTitle">Title</h2>
+        <p id="modalDescription">Description</p>
+
+        <button class="primary-button" type="button" onclick="closeModal()">
+            Close
+        </button>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <strong>TEVFIX</strong> © 2026. Built for entertainment.
+    </p>
+    <p style="margin-top:5px;">
+        Only content you have permission to distribute should be added.
+    </p>
+</footer>
+
+<script>
+"use strict";
+
+/* -------------------------
+   Navigation
+------------------------- */
+
+function goTo(id) {
+    const element = document.getElementById(id);
+
+    if (element) {
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    document.getElementById("navLinks").classList.remove("active");
+}
+
+/* -------------------------
+   Mobile menu
+------------------------- */
+
+document.getElementById("menuButton").addEventListener("click", function () {
+    document.getElementById("navLinks").classList.toggle("active");
+});
+
+/* -------------------------
+   Search
+------------------------- */
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", function () {
+    const query = searchInput.value.trim().toLowerCase();
+
+    filterCards("movieGrid", "movieEmpty", query);
+    filterCards("showGrid", "showEmpty", query);
+
+    updateCounts();
+});
+
+function filterCards(gridId, emptyId, query) {
+    const grid = document.getElementById(gridId);
+    const empty = document.getElementById(emptyId);
+    const cards = grid.querySelectorAll(".card");
+
+    let visible = 0;
+
+    cards.forEach(function (card) {
+        const title = card.dataset.title.toLowerCase();
+
+        const matches =
+            query === "" ||
+            title.includes(query);
+
+        card.classList.toggle("hidden", !matches);
+
+        if (matches) {
+            visible++;
+        }
+    });
+
+    empty.style.display = visible === 0 ? "block" : "none";
+}
+
+function updateCounts() {
+    const movies = document.querySelectorAll("#movieGrid .card:not(.hidden)").length;
+    const shows = document.querySelectorAll("#showGrid .card:not(.hidden)").length;
+
+    document.getElementById("movieCount").textContent =
+        movies + (movies === 1 ? " title" : " titles");
+
+    document.getElementById("showCount").textContent =
+        shows + (shows === 1 ? " title" : " titles");
+}
+
+updateCounts();
+
+/* -------------------------
+   Modal
+------------------------- */
+
+function showDetails(title, description) {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalDescription").textContent = description;
+
+    document.getElementById("detailsModal").classList.add("active");
+}
+
+function closeModal() {
+    document.getElementById("detailsModal").classList.remove("active");
+}
+
+document.getElementById("detailsModal").addEventListener("click", function (event) {
+    if (event.target === this) {
+        closeModal();
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeModal();
+    }
+});
+
+/* -------------------------
+   Admin panel
+------------------------- */
+
+function openAdmin() {
+    const password = prompt("Enter TEVFIX admin password:");
+
+    if (password === null) {
+        return;
+    }
+
+    /*
+      This is only a front-end demo.
+      Never use a client-side password as real security.
+    */
+    if (password === "WALL") {
+        document.getElementById("adminPanel").classList.add("active");
+        document.getElementById("adminPanel").scrollIntoView({
+            behavior: "smooth"
+        });
+    } else {
+        alert("Incorrect admin password.");
+    }
+}
+
+function closeAdmin() {
+    document.getElementById("adminPanel").classList.remove("active");
+}
+
+function addTitle() {
+    const titleInput = document.getElementById("adminTitle");
+    const typeInput = document.getElementById("adminType");
+
+    const title = titleInput.value.trim();
+    const type = typeInput.value.trim().toLowerCase();
+
+    if (!title) {
+        alert("Enter a title first.");
+        return;
+    }
+
+    if (type !== "movie" && type !== "show") {
+        alert("Type must be 'movie' or 'show'.");
+        return;
+    }
+
+    const gridId = type === "movie" ? "movieGrid" : "showGrid";
+    const grid = document.getElementById(gridId);
+
+    const card = document.createElement("article");
+    card.className = "card";
+    card.dataset.title = title;
+    card.dataset.type = type;
+
+    const poster = document.createElement("div");
+    poster.className = "poster";
+    poster.textContent = title.toUpperCase();
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+
+    const cardTitle = document.createElement("div");
+    cardTitle.className = "card-title";
+    cardTitle.textContent = title;
+
+    const meta = document.createElement("div");
+    meta.className = "card-meta";
+    meta.textContent = "TEVFIX • Added";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Details";
+
+    button.addEventListener("click", function () {
+        showDetails(
+            title,
+            "This title was added through the TEVFIX admin interface."
+        );
+    });
+
+    body.appendChild(cardTitle);
+    body.appendChild(meta);
+    body.appendChild(button);
+
+    card.appendChild(poster);
+    card.appendChild(body);
+
+    grid.appendChild(card);
+
+    titleInput.value = "";
+    typeInput.value = "";
+
+    updateCounts();
+
+    alert("Title added to TEVFIX.");
+}
+
+/* -------------------------
+   Prevent accidental form
+   submission behaviour
+------------------------- */
+
+document.querySelectorAll("button").forEach(function (button) {
+    button.setAttribute("type", button.getAttribute("type") || "button");
+});
+</script>
+
+</body>
+</html>
