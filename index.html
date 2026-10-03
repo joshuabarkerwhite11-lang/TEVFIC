@@ -86,11 +86,7 @@ h2{margin-top:30px}
 </div>
 
 <script>
-/* =====================================================
-   TEVFIX TMDB SETTINGS
-   ===================================================== */
-
-const TMDB_API_KEY = "PUT_YOUR_NEW_KEY_HERE";
+const TMDB_API_KEY = "778d7be2cae88c7a0a9e72d862d51f46";
 
 const API = "https://api.themoviedb.org/3";
 const IMG = "https://image.tmdb.org/t/p/w500";
@@ -98,14 +94,10 @@ const IMG = "https://image.tmdb.org/t/p/w500";
 let currentList = [];
 let myList = JSON.parse(localStorage.getItem("tevfix_list") || "[]");
 
-/* =====================================================
-   TMDB
-   ===================================================== */
-
 async function tmdb(path, params = {}) {
     const url = new URL(API + path);
 
-    url.searchParams.set("api_key", TMDB_API_KEY);968e7efef4206f0914f37ccfc7c788f0
+    url.searchParams.set("api_key", TMDB_API_KEY);
     url.searchParams.set("language", "en-US");
 
     Object.entries(params).forEach(([key,value]) => {
@@ -123,17 +115,9 @@ async function tmdb(path, params = {}) {
     return response.json();
 }
 
-/* =====================================================
-   START
-   ===================================================== */
-
 window.addEventListener("load", () => {
     home();
 });
-
-/* =====================================================
-   HOME
-   ===================================================== */
 
 async function home() {
     document.getElementById("sectionTitle").textContent = "Popular Movies";
@@ -155,10 +139,6 @@ async function home() {
     }
 }
 
-/* =====================================================
-   MOVIES
-   ===================================================== */
-
 async function showMovies() {
     document.getElementById("sectionTitle").textContent = "Popular Movies";
     document.getElementById("searchSection").style.display = "none";
@@ -178,10 +158,6 @@ async function showMovies() {
     }
 }
 
-/* =====================================================
-   TV
-   ===================================================== */
-
 async function showTV() {
     document.getElementById("sectionTitle").textContent = "Popular TV Shows";
     document.getElementById("searchSection").style.display = "none";
@@ -200,12 +176,7 @@ async function showTV() {
     }
 }
 
-/* =====================================================
-   RENDER
-   ===================================================== */
-
 function render(items, isTV=false) {
-
     currentList = items;
 
     const box = document.getElementById("content");
@@ -216,12 +187,9 @@ function render(items, isTV=false) {
     }
 
     box.innerHTML = items.map(item => {
-
         const title = item.title || item.name || "Untitled";
         const date = item.release_date || item.first_air_date || "";
-        const poster = item.poster_path
-            ? IMG + item.poster_path
-            : "";
+        const poster = item.poster_path ? IMG + item.poster_path : "";
 
         return `
         <article class="card" onclick="openDetails(${item.id},${isTV})">
@@ -240,10 +208,6 @@ function render(items, isTV=false) {
     }).join("");
 }
 
-/* =====================================================
-   SEARCH
-   ===================================================== */
-
 function toggleSearch() {
     const box = document.getElementById("searchBox");
     box.classList.toggle("active");
@@ -253,13 +217,11 @@ function toggleSearch() {
 }
 
 async function searchTMDB() {
-
     const query = document.getElementById("searchBox").value.trim();
 
     if(!query) return;
 
     try {
-
         setStatus("Searching...");
 
         const data = await tmdb("/search/multi", {
@@ -276,7 +238,6 @@ async function searchTMDB() {
         const box = document.getElementById("searchResults");
 
         box.innerHTML = results.map(item => {
-
             const title = item.title || item.name || "Untitled";
             const poster = item.poster_path ? IMG + item.poster_path : "";
             const isTV = item.media_type === "tv";
@@ -307,139 +268,9 @@ async function searchTMDB() {
     }
 }
 
-/* =====================================================
-   DETAILS
-   ===================================================== */
-
 async function openDetails(id,isTV) {
-
     const modal = document.getElementById("modal");
     const details = document.getElementById("details");
 
     modal.classList.add("show");
-    details.innerHTML = "<h2>Loading...</h2>";
-
-    try {
-
-        const type = isTV ? "tv" : "movie";
-
-        const item = await tmdb("/" + type + "/" + id);
-
-        const title = item.title || item.name || "Untitled";
-        const date = item.release_date || item.first_air_date || "Unknown";
-
-        const poster = item.poster_path
-            ? IMG + item.poster_path
-            : "";
-
-        const saved = myList.some(x =>
-            x.id === item.id && x.type === type
-        );
-
-        details.innerHTML = `
-            ${poster ? `<img src="${poster}" style="width:180px;max-width:100%;border-radius:8px">` : ""}
-            <h1>${escapeHTML(title)}</h1>
-            <p>⭐ ${Number(item.vote_average || 0).toFixed(1)} / 10</p>
-            <p>${date}</p>
-            <p>${escapeHTML(item.overview || "No description available.")}</p>
-
-            <button onclick="toggleList(${item.id},'${type}')">
-                ${saved ? "Remove from My List" : "Add to My List"}
-            </button>
-        `;
-
-    } catch(error) {
-        details.innerHTML =
-            `<p class="error">${escapeHTML(error.message)}</p>`;
-    }
-}
-
-function closeModal() {
-    document.getElementById("modal").classList.remove("show");
-}
-
-/* =====================================================
-   MY LIST
-   ===================================================== */
-
-function toggleList(id,type) {
-
-    const index = myList.findIndex(x =>
-        x.id === id && x.type === type
-    );
-
-    if(index >= 0) {
-        myList.splice(index,1);
-    } else {
-        myList.push({id,type});
-    }
-
-    localStorage.setItem("tevfix_list",JSON.stringify(myList));
-
-    openDetails(id,type === "tv");
-}
-
-async function showList() {
-
-    document.getElementById("sectionTitle").textContent = "My List";
-    document.getElementById("searchSection").style.display = "none";
-
-    if(!myList.length) {
-        document.getElementById("content").innerHTML =
-            "<p>Your list is empty.</p>";
-        return;
-    }
-
-    const results = [];
-
-    for(const item of myList) {
-        try {
-            const data = await tmdb("/" + item.type + "/" + item.id);
-            results.push(data);
-        } catch(e) {}
-    }
-
-    render(results, false);
-    setStatus("Your list");
-}
-
-/* =====================================================
-   HELPERS
-   ===================================================== */
-
-function setStatus(message) {
-    document.getElementById("status").textContent = message;
-    document.getElementById("status").classList.remove("error");
-}
-
-function showError(error) {
-
-    console.error(error);
-
-    const message = error.message || "Unknown error";
-
-    document.getElementById("status").textContent =
-        "TMDB could not load: " + message;
-
-    document.getElementById("status").classList.add("error");
-
-    document.getElementById("content").innerHTML = `
-        <div>
-            <h3>Movies couldn't load.</h3>
-            <p>Check that your TMDB API key is entered correctly.</p>
-        </div>
-    `;
-}
-
-function escapeHTML(value) {
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-}
-</script>
-
-</body>
-</html>
+    details.innerHTML = "<h2
