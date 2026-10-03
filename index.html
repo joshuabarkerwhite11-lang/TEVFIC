@@ -267,10 +267,93 @@ async function searchTMDB() {
         showError(error);
     }
 }
-
 async function openDetails(id,isTV) {
     const modal = document.getElementById("modal");
     const details = document.getElementById("details");
 
     modal.classList.add("show");
-    details.innerHTML = "<h2
+    details.innerHTML = "<h2>Loading...</h2>";
+
+    try {
+        const type = isTV ? "tv" : "movie";
+        const data = await tmdb("/" + type + "/" + id, {
+            append_to_response: "videos,credits"
+        });
+
+        const title = data.title || data.name || "Unknown";
+        const description = data.overview || "No description available.";
+        const poster = data.poster_path
+            ? IMG + data.poster_path
+            : "";
+
+        details.innerHTML = `
+            <div class="detail-box">
+                ${poster ? `<img src="${poster}" class="detail-poster">` : ""}
+                <div>
+                    <h2>${escapeHTML(title)}</h2>
+                    <p>⭐ ${data.vote_average ? data.vote_average.toFixed(1) : "N/A"}</p>
+                    <p>${escapeHTML(description)}</p>
+                    <button onclick="addToList(${data.id}, '${type}')">＋ Add to My List</button>
+                </div>
+            </div>
+        `;
+    } catch(error) {
+        details.innerHTML = "<h2>Could not load details.</h2>";
+        showError(error);
+    }
+}
+
+function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+}
+
+function addToList(id,type) {
+    if (!myList.some(item => item.id === id && item.type === type)) {
+        myList.push({id:id,type:type});
+        localStorage.setItem("tevfix_list", JSON.stringify(myList));
+    }
+
+    setStatus("Added to My List.");
+}
+
+function showMyList() {
+    const grid = document.getElementById("grid");
+
+    if (!myList.length) {
+        grid.innerHTML = "<p>Your My List is empty.</p>";
+        return;
+    }
+
+    grid.innerHTML = "";
+
+    myList.forEach(item => {
+        tmdb("/" + item.type + "/" + item.id)
+            .then(data => {
+                const title = data.title || data.name;
+                const poster = data.poster_path
+                    ? IMG + data.poster_path
+                    : "";
+
+                grid.innerHTML += `
+                    <div class="card" onclick="openDetails(${data.id}, ${item.type === "tv"})">
+                        ${poster ? `<img src="${poster}">` : ""}
+                        <h3>${escapeHTML(title)}</h3>
+                    </div>
+                `;
+            })
+            .catch(() => {});
+    });
+}
+
+function escapeHTML(value) {
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+</script>
+
+</body>
+</html>
