@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TEVFIX — Movies & TV Discovery</title>
+<meta name="description" content="TEVFIX — discover movies, TV series, free legal films and where to watch.">
+<meta name="theme-color" content="#e50914">
+<link rel="manifest" href="manifest.webmanifest">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+ --bg:#08090d;--panel:#11131a;--panel2:#171a23;--text:#f7f7f9;--muted:#9da2ad;
+ --line:#242833;--accent:#e50914;--accent2:#ff3340;--shadow:0 18px 60px #0008;
+}
+[data-theme="light"]{
+ --bg:#f5f6f8;--panel:#fff;--panel2:#f0f1f4;--text:#101218;--muted:#626875;
+ --line:#dddfe5;--shadow:0 18px 50px #0002;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;transition:.2s}
+button,input{font:inherit}
+button{cursor:pointer}
+header{height:72px;position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{height:72px;max-width:1500px;margin:auto;padding:0 24px;display:flex;align-items:center;gap:22px}
+.logo{font-size:25px;font-weight:950;letter-spacing:-1px;color:var(--text);white-space:nowrap}
+.logo span{color:var(--accent)}
+.navlinks{display:flex;gap:4px;align-items:center}
+.navlinks button,.iconbtn{background:transparent;color:var(--muted);border:0;padding:9px 11px;border-radius:9px}
+.navlinks button:hover,.navlinks button.active{background:var(--panel2);color:var(--text)}
+.navright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.iconbtn{font-size:18px}
+.profile{width:38px;height:38px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);color:var(--text);font-weight:800}
+.mobile-menu{display:none}
+main{max-width:1500px;margin:auto;padding:0 24px 60px}
+.hero{min-height:410px;border-radius:0 0 24px 24px;margin:0 -24px;padding:100px 7% 55px;display:flex;align-items:flex-end;background:
+ radial-gradient(circle at 80% 25%,#e5091438,transparent 32%),
+ linear-gradient(135deg,#161923 0%,#090a0f 58%,#0b0c11 100%);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#08090df2 0%,#08090daa 48%,transparent 100%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:700px}
+.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:12px;color:#ff6670;font-weight:800}
+.hero h1{font-size:clamp(42px,6vw,76px);line-height:.98;margin:10px 0 15px;letter-spacing:-3px}
+.hero p{color:#c4c7cf;max-width:580px;font-size:17px;line-height:1.55}
+.searchbar{margin-top:24px;display:flex;max-width:650px;background:#fff;border-radius:13px;overflow:hidden;box-shadow:var(--shadow)}
+.searchbar input{flex:1;border:0;outline:0;padding:15px 17px;color:#111;background:#fff}
+.searchbar button{border:0;background:var(--accent);color:#fff;padding:0 20px;font-weight:800}
+.chips{display:flex;gap:8px;overflow:auto;padding:20px 0 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:9px 14px}
+.chip.active,.chip:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.section{margin-top:34px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-bottom:15px}
+.section h2{margin:0;font-size:23px}
+.section-head small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
+.card{min-width:0;cursor:pointer}
+.poster{position:relative;aspect-ratio:2/3;border-radius:11px;overflow:hidden;background:var(--panel);border:1px solid var(--line);transition:.18s}
+.poster img{width:100%;height:100%;display:block;object-fit:cover}
+.card:hover .poster{transform:translateY(-5px);box-shadow:0 15px 35px #0008;border-color:#454a58}
+.rating{position:absolute;top:8px;left:8px;background:#000c;color:#fff;border-radius:7px;padding:5px 7px;font-size:12px;font-weight:800}
+.card-info{padding:9px 2px}
+.card-title{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.empty,.loading{padding:30px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center;grid-column:1/-1}
+footer{border-top:1px solid var(--line);padding:30px 24px;color:var(--muted);text-align:center}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:100;padding:20px;align-items:center;justify-content:center}
+.modal.show{display:flex}
+.modal-box{background:var(--panel);border:1px solid var(--line);border-radius:18px;max-width:950px;width:100%;max-height:92vh;overflow:auto;box-shadow:var(--shadow);position:relative}
+.close{position:absolute;right:14px;top:14px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:#0008;color:#fff;z-index:2}
+.details{display:grid;grid-template-columns:260px 1fr;gap:25px;padding:28px}
+.details img{width:100%;border-radius:12px}
+.details h2{font-size:32px;margin:8px 0}
+.muted{color:var(--muted);line-height:1.65}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.primary{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:11px 15px;font-weight:800}
+.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px 14px}
+.trailer{margin-top:25px;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+.trailer iframe,.trailer video{width:100%;height:100%;border:0}
+.auth-box{max-width:430px;padding:28px}
+.tabs{display:flex;gap:7px;margin-bottom:20px}
+.tabs button{flex:1;padding:10px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+.tabs button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.form{display:flex;flex-direction:column;gap:11px}
+.form input{width:100%;padding:12px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--text);outline:none}
+.form input:focus{border-color:var(--accent)}
+.message{min-height:20px;font-size:13px;color:var(--muted)}
+.message.error{color:#ff6670}.message.success{color:#73e6a4}
+.account-menu{display:none;position:absolute;right:24px;top:62px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:190px;box-shadow:var(--shadow)}
+.account-menu.show{display:block}
+.account-wrap{position:relative}
+.menu-name{font-size:13px;color:var(--muted);padding:5px 7px 10px;border-bottom:1px solid var(--line);margin-bottom:7px}
+.menu-item{width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:9px 7px;border-radius:7px}
+.menu-item:hover{background:var(--panel2)}
+.store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.store-card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px}
+.admin-box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.hidden{display:none!important}
+@media(max-width:1050px){.grid{grid-template-columns:repeat(4,1fr)}.navlinks{display:none}.mobile-menu{display:block}.store-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){
+ header,.nav{height:64px}.nav{padding:0 14px}.logo{font-size:22px}
+ main{padding:0 14px 40px}.hero{margin:0 -14px;border-radius:0 0 18px 18px;padding:80px 20px 35px;min-height:420px}
+ .hero h1{letter-spacing:-2px}.searchbar{display:flex}.grid{grid-template-columns:repeat(2,1fr);gap:12px}
+ .details{grid-template-columns:1fr;padding:20px}.details img{max-width:190px}.store-grid{grid-template-columns:1fr}
+ .account-menu{right:8px}.navright{gap:2px}
+}
+
+.free-movie-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.free-movie-card{background:var(--card,#171717);border:1px solid var(--border,#2a2a2a);border-radius:18px;overflow:hidden}
+.free-player{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.free-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.free-info{padding:18px}
+.free-info h3{margin:0 0 8px}
+.free-info p{line-height:1.55;margin:0 0 10px}
+.free-info .meta{opacity:.75;margin-bottom:8px}
+.free-info small{opacity:.65}
+@media(max-width:800px){.free-movie-grid{grid-template-columns:1fr}}
+
+/* TEVFIX app polish */
+body{padding-bottom:env(safe-area-inset-bottom);overflow-x:hidden}
+button,.card,.chip,.poster,.primary,.secondary{transition:transform .18s ease,opacity .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease}
+button:active{transform:scale(.97)}
+.logo{position:relative;text-shadow:0 0 18px #e5091430}
+.logo.led{animation:ledPulse 2.8s linear infinite}
+@keyframes ledPulse{0%{filter:hue-rotate(0deg);text-shadow:0 0 8px #ff0044}25%{filter:hue-rotate(90deg);text-shadow:0 0 8px #00ff88}50%{filter:hue-rotate(180deg);text-shadow:0 0 8px #0088ff}75%{filter:hue-rotate(270deg);text-shadow:0 0 8px #ffcc00}100%{filter:hue-rotate(360deg);text-shadow:0 0 8px #ff0044}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;z-index:300;background:var(--panel);color:var(--text);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:999px;padding:11px 16px;font-size:13px;pointer-events:none;transition:.22s;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.app-status{position:fixed;left:12px;bottom:12px;z-index:120;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:11px;color:var(--muted);display:none}
+.skeleton{background:linear-gradient(90deg,var(--panel) 25%,var(--panel2) 50%,var(--panel) 75%);background-size:200% 100%;animation:skeleton 1.2s infinite;border-radius:11px;aspect-ratio:2/3}
+@keyframes skeleton{to{background-position:-200% 0}}
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.quick-action{padding:13px;border:1px solid var(--line);background:#ffffff0a;color:var(--text);border-radius:12px;font-weight:750;backdrop-filter:blur(8px)}
+.quick-action:hover{background:#ffffff12;transform:translateY(-2px)}
+.provider-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.provider{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:12px}
+.provider.free{border-color:#39c98266}
+.provider-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.provider.free .provider-dot{background:#39c982}
+.detail-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.bottom-nav{display:none}
+.install-banner{position:fixed;left:14px;right:14px;bottom:14px;z-index:180;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow);align-items:center;gap:12px}
+.install-banner .grow{flex:1}.install-banner h4{margin:0 0 4px}.install-banner p{margin:0;color:var(--muted);font-size:12px}
+.history-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.history-item{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:999px;padding:7px 10px}
+.offline-banner{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:170;background:#3b2b00;color:#ffd76a;border:1px solid #806000;border-radius:999px;padding:7px 12px;font-size:12px;display:none}
+@media(max-width:650px){
+ body{padding-bottom:78px}
+ .quick-actions{grid-template-columns:repeat(2,1fr)}
+ .bottom-nav{position:fixed;display:grid;grid-template-columns:repeat(5,1fr);left:0;right:0;bottom:0;z-index:140;background:color-mix(in srgb,var(--panel) 94%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom))}
+ .bottom-nav button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:7px 2px;border-radius:10px}
+ .bottom-nav button.active{color:var(--text);background:var(--panel2)}
+ .bottom-nav b{display:block;font-size:18px;line-height:18px;margin-bottom:2px}
+ .install-banner{bottom:86px}
+ .offline-banner{top:64px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Light-mode readability fix */
+[data-theme="light"] .hero h1,
+[data-theme="light"] .hero p,
+[data-theme="light"] .quick-action {
+  color:#f7f7f9;
+}
+[data-theme="light"] .hero .eyebrow {
+  color:#ff6670;
+}
+[data-theme="light"] .quick-action {
+  background:#171923;
+  border-color:#343846;
+}
+[data-theme="light"] .quick-action:hover {
+  background:#20232d;
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="nav">
+<div class="logo led" id="tevLogo">TEV<span>FIX</span></div>
+<div class="navlinks" id="navLinks">
+<button data-section="home" onclick="home()">Home</button>
+<button data-section="movies" onclick="loadMovies()">Movies</button>
+<button data-section="tv" onclick="loadTV()">TV Series</button>
+<button data-section="horror" onclick="loadHorror()">Classic Horror</button>
+<button data-section="classic" onclick="loadClassicTV()">Classic TV</button>
+<button data-section="free" onclick="loadFreeMovies()">Free Movies</button>
+</div>
+<button class="iconbtn mobile-menu" onclick="toggleMobileNav()">☰</button>
+<div class="navright">
+<button class="iconbtn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+<button class="iconbtn" onclick="openStore()" title="Store">▣</button>
+<div class="account-wrap">
+<button class="profile" id="profileBtn" onclick="accountAction()">?</button>
+<div class="account-menu" id="accountMenu">
+<div class="menu-name" id="menuName">Not signed in</div>
+<button class="menu-item" onclick="openAuth('login')">Log in / Sign up</button>
+<button class="menu-item" onclick="openMyList()">My List</button>
+<button class="menu-item hidden" id="adminMenu" onclick="openAdmin()">Admin</button>
+<button class="menu-item hidden" id="logoutMenu" onclick="logout()">Log out</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+<main>
+<section class="hero" id="homeHero">
+<div class="hero-content">
+<div class="eyebrow">TEVFIX • Movies & TV</div>
+<h1>Find something worth watching.</h1>
+<p>Discover popular movies, TV series and classics. Search, explore, save favourites and find your next watch.</p>
+<div class="searchbar">
+<input id="searchInput" placeholder="Search movies, TV shows..." onkeydown="if(event.key==='Enter')searchTMDB()">
+<button onclick="searchTMDB()">Search</button>
+</div>
+<div class="quick-actions">
+ <button class="quick-action" onclick="surpriseMe()">🎲 Surprise Me</button>
+ <button class="quick-action" onclick="randomGenre()">🎭 Random Genre</button>
+ <button class="quick-action" onclick="loadFreeMovies()">🆓 Free Movies</button>
+ <button class="quick-action" onclick="shareTEVFIX()">↗ Share TEVFIX</button>
+</div>
+</div>
+</section>
+
+<div class="chips">
+<button class="chip active" onclick="home()">Trending</button>
+<button class="chip" onclick="loadMovies()">Movies</button>
+<button class="chip" onclick="loadTV()">TV Series</button>
+<button class="chip" onclick="loadHorror()">Classic Horror</button>
+<button class="chip" onclick="loadClassicTV()">Classic TV</button>
+</div>
+
+<div id="app"></div>
+</main>
+<div class="bottom-nav" id="bottomNav">
+ <button data-bottom="home" onclick="home()"><b>⌂</b>Home</button>
+ <button data-bottom="search" onclick="focusSearch()"><b>⌕</b>Search</button>
+ <button data-bottom="list" onclick="openMyList()"><b>♡</b>My List</button>
+ <button data-bottom="surprise" onclick="surpriseMe()"><b>🎲</b>Surprise</button>
+ <button data-bottom="profile" onclick="accountAction()"><b>●</b>Profile</button>
+</div>
+<div class="toast" id="toast"></div>
+<div class="offline-banner" id="offlineBanner">You’re offline — saved TEVFIX features still work.</div>
+<div class="app-status" id="appStatus">TEVFIX</div>
+<div class="install-banner" id="installBanner" style="display:none">
+ <div class="grow"><h4>Install TEVFIX</h4><p>Use TEVFIX like an app from your home screen.</p></div>
+ <button class="primary" onclick="installTEVFIX()">Install</button>
+ <button class="secondary" onclick="dismissInstall()">×</button>
+</div>
+
+<footer>© 2026 TEVFIX • Movies & TV discovery
+<section class="section" style="margin-top:28px">
+  <div class="section-head"><h2>TEVFIX Support</h2><small>Need help?</small></div>
+  <div class="panel">
+    <p>For TEVFIX support, contact <strong>joshuabarkerwhite11@gmail.com</strong>.</p>
+    <a class="primary" href="mailto:joshuabarkerwhite11@gmail.com?subject=TEVFIX%20Support">Contact Support</a>
+  </div>
+</section>
+
+<section class="section" style="margin-top:28px">
+  <div class="section-head"><h2>Free &amp; Legal Movies</h2><small>Public-domain / free-to-use sources</small></div>
+  <div class="panel">
+    <p>TEVFIX can feature films that are actually available for free use or viewing, rather than linking to pirated copies.</p>
+    <div class="chips">
+      <a class="chip" href="https://archive.org/details/feature_films" target="_blank" rel="noopener">Internet Archive Feature Films</a>
+      <a class="chip" href="https://www.loc.gov/free-to-use/public-domain-films-from-the-national-film-registry/" target="_blank" rel="noopener">Library of Congress Public-Domain Films</a>
+      <a class="chip" href="https://www.loc.gov/film-and-videos/" target="_blank" rel="noopener">Library of Congress Film &amp; Video</a>
+    </div>
+    <p class="muted" style="margin-top:12px">Rights can vary by individual title and version, so TEVFIX should verify the rights information for each film before hosting or embedding it.</p>
+  </div>
+</section>
+</footer>
+
+<!-- Details -->
+<div class="modal" id="detailsModal" onclick="if(event.target===this)closeModal('detailsModal')">
+<div class="modal-box">
+<button class="close" onclick="closeModal('detailsModal')">×</button>
+<div id="detailsContent"></div>
+</div>
+</div>
+
+<!-- Auth -->
+<div class="modal" id="authModal" onclick="if(event.target===this)closeModal('authModal')">
+<div class="modal-box auth-box">
+<button class="close" onclick="closeModal('authModal')">×</button>
+<h2 id="authTitle">Log in to TEVFIX</h2>
+<div class="tabs">
+<button id="loginTab" class="active" onclick="setAuthMode('login')">Log in</button>
+<button id="signupTab" onclick="setAuthMode('signup')">Sign up</button>
+</div>
+<form class="form" onsubmit="submitAuth(event)">
+<input id="nameInput" placeholder="Your name" autocomplete="name" style="display:none">
+<input id="emailInput" type="email" placeholder="Email address" autocomplete="email" required>
+<input id="passwordInput" type="password" placeholder="Password" autocomplete="current-password" required>
+<button class="primary" id="authSubmit">Log in</button>
+<button type="button" class="menu-item" onclick="forgotPassword()">Forgot password?</button>
+<div id="authMessage" class="message"></div>
+</form>
+</div>
+</div>
+
+<script>
+/* =========================
+   TEVFIX CONFIG
+========================= */
+const TMDB_API_KEY="778d7be2cae88c7a0a9e72d862d51f46";
+const API="https://api.themoviedb.org/3";
+const IMG="https://image.tmdb.org/t/p/w500";
+
+const SUPABASE_URL="https://lpetbsduptfgiwgppzee.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_lQm8vR-1xGiMJZWO11ba5g_kq4sc_3D";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
+let authMode="login";
+let currentSection="home";
+let myList=JSON.parse(localStorage.getItem("tevfix_list")||"[]");
+let continueWatching=JSON.parse(localStorage.getItem("tevfix_progress")||"[]");
+let recentTitles=JSON.parse(localStorage.getItem("tevfix_recent")||"[]");
+let searchHistory=JSON.parse(localStorage.getItem("tevfix_search_history")||"[]");
+let favouriteTitles=JSON.parse(localStorage.getItem("tevfix_favourites")||"[]");
+let deferredInstallPrompt=null;
+const TEVFIX_VERSION="2.0.0";
+
+function saveContinueWatching(item,progress=0){
+ const key=(item.media_type||item.type||"movie")+":"+item.id;
+ continueWatching=continueWatching.filter(x=>(x.media_type+":"+x.id)!==key);
+ continueWatching.unshift({...item,progress:Math.max(0,Math.min(100,progress))});
+ continueWatching=continueWatching.slice(0,20);
+ localStorage.setItem("tevfix_progress",JSON.stringify(continueWatching));
+}
+function renderContinueWatching(){
+ const el=document.getElementById("continueWatching");
+ if(!el)return;
+ el.innerHTML=continueWatching.length
+  ? `<section class="section"><div class="section-head"><h2>Continue Watching</h2><small>Pick up where you left off</small></div><div class="grid">${continueWatching.map(card).join("")}</div></section>`
+  : "";
+}
+
+function toast(msg){const el=document.getElementById("toast");if(!el)return;el.textContent=msg;el.classList.add("show");clearTimeout(window.__tevToast);window.__tevToast=setTimeout(()=>el.classList.remove("show"),2600)}
+function tevHaptic(){try{navigator.vibrate?.(8)}catch(e){}}
+function focusSearch(){document.getElementById("homeHero").style.display="";document.getElementById("searchInput")?.focus();window.scrollTo({top:0,behavior:"smooth"})}
+function setBottomActive(key){document.querySelectorAll("[data-bottom]").forEach(b=>b.classList.toggle("active",b.dataset.bottom===key))}
+function rememberSection(key){localStorage.setItem("tevfix_last_section",key)}
+function saveSearchTerm(q){if(!q)return;searchHistory=[q,...searchHistory.filter(x=>x.toLowerCase()!==q.toLowerCase())].slice(0,10);localStorage.setItem("tevfix_search_history",JSON.stringify(searchHistory))}
+function addRecentlyViewed(item){if(!item?.id)return;recentTitles=[{id:item.id,type:typeOf(item),title:title(item)},...recentTitles.filter(x=>x.id!==item.id||x.type!==typeOf(item))].slice(0,12);localStorage.setItem("tevfix_recent",JSON.stringify(recentTitles))}
+function toggleFavourite(item){const kind=item.type||item.media_type||typeOf(item);const key=item.id+":"+kind;const i=favouriteTitles.findIndex(x=>x===key);if(i>=0)favouriteTitles.splice(i,1);else favouriteTitles.unshift(key);localStorage.setItem("tevfix_favourites",JSON.stringify(favouriteTitles));toast(i>=0?"Removed from favourites":"Added to favourites");tevHaptic()}
+function isFavourite(item){const kind=item.type||item.media_type||typeOf(item);return favouriteTitles.includes(item.id+":"+kind)}
+function randomGenre(){const genres=["Action","Comedy","Horror","Science Fiction","Thriller","Animation","Adventure","Fantasy","Drama","Mystery"];const g=genres[Math.floor(Math.random()*genres.length)];document.getElementById("searchInput").value=g;searchTMDB();toast("Random genre: "+g)}
+async function shareTEVFIX(){try{await navigator.share?.({title:"TEVFIX",text:"Check out TEVFIX — movies and TV discovery.",url:location.href});if(!navigator.share){await navigator.clipboard.writeText(location.href);toast("TEVFIX link copied")}}catch(e){}}
+function clearLocalHistory(){localStorage.removeItem("tevfix_recent");localStorage.removeItem("tevfix_search_history");recentTitles=[];searchHistory=[];toast("Local history cleared")}
+function setMutePreference(muted){localStorage.setItem("tevfix_muted",muted?"1":"0")}
+function dismissInstall(){document.getElementById("installBanner").style.display="none"}
+async function installTEVFIX(){if(!deferredInstallPrompt){toast("Use your browser menu → Add to Home screen");return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;dismissInstall()}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstallPrompt=e;document.getElementById("installBanner").style.display="flex"})
+window.addEventListener("online",()=>{document.getElementById("offlineBanner").style.display="none";toast("Back online")})
+window.addEventListener("offline",()=>{document.getElementById("offlineBanner").style.display="block";toast("You’re offline")})
+document.addEventListener("keydown",e=>{if(e.key==="/"&&!/input|textarea/i.test(document.activeElement?.tagName)){e.preventDefault();focusSearch()}})
+let lastTopTap=0;document.addEventListener("click",e=>{if(e.target.closest("header")){const now=Date.now();if(now-lastTopTap<450)window.scrollTo({top:0,behavior:"smooth"});lastTopTap=now}})
+
+// Large catalogue pagination. TMDB supplies the titles dynamically,
+// so the HTML stays fast while TEVFIX can browse thousands of titles.
+const catalogue={
+  movies:{page:0,totalPages:1,items:[],loading:false},
+  tv:{page:0,totalPages:1,items:[],loading:false}
+};
+
+/* Direct licensed trailer files can be added here.
+   Never put unlicensed movie/TV copies here. */
+const TRAILERS={
+  // "movie:123": "https://your-cdn.example/trailers/example.mp4",
+  // "tv:456": "https://your-cdn.example/trailers/example.mp4"
+};
+
+const classicHorrorIds=[
+  238, 694, 539, 77, 1091, 2667, 4232, 539, 4935, 9552, 1685, 9607
+];
+
+const classicTVSearch=[
+  "The Twilight Zone","Columbo","M*A*S*H","The Addams Family",
+  "The Munsters","Star Trek","Cheers","The A-Team"
+];
+
+async function tmdb(path,params={}){
+  const url=new URL(API+path);
+  url.searchParams.set("api_key",TMDB_API_KEY);
+  url.searchParams.set("language","en-US");
+  for(const [k,v] of Object.entries(params)){
+    if(v!==undefined&&v!==null)url.searchParams.set(k,v);
+  }
+  const r=await fetch(url);
+  if(!r.ok)throw new Error("TMDB request failed ("+r.status+")");
+  return r.json();
+}
+
+function escapeHTML(v){
+ return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;")
+  .replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function img(path){return path?IMG+path:""}
+function year(item){return (item.release_date||item.first_air_date||"").slice(0,4)}
+function title(item){return item.title||item.name||"Untitled"}
+function typeOf(item){return item.media_type==="tv"||item.first_air_date?"tv":"movie"}
+
+function card(item){
+ const type=typeOf(item);
+ const poster=img(item.poster_path);
+ return `<article class="card" onclick="openDetails(${item.id},'${type}')">
+  <div class="poster">${poster?`<img loading="lazy" src="${poster}" alt="">`:`<div style="height:100%;background:var(--panel2)"></div>`}
+  <span class="rating">★ ${Number(item.vote_average||0).toFixed(1)}</span></div>
+  <div class="card-info"><div class="card-title">${escapeHTML(title(item))}</div>
+  <div class="card-meta">${type==="tv"?"TV":"Movie"}${year(item)?" • "+year(item):""}</div></div>
+ </article>`;
+}
+
+function renderSection(name,items,options={}){
+ currentSection=options.sectionKey||name;
+ const canLoadMore=!!options.canLoadMore;
+ const targetId=options.targetId||"app";
+ document.getElementById(targetId).innerHTML=`
+ <section class="section">
+  <div class="section-head"><h2>${escapeHTML(name)}</h2><small>${items.length}${options.total?" of "+options.total:""} titles</small></div>
+  <div class="grid">${items.length?items.map(card).join(""):`<div class="empty">No titles found.</div>`}</div>
+  ${canLoadMore?`<div style="display:flex;justify-content:center;margin-top:22px">
+    <button class="secondary" id="loadMoreBtn" onclick="loadMoreCatalogue('${options.sectionKey}')">Load more</button>
+  </div>`:""}
+ </section>`;
+}
+
+function catalogueType(sectionKey){
+ return sectionKey==="tv"?"tv":"movie";
+}
+
+async function loadCatalogue(type,reset=false){
+ const state=catalogue[type];
+ if(state.loading)return;
+
+ if(reset){
+  state.page=0;
+  state.totalPages=1;
+  state.items=[];
+ }
+
+ if(state.page>=state.totalPages)return;
+
+ state.loading=true;
+ const btn=document.getElementById("loadMoreBtn");
+ if(btn){btn.disabled=true;btn.textContent="Loading...";}
+
+ try{
+  const nextPage=state.page+1;
+  const endpoint=type==="tv"?"/tv/popular":"/movie/popular";
+  const params=type==="tv"?{page:nextPage}:{page:nextPage,region:"IE"};
+
+  const data=await tmdb(endpoint,params);
+  state.page=data.page||nextPage;
+  state.totalPages=Math.min(data.total_pages||500,500);
+  state.items.push(...(data.results||[]));
+
+  const unique=[];
+  const seen=new Set();
+  for(const item of state.items){
+   if(!seen.has(item.id)){
+    seen.add(item.id);
+    unique.push(item);
+   }
+  }
+  state.items=unique;
+
+  renderSection(
+   type==="tv"?"TV Series":"Movies",
+   state.items,
+   {sectionKey:type,canLoadMore:state.page<state.totalPages,total:Math.min(state.totalPages*20,10000)}
+  );
+ }catch(e){
+  showError(e);
+ }finally{
+  state.loading=false;
+  const b=document.getElementById("loadMoreBtn");
+  if(b){b.disabled=false;b.textContent="Load more";}
+ }
+}
+
+async function loadMoreCatalogue(type){
+ await loadCatalogue(type,false);
+}
+async function home(){
+ renderContinueWatching();
+ setActive("home");setBottomActive("home");rememberSection("home");
+ document.getElementById("homeHero").style.display="";
+ const app=document.getElementById("app");
+ app.innerHTML=`<section class="section"><div class="section-head"><h2>Trending now</h2></div><div class="grid"><div class="loading">Loading...</div></div></section>`;
+ try{
+  const [trending,movies,tv]=await Promise.all([
+   tmdb("/trending/all/week"),
+   tmdb("/movie/popular",{region:"IE"}),
+   tmdb("/tv/popular")
+  ]);
+  const cw=continueWatching.length?`<section class="section"><div class="section-head"><h2>Continue Watching</h2><small>Pick up where you left off</small></div><div class="grid">${continueWatching.slice(0,6).map(card).join("")}</div></section>`:"";
+  const recent=recentTitles.length?`<section class="section"><div class="section-head"><h2>Recently Viewed</h2><small>Your recent titles</small></div><div class="history-row">${recentTitles.slice(0,8).map(x=>`<button class="history-item" onclick="openDetails(${x.id},'${x.type}')">${escapeHTML(x.title)}</button>`).join("")}</div></section>`:"";
+  app.innerHTML=cw+recent+
+   `<section class="section"><div class="section-head"><h2>Trending now</h2><small>This week</small></div><div class="grid">${(trending.results||[]).slice(0,12).map(card).join("")}</div></section>`+
+   `<section class="section"><div class="section-head"><h2>Popular movies</h2></div><div class="grid">${(movies.results||[]).slice(0,12).map(card).join("")}</div></section>`+
+   `<section class="section"><div class="section-head"><h2>Popular TV series</h2></div><div class="grid">${(tv.results||[]).slice(0,12).map(card).join("")}</div></section>`;
+ }catch(e){showError(e)}
+}
+
+async function loadMovies(){
+ setActive("movies");setBottomActive("home");rememberSection("movies");hideHero();
+ await loadCatalogue("movies",true);
+}
+async function loadTV(){
+ setActive("tv");setBottomActive("home");rememberSection("tv");hideHero();
+ await loadCatalogue("tv",true);
+}
+function surpriseMe(){
+ const pool=[...continueWatching,...(catalogue.movies.items||[]),...(catalogue.tv.items||[])];
+ if(!pool.length){
+  toast("Load some movies or TV first, then try Surprise Me.");
+  return;
+ }
+ const item=pool[Math.floor(Math.random()*pool.length)];
+ openDetails(item.id,item.media_type==="tv"||item.first_air_date?"tv":"movie");
+}
+
+const FREE_MOVIES=[
+ {title:"Big Buck Bunny",year:2008,runtime:"~10 min",license:"CC BY",video:"https://www.youtube.com/embed/aqz-KE-bpKQ",source:"Blender Foundation",description:"A funny animated short about a giant rabbit who finally fights back against a group of rude forest creatures."},
+ {title:"Sintel",year:2010,runtime:"~15 min",license:"CC BY 3.0",video:"https://www.youtube.com/embed/eRsGyueVLvQ",source:"Blender Foundation",description:"An open animated fantasy short about Sintel and her friendship with a baby dragon."},
+ {title:"Cosmos Laundromat: First Cycle",year:2015,runtime:"~10 min",license:"CC BY 3.0",video:"https://www.youtube.com/embed/Y-rmzh0PI3c",source:"Blender Foundation",description:"An absurd animated open-movie pilot about a sheep named Franck and a mysterious salesman."},
+ {title:"Elephants Dream",year:2006,runtime:"~11 min",license:"CC BY 2.5",video:"https://www.youtube.com/embed/eRsGyueVLvQ",source:"Blender Foundation / Orange Open Movie",description:"A surreal open movie following Proog and Emo as they explore a strange, seemingly endless machine."},
+ {title:"Tears of Steel",year:2012,runtime:"~12 min",license:"CC BY 3.0",video:"https://www.youtube.com/embed/OHOpb2fS-cM",source:"Blender Foundation",description:"A science-fiction open movie about a group of soldiers and scientists trying to save the future of humanity."},
+ {title:"Spring",year:2019,runtime:"~8 min",license:"CC BY 4.0",video:"https://www.youtube.com/embed/WhWc3b3KhnY",source:"Blender Foundation",description:"A shepherd girl and her dog face ancient spirits in a poetic fantasy short film."},
+ {title:"Agent 327: Operation Barbershop",year:2017,runtime:"~4 min",license:"CC BY-ND",video:"https://www.youtube.com/embed/JKlgCnp_57M",source:"Blender Foundation",description:"Agent 327 enters a barbershop looking for a secret and gets caught in a fast-moving spy fight."},
+ {title:"Sita Sings the Blues",year:2008,runtime:"~82 min",license:"CC0 / Public Domain Dedication",video:"https://archive.org/embed/Sita_Sings_the_Blues",source:"Nina Paley / Internet Archive",description:"Nina Paley's feature-length animated film, released for free sharing and reuse under a CC0 dedication."}
+];
+
+function loadFreeMovies(){
+ setActive("free");setBottomActive("home");rememberSection("free");
+ hideHero();
+ document.getElementById("app").innerHTML=`
+ <section class="section">
+  <div class="section-head">
+   <h2>Free Movies</h2>
+   <small>Watch legally inside TEVFIX</small>
+  </div>
+  <p class="muted" style="margin:-6px 0 22px">
+   These films have reuse-friendly licences or public-domain-style dedications. TEVFIX embeds official/open releases rather than copying them into the site. Always keep the displayed attribution and licence terms.
+  </p>
+  <div class="free-movie-grid">
+   ${FREE_MOVIES.map((film,i)=>`
+    <article class="free-movie-card">
+      <div class="free-player">
+        <iframe src="${film.video}?rel=0" title="${escapeHTML(film.title)}" loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+      <div class="free-info">
+       <h3>${escapeHTML(film.title)}</h3>
+       <p>${escapeHTML(film.description)}</p>
+       <div class="meta">${film.year} • ${film.runtime} • ${escapeHTML(film.license)}</div>
+       <small>Source: ${escapeHTML(film.source)}</small>
+      </div>
+    </article>`).join("")}
+  </div>
+ </section>`;
+}
+
+async function loadHorror(){
+ setActive("horror");setBottomActive("home");rememberSection("horror");hideHero();
+ try{
+  const d=await tmdb("/discover/movie",{with_genres:"27",sort_by:"popularity.desc",include_adult:"false",page:1});
+  renderSection("Classic Horror",d.results||[]);
+ }catch(e){showError(e)}
+}
+async function loadClassicTV(){
+ setActive("classic");setBottomActive("home");rememberSection("classic");hideHero();
+ try{
+  const results=[];
+  for(const q of classicTVSearch.slice(0,8)){
+   const d=await tmdb("/search/tv",{query:q,page:1});
+   if(d.results?.[0])results.push(d.results[0]);
+  }
+  renderSection("Classic TV",results);
+ }catch(e){showError(e)}
+}
+function hideHero(){document.getElementById("homeHero").style.display="none"}
+function setActive(key){
+ document.querySelectorAll("[data-section]").forEach(b=>b.classList.toggle("active",b.dataset.section===key));
+}
+function showError(e){
+ document.getElementById("app").innerHTML=`<div class="section"><div class="empty">${escapeHTML(e.message||"Something went wrong.")}</div></div>`;
+}
+
+async function searchTMDB(){
+ const q=document.getElementById("searchInput").value.trim();
+ if(!q)return;
+ saveSearchTerm(q);setBottomActive("search");rememberSection("search");
+ hideHero();
+ try{
+  const d=await tmdb("/search/multi",{query:q,include_adult:"false",page:1});
+  const items=(d.results||[]).filter(x=>x.media_type==="movie"||x.media_type==="tv");
+  renderSection("Search results for “"+q+"”",items);
+ }catch(e){showError(e)}
+}
+
+async function openDetails(id,type){
+ const modal=document.getElementById("detailsModal");
+ const box=document.getElementById("detailsContent");
+ modal.classList.add("show");
+ box.innerHTML=`<div class="details"><div></div><div><h2>Loading...</h2></div></div>`;
+ try{
+  const d=await tmdb("/"+type+"/"+id,{append_to_response:"videos,credits,watch/providers"});
+  addRecentlyViewed(d);
+  const trailer=getDirectTrailer(id,type);
+  const yt=(d.videos?.results||[]).find(v=>v.site==="YouTube"&&(v.type==="Trailer"||v.type==="Teaser"));
+  const poster=img(d.poster_path);
+  const providerData=d["watch/providers"]?.results?.IE||d["watch/providers"]?.results?.GB||null;
+  const providers=[...(providerData?.flatrate||[]),...(providerData?.free||[]),...(providerData?.ads||[])];
+  const uniqueProviders=[];const seenProviders=new Set();
+  for(const p of providers){if(!seenProviders.has(p.provider_id)){seenProviders.add(p.provider_id);uniqueProviders.push(p)}}
+  const providerHtml=uniqueProviders.length?'<div style="margin-top:18px"><strong>Where to watch</strong><div class="provider-list">'+uniqueProviders.slice(0,10).map(p=>{const free=(providerData?.free||[]).some(x=>x.provider_id===p.provider_id)||(providerData?.ads||[]).some(x=>x.provider_id===p.provider_id);return '<a class="provider '+(free?'free':'')+'" href="'+escapeHTML(providerData.link||'https://www.justwatch.com/')+'" target="_blank" rel="noopener"><span class="provider-dot"></span>'+escapeHTML(p.provider_name)+(free?' • Free':'')+'</a>'}).join('')+'</div><small class="muted">Availability shown for Ireland where available; provider catalogues can change.</small></div>':'<div style="margin-top:18px"><strong>Where to watch</strong><p class="muted">No provider availability was returned for Ireland.</p></div>';
+  const cast=(d.credits?.cast||[]).slice(0,6).map(c=>escapeHTML(c.name)).join(", ");
+  const saved=myList.some(x=>x.id===id&&x.type===type);
+  box.innerHTML=`<div class="details">
+   <div>${poster?`<img src="${poster}" alt="">`:""}</div>
+   <div>
+    <div class="eyebrow">${type==="tv"?"TV SERIES":"MOVIE"}</div>
+    <h2>${escapeHTML(title(d))}</h2>
+    <p class="muted">★ ${Number(d.vote_average||0).toFixed(1)} ${year(d)?" • "+year(d):""}</p>
+    <p class="muted">${escapeHTML(d.overview||"No description available.")}</p>
+    ${cast?`<p class="muted"><strong>Cast:</strong> ${cast}</p>`:""}
+    ${providerHtml}
+    <div class="actions">
+      <button class="primary" onclick="toggleMyList(${id},'${type}')">${saved?"✓ In My List":"＋ Add to My List"}</button>
+      <button class="secondary" onclick="toggleFavourite({id:${id},type:'${type}'})">★ Favourite</button>
+      <button class="secondary" onclick="shareTitle(${id},'${type}')">↗ Share</button>
+      <button class="secondary" onclick="closeModal('detailsModal')">Close</button>
+    </div>
+    ${trailer?`<div class="trailer"><video controls playsinline src="${escapeHTML(trailer)}"></video></div>`:
+      yt?`<div class="trailer"><iframe src="https://www.youtube.com/embed/${encodeURIComponent(yt.key)}" allowfullscreen></iframe></div>`:""}
+   </div>
+  </div>`;
+ }catch(e){box.innerHTML=`<div class="details"><div></div><div><h2>Could not load details</h2><p class="muted">${escapeHTML(e.message)}</p></div></div>`}
+}
+
+async function shareTitle(id,type){try{const url=location.href.split("#")[0]+"#"+type+"-"+id;if(navigator.share)await navigator.share({title:"TEVFIX",text:"Watch "+type+" details on TEVFIX",url});else{await navigator.clipboard.writeText(url);toast("Title link copied")}}catch(e){}}
+
+function getDirectTrailer(id,type){return TRAILERS[type+":"+id]||""}
+
+function toggleMyList(id,type){
+ const i=myList.findIndex(x=>x.id===id&&x.type===type);
+ if(i>=0)myList.splice(i,1);else myList.push({id,type});
+ localStorage.setItem("tevfix_list",JSON.stringify(myList));
+ closeModal("detailsModal");
+}
+async function openMyList(){
+ setBottomActive("list");rememberSection("list");hideHero();
+ if(!myList.length){renderSection("My List",[]);return}
+ const results=[];
+ for(const item of myList){
+  try{const d=await tmdb("/"+item.type+"/"+item.id);d.media_type=item.type;results.push(d)}catch(e){}
+ }
+ renderSection("My List",results);
+}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+
+/* Theme */
+function toggleTheme(){
+ const root=document.documentElement;
+ const next=root.dataset.theme==="light"?"dark":"light";
+ root.dataset.theme=next;
+ localStorage.setItem("tevfix_theme",next);
+}
+if(localStorage.getItem("tevfix_theme")==="light")document.documentElement.dataset.theme="light";
+
+/* Store / Admin prototypes */
+function openStore(){
+ hideHero();
+ document.getElementById("app").innerHTML=`
+ <section class="section"><div class="section-head"><h2>TEVFIX Store</h2><small>Coming soon</small></div>
+ <div class="store-grid">
+  <div class="store-card"><h3>TEVFIX Hoodie</h3><p class="muted">Official TEVFIX merch.</p><button class="primary" onclick="alert('Store checkout will be connected when products are added.')">View</button></div>
+  <div class="store-card"><h3>TEVFIX T-Shirt</h3><p class="muted">TEVFIX logo collection.</p><button class="primary" onclick="alert('Store checkout will be connected when products are added.')">View</button></div>
+  <div class="store-card"><h3>Digital Membership</h3><p class="muted">Premium features can go here.</p><button class="primary" onclick="alert('Membership is not connected yet.')">View</button></div>
+  <div class="store-card"><h3>Gift Card</h3><p class="muted">A future TEVFIX gift option.</p><button class="primary" onclick="alert('Gift cards are not connected yet.')">View</button></div>
+ </div></section>`;
+}
+function openAdmin(){
+ hideHero();
+ document.getElementById("app").innerHTML=`
+ <section class="section"><div class="section-head"><h2>TEVFIX Admin</h2></div>
+ <div class="admin-box"><p>Admin dashboard prototype.</p>
+ <p class="muted">This area is ready for real admin controls once role-based Supabase permissions are configured.</p>
+ <button class="secondary" onclick="home()">Back to TEVFIX</button></div></section>`;
+}
+
+/* Auth */
+async function refreshAccount(){
+ const {data}=await supabaseClient.auth.getSession();
+ const user=data.session?.user;
+ const btn=document.getElementById("profileBtn");
+ const name=document.getElementById("menuName");
+ const admin=document.getElementById("adminMenu");
+ const logoutBtn=document.getElementById("logoutMenu");
+ if(user){
+  const n=user.user_metadata?.display_name||user.email||"User";
+  btn.textContent=(n[0]||"U").toUpperCase();
+  name.textContent=n;
+  logoutBtn.classList.remove("hidden");
+  admin.classList.add("hidden");
+ }else{
+  btn.textContent="?";name.textContent="Not signed in";
+  logoutBtn.classList.add("hidden");admin.classList.add("hidden");
+ }
+}
+supabaseClient.auth.onAuthStateChange(()=>setTimeout(refreshAccount,0));
+window.addEventListener("load",()=>{
+ refreshAccount();
+ document.getElementById("appStatus").textContent="TEVFIX v"+TEVFIX_VERSION;
+ if(!navigator.onLine)document.getElementById("offlineBanner").style.display="block";
+ home();
+});
+window.addEventListener("load",()=>{if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});});
+
+function accountAction(){document.getElementById("accountMenu").classList.toggle("show")}
+function openAuth(mode="login"){
+ document.getElementById("accountMenu").classList.remove("show");
+ setAuthMode(mode);setAuthMessage("");document.getElementById("authModal").classList.add("show");
+ setTimeout(()=>document.getElementById("emailInput").focus(),80);
+}
+function setAuthMode(mode){
+ authMode=mode;
+ const signup=mode==="signup";
+ document.getElementById("authTitle").textContent=signup?"Create your TEVFIX account":"Log in to TEVFIX";
+ document.getElementById("loginTab").classList.toggle("active",!signup);
+ document.getElementById("signupTab").classList.toggle("active",signup);
+ document.getElementById("nameInput").style.display=signup?"block":"none";
+ document.getElementById("nameInput").required=signup;
+ document.getElementById("passwordInput").autocomplete=signup?"new-password":"current-password";
+ document.getElementById("authSubmit").textContent=signup?"Create account":"Log in";
+}
+function setAuthMessage(msg,type=""){
+ const el=document.getElementById("authMessage");el.textContent=msg;el.className="message "+type;
+}
+async function submitAuth(e){
+ e.preventDefault();
+ const email=document.getElementById("emailInput").value.trim();
+ const password=document.getElementById("passwordInput").value;
+ const name=document.getElementById("nameInput").value.trim();
+ const btn=document.getElementById("authSubmit");
+ if(authMode==="signup"&&password.length<6){setAuthMessage("Password must be at least 6 characters.","error");return}
+ btn.disabled=true;btn.textContent=authMode==="signup"?"Creating...":"Logging in...";setAuthMessage("");
+ try{
+  if(authMode==="signup"){
+   const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:location.href}});
+   if(error)throw error;
+   if(data.session)await saveProfile(data.user,name);
+   setAuthMessage(data.session?"Account created and you're logged in.":"Account created. Check your email to confirm your account.","success");
+   if(data.session)setTimeout(()=>closeModal("authModal"),600);
+  }else{
+   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+   if(error)throw error;
+   if(data.user)await saveProfile(data.user,data.user.user_metadata?.display_name||"");
+   setAuthMessage("Logged in successfully.","success");
+   setTimeout(()=>closeModal("authModal"),500);
+  }
+ }catch(err){setAuthMessage(err.message||"Authentication failed.","error")}
+ finally{btn.disabled=false;btn.textContent=authMode==="signup"?"Create account":"Log in";refreshAccount()}
+}
+async function saveProfile(user,name){
+ if(!user)return;
+ const {error}=await supabaseClient.from("profiles").upsert({id:user.id,display_name:name||user.user_metadata?.display_name||null});
+ if(error)console.warn("Profile save:",error.message);
+}
+async function forgotPassword(){
+ const email=document.getElementById("emailInput").value.trim();
+ if(!email){setAuthMessage("Enter your email first.","error");return}
+ try{
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.href});
+  if(error)throw error;
+  setAuthMessage("Password reset email sent.","success");
+ }catch(e){setAuthMessage(e.message||"Could not send reset email.","error")}
+}
+async function logout(){await supabaseClient.auth.signOut();refreshAccount();home()}
+function toggleMobileNav(){
+ const n=document.getElementById("navLinks");
+ n.style.display=n.style.display==="flex"?"none":"flex";
+ if(n.style.display==="flex"){
+  n.style.position="absolute";n.style.top="64px";n.style.left="10px";n.style.right="10px";
+  n.style.background="var(--panel)";n.style.padding="10px";n.style.border="1px solid var(--line)";
+  n.style.borderRadius="12px";n.style.flexDirection="column";n.style.alignItems="stretch";
+ }
+}
+</script>
+</body>
+</html>
